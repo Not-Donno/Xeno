@@ -243,7 +243,7 @@ export default function AdminCategoriesPage() {
                 label="Icon (emoji)"
                 value={form.icon}
                 onChange={(e) => setForm((f) => ({ ...f, icon: e.target.value }))}
-                placeholder="e.g. 🏃"
+                placeholder="e.g. runner, football, basketball"
                 maxLength={4}
               />
               <Textarea
