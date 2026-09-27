@@ -22,7 +22,13 @@ async function request<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${API_BASE}${endpoint}`, {
+  // In server components (no window), use the full API URL
+  // In client components, use the relative /api path (proxied by Next.js)
+  const baseUrl = typeof window === 'undefined'
+    ? (process.env.API_URL || 'http://localhost:3001')
+    : API_BASE;
+
+  const res = await fetch(`${baseUrl}${endpoint}`, {
     ...options,
     headers,
   });
@@ -39,6 +45,29 @@ async function request<T>(
   }
 
   // Unwrap the { success, data } envelope
+  if (data && typeof data === 'object' && 'success' in data && 'data' in data) {
+    return data.data;
+  }
+  return data as T;
+}
+
+/**
+ * Server-side fetch wrapper for use in Next.js server components.
+ * Uses the API_URL environment variable and unwraps the response envelope.
+ */
+export async function serverFetch<T>(endpoint: string): Promise<T> {
+  const base = process.env.API_URL || 'http://localhost:3001';
+  const res = await fetch(`${base}/api${endpoint}`, {
+    headers: { 'Content-Type': 'application/json' },
+    cache: 'no-store',
+  });
+  const data = await res.json().catch(() => null);
+  if (!res.ok) {
+    throw new ApiError(
+      data?.message || `Request failed with status ${res.status}`,
+      res.status
+    );
+  }
   if (data && typeof data === 'object' && 'success' in data && 'data' in data) {
     return data.data;
   }

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { api } from '@/lib/api';
+import { api, serverFetch } from '@/lib/api';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Button } from '@/components/ui/Button';
 import { Rating } from '@/components/ui/Rating';
@@ -10,13 +10,13 @@ async function getHomeData() {
   try {
     const [featured, trending, newArrivals, vendors, sports, productTypes, promotions] =
       await Promise.all([
-        api.get<{ products: Product[] }>('/products/featured'),
-        api.get<{ products: Product[] }>('/products/trending'),
-        api.get<{ products: Product[] }>('/products/new-arrivals'),
-        api.get<{ vendors: Vendor[] }>('/vendors?limit=4'),
-        api.get<{ categories: Category[] }>('/categories?type=SPORT'),
-        api.get<{ categories: Category[] }>('/categories?type=PRODUCT_TYPE'),
-        api.get<{ promotions: Promotion[] }>('/promotions'),
+        serverFetch<{ products: Product[] }>('/products/featured'),
+        serverFetch<{ products: Product[] }>('/products/trending'),
+        serverFetch<{ products: Product[] }>('/products/new-arrivals'),
+        serverFetch<{ vendors: Vendor[] }>('/vendors?limit=4'),
+        serverFetch<{ categories: Category[] }>('/categories?type=SPORT'),
+        serverFetch<{ categories: Category[] }>('/categories?type=PRODUCT_TYPE'),
+        serverFetch<{ promotions: Promotion[] }>('/promotions'),
       ]);
     return {
       featured: featured.products,
@@ -27,7 +27,8 @@ async function getHomeData() {
       productTypes: productTypes.categories,
       promotions: promotions.promotions,
     };
-  } catch {
+  } catch (err) {
+    console.error('Home data fetch failed:', err);
     return {
       featured: [],
       trending: [],
