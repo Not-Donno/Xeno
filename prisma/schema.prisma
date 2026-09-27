@@ -86,6 +86,7 @@ model User {
   wishlist      Wishlist?
   notifications Notification[]
   refreshTokens RefreshToken[]
+  verificationTokens VerificationToken[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
@@ -102,6 +103,20 @@ model RefreshToken {
   createdAt DateTime @default(now())
 
   @@index([userId])
+}
+
+model VerificationToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String    @unique
+  type      String // EMAIL_VERIFICATION | PASSWORD_RESET
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([type])
 }
 
 // ============================================================
@@ -447,4 +462,11 @@ model Notification {
   createdAt DateTime @default(now())
 
   @@index([userId])
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
 }
