@@ -26,10 +26,15 @@ export class AdminController {
   }
 
   @Get('analytics/sales')
-  getSalesAnalytics(@Query('period') period?: '7d' | '30d' | '90d' | '1y') {
+  getSalesAnalytics(
+    @Query('period') period?: '7d' | '30d' | '90d' | '1y',
+  ) {
     return this.adminService.getSalesAnalytics(period);
   }
 
+  // ---------------------------------------------------------------
+  // Users
+  // ---------------------------------------------------------------
   @Get('users')
   getAllUsers(
     @Query('page') page?: string,
@@ -46,7 +51,10 @@ export class AdminController {
   }
 
   @Patch('users/:id')
-  updateUser(@Param('id') id: string, @Body() data: { role?: Role; isActive?: boolean }) {
+  updateUser(
+    @Param('id') id: string,
+    @Body() data: { role?: Role; isActive?: boolean },
+  ) {
     return this.adminService.updateUser(id, data);
   }
 
@@ -55,6 +63,9 @@ export class AdminController {
     return this.adminService.deleteUser(id);
   }
 
+  // ---------------------------------------------------------------
+  // Vendors
+  // ---------------------------------------------------------------
   @Get('vendors')
   getAllVendors(
     @Query('page') page?: string,
@@ -68,6 +79,9 @@ export class AdminController {
     });
   }
 
+  // ---------------------------------------------------------------
+  // Orders
+  // ---------------------------------------------------------------
   @Get('orders')
   getAllOrders(
     @Query('page') page?: string,
@@ -81,6 +95,9 @@ export class AdminController {
     });
   }
 
+  // ---------------------------------------------------------------
+  // Products
+  // ---------------------------------------------------------------
   @Get('products')
   getAllProducts(
     @Query('page') page?: string,
@@ -95,12 +112,28 @@ export class AdminController {
   }
 
   @Patch('products/:id/status')
-  updateProductStatus(@Param('id') id: string, @Body() data: { status: string }) {
+  updateProductStatus(
+    @Param('id') id: string,
+    @Body() data: { status: string },
+  ) {
     return this.adminService.updateProductStatus(id, data.status);
   }
 
   @Delete('products/:id')
   deleteProduct(@Param('id') id: string) {
     return this.adminService.deleteProduct(id);
+  }
+
+  // ---------------------------------------------------------------
+  // Settings
+  // ---------------------------------------------------------------
+  @Get('settings')
+  getSettings() {
+    return this.adminService.getSettings();
+  }
+
+  @Patch('settings/:key')
+  updateSetting(@Param('key') key: string, @Body() body: { value: string }) {
+    return this.adminService.updateSetting(key, body.value);
   }
 }

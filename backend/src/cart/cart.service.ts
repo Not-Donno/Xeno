@@ -103,7 +103,7 @@ export class CartService {
       });
     } else {
       await this.prisma.cartItem.create({
-        data: { cartId: cart.id, variantId, quantity },
+        data: { cartId: cart.id, variantId, productId: variant.productId, quantity },
       });
     }
 
