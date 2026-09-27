@@ -123,8 +123,8 @@ export default function ProductPage() {
     );
   }
 
-  const colors = [...new Set(product.variants?.map((v) => v.color) || [])];
-  const sizes = [...new Set(product.variants?.map((v) => v.size) || [])];
+  const colors = Array.from(new Set(product.variants?.map((v) => v.color) || []));
+  const sizes = Array.from(new Set(product.variants?.map((v) => v.size) || []));
   const inStock = selectedVariant ? selectedVariant.stock > 0 : false;
 
   return (
