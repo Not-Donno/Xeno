@@ -399,13 +399,22 @@ async function main() {
 
   // Create products with variants and images
   const createdProducts: any[] = [];
+  const usedSlugs = new Set<string>();
   for (let i = 0; i < products.length; i++) {
     const p = products[i];
-    const slug = p.name
+    let slug = p.name
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/[\s_]+/g, '-')
       .replace(/-+/g, '-');
+    // Handle duplicate slugs
+    let slugSuffix = 1;
+    let originalSlug = slug;
+    while (usedSlugs.has(slug)) {
+      slug = `${originalSlug}-${slugSuffix}`;
+      slugSuffix++;
+    }
+    usedSlugs.add(slug);
 
     const product = await prisma.product.create({
       data: {
@@ -444,6 +453,9 @@ async function main() {
             sortOrder: imgIdx,
           })),
         },
+      },
+      include: {
+        variants: true,
       },
     });
     createdProducts.push(product);
