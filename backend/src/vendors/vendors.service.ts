@@ -245,7 +245,7 @@ export class VendorsService {
           product: { select: { name: true, slug: true, images: { take: 1 } } },
           variant: { select: { size: true, color: true } },
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { order: { createdAt: 'desc' } },
         take: 10,
       }),
       this.prisma.product.findMany({
@@ -322,7 +322,7 @@ export class VendorsService {
         },
         skip,
         take: limit,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { order: { createdAt: 'desc' } },
       }),
       this.prisma.orderItem.count({ where }),
     ]);
