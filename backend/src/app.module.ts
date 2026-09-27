@@ -18,6 +18,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { AdminModule } from './admin/admin.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { UploadsModule } from './uploads/uploads.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { StorageModule } from './storage/storage.module';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
@@ -46,6 +47,7 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
     PromotionsModule,
     AdminModule,
     NotificationsModule,
+    UploadsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },
