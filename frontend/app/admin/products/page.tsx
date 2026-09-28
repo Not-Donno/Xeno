@@ -31,6 +31,7 @@ export default function AdminProductsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -38,13 +39,18 @@ export default function AdminProductsPage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError(null);
     const params = new URLSearchParams();
     params.set('page', String(page));
     params.set('limit', String(PAGE_SIZE));
-    if (search) params.set('search', search);
+    if (debouncedSearch) params.set('search', debouncedSearch);
     if (status) params.set('status', status);
     try {
       const res = await api.get<PaginatedResponse<Product>>(`/admin/products?${params.toString()}`, token);
@@ -56,7 +62,7 @@ export default function AdminProductsPage() {
     } finally {
       setLoading(false);
     }
-  }, [token, page, search, status]);
+  }, [token, page, debouncedSearch, status]);
 
   useEffect(() => {
     fetchProducts();
@@ -89,23 +95,29 @@ export default function AdminProductsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-bold text-brand-950">Products</h2>
-        <p className="text-sm text-brand-500 mt-1">{total} total products</p>
+    <div className="space-y-6 animate-fade-in">
+      <div className="animate-fade-in-up">
+        <h2 className="text-xl font-bold text-star-white">Products</h2>
+        <p className="text-sm text-star-blue/60 mt-1">{total} total products</p>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-3">
-        <Input
-          placeholder="Search products..."
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
-          className="w-72"
-        />
+      <div className="flex flex-wrap items-center gap-3 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+        <div className="relative">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-star-blue/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
+            className="input pl-10 w-72"
+          />
+        </div>
         <Select
           value={status}
           onChange={(e) => {
@@ -125,7 +137,7 @@ export default function AdminProductsPage() {
       </div>
 
       {/* Table */}
-      <div className="card overflow-hidden">
+      <div className="card overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
         {loading ? (
           <div className="p-6 space-y-3">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -145,23 +157,23 @@ export default function AdminProductsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-brand-100 bg-brand-50/50">
-                    <th className="text-left px-6 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Product</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Brand</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Price</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Stock</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Status</th>
-                    <th className="text-right px-6 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Actions</th>
+                  <tr className="border-b border-surface-border bg-surface-light/50">
+                    <th className="text-left px-6 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Product</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Brand</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Price</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Stock</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Status</th>
+                    <th className="text-right px-6 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-brand-100">
+                <tbody className="divide-y divide-surface-border">
                   {products.map((product) => {
                     const totalStock = product.variants?.reduce((sum, v) => sum + v.stock, 0) ?? 0;
                     return (
-                      <tr key={product.id} className="hover:bg-brand-50/50">
+                      <tr key={product.id} className="hover:bg-surface-light/50 transition-colors">
                         <td className="px-6 py-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-11 h-11 rounded bg-brand-100 overflow-hidden shrink-0">
+                            <div className="w-11 h-11 rounded-lg bg-surface-lighter overflow-hidden shrink-0">
                               {product.images?.[0] && (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img
@@ -172,23 +184,23 @@ export default function AdminProductsPage() {
                               )}
                             </div>
                             <div>
-                              <p className="font-medium text-brand-950 max-w-[220px] truncate">
+                              <p className="font-medium text-star-white max-w-[220px] truncate">
                                 {product.name}
                               </p>
-                              <p className="text-xs text-brand-400">{product.vendor?.name}</p>
+                              <p className="text-xs text-star-blue/40">{product.vendor?.name}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-brand-700">{product.brand?.name}</td>
+                        <td className="px-4 py-3 text-star-blue/80">{product.brand?.name}</td>
                         <td className="px-4 py-3">
-                          <span className="font-medium text-brand-950">{formatPrice(product.price)}</span>
+                          <span className="font-medium text-star-white">{formatPrice(product.price)}</span>
                           {product.discountPrice && (
-                            <span className="text-xs text-brand-400 line-through ml-2">
+                            <span className="text-xs text-star-blue/40 line-through ml-2">
                               {formatPrice(product.discountPrice)}
                             </span>
                           )}
                         </td>
-                        <td className="px-4 py-3 text-brand-600">{totalStock}</td>
+                        <td className="px-4 py-3 text-star-blue/70">{totalStock}</td>
                         <td className="px-4 py-3">{productStatusBadge(product.status)}</td>
                         <td className="px-6 py-3">
                           <div className="flex items-center justify-end gap-2">
@@ -219,7 +231,7 @@ export default function AdminProductsPage() {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => setDeleteConfirm(product.id)}
-                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
                               >
                                 Delete
                               </Button>
@@ -235,8 +247,8 @@ export default function AdminProductsPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between px-6 py-4 border-t border-brand-100">
-                <p className="text-sm text-brand-500">
+              <div className="flex items-center justify-between px-6 py-4 border-t border-surface-border">
+                <p className="text-sm text-star-blue/60">
                   Page {page} of {totalPages}
                 </p>
                 <div className="flex gap-2">

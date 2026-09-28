@@ -12,9 +12,9 @@ import * as bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
-// Generate a realistic placeholder image URL
-function img(seed: string, w = 800, h = 800): string {
-  return `https://picsum.photos/seed/${seed}/${w}/${h}`;
+// Real product photos from Unsplash
+function img(id: string, w = 800, h = 800): string {
+  return `https://images.unsplash.com/${id}?w=${w}&h=${h}&fit=crop&q=80`;
 }
 
 async function main() {
@@ -67,40 +67,60 @@ async function main() {
   const vendorUsers = await Promise.all([
     prisma.user.create({
       data: {
-        email: 'velocity@xeno.com',
+        email: 'nike@xeno.com',
         passwordHash: vendorPassword,
-        firstName: 'Marcus',
-        lastName: 'Chen',
+        firstName: 'Nike',
+        lastName: 'Team',
         role: Role.VENDOR,
         emailVerified: true,
       },
     }),
     prisma.user.create({
       data: {
-        email: 'apex@xeno.com',
+        email: 'adidas@xeno.com',
         passwordHash: vendorPassword,
-        firstName: 'Sarah',
-        lastName: 'Williams',
+        firstName: 'Adidas',
+        lastName: 'Team',
         role: Role.VENDOR,
         emailVerified: true,
       },
     }),
     prisma.user.create({
       data: {
-        email: 'nova@xeno.com',
+        email: 'puma@xeno.com',
         passwordHash: vendorPassword,
-        firstName: 'James',
-        lastName: 'Rodriguez',
+        firstName: 'Puma',
+        lastName: 'Team',
         role: Role.VENDOR,
         emailVerified: true,
       },
     }),
     prisma.user.create({
       data: {
-        email: 'zenith@xeno.com',
+        email: 'underarmour@xeno.com',
         passwordHash: vendorPassword,
-        firstName: 'Elena',
-        lastName: 'Kowalski',
+        firstName: 'Under',
+        lastName: 'Armour',
+        role: Role.VENDOR,
+        emailVerified: true,
+      },
+    }),
+    prisma.user.create({
+      data: {
+        email: 'newbalance@xeno.com',
+        passwordHash: vendorPassword,
+        firstName: 'New',
+        lastName: 'Balance',
+        role: Role.VENDOR,
+        emailVerified: true,
+      },
+    }),
+    prisma.user.create({
+      data: {
+        email: 'reebok@xeno.com',
+        passwordHash: vendorPassword,
+        firstName: 'Reebok',
+        lastName: 'Team',
         role: Role.VENDOR,
         emailVerified: true,
       },
@@ -161,80 +181,120 @@ async function main() {
   ]);
 
   // ============================================================
-  // VENDORS
+  // VENDORS - Real sports brands
   // ============================================================
   const vendors = await Promise.all([
     prisma.vendor.create({
       data: {
         userId: vendorUsers[0].id,
-        slug: 'velocity-athletics',
-        name: 'Velocity Athletics',
+        slug: 'nike',
+        name: 'Nike',
         description:
-          'Premium running and training gear designed for athletes who demand performance. Founded in 2015, we specialize in cutting-edge footwear and apparel for serious runners.',
-        logoUrl: img('velocity-logo', 200, 200),
-        bannerUrl: img('velocity-banner', 1600, 400),
+          'Nike, Inc. is an American multinational corporation that is engaged in the design, development, manufacturing, and worldwide marketing and sales of footwear, apparel, equipment, accessories, and services.',
+        logoUrl: img('photo-1542291026-7eec264c27ff', 200, 200),
+        bannerUrl: img('photo-1556906781-9a412961c28c', 1600, 400),
         status: VendorStatus.APPROVED,
-        rating: 4.7,
-        totalSales: 1250,
+        rating: 4.8,
+        totalSales: 15420,
         socialLinks: {
-          website: 'https://velocityathletics.com',
-          instagram: '@velocityathletics',
-          twitter: '@velocityathletics',
+          website: 'https://www.nike.com',
+          instagram: '@nike',
+          twitter: '@nike',
         },
       },
     }),
     prisma.vendor.create({
       data: {
         userId: vendorUsers[1].id,
-        slug: 'apex-sports',
-        name: 'Apex Sports',
+        slug: 'adidas',
+        name: 'Adidas',
         description:
-          'Official supplier of team sports equipment and apparel. We outfit athletes from grassroots to professional level with quality gear that lasts.',
-        logoUrl: img('apex-logo', 200, 200),
-        bannerUrl: img('apex-banner', 1600, 400),
+          'Adidas AG is a German multinational corporation, founded and headquartered in Herzogenaurach, Germany. It designs and manufactures shoes, clothing and accessories.',
+        logoUrl: img('photo-1608231387042-66d1773070a5', 200, 200),
+        bannerUrl: img('photo-1606107557195-0e29a4b5b4aa', 1600, 400),
         status: VendorStatus.APPROVED,
-        rating: 4.5,
-        totalSales: 980,
+        rating: 4.7,
+        totalSales: 12850,
         socialLinks: {
-          website: 'https://apexsports.com',
-          facebook: 'apexsports',
-          instagram: '@apexsports',
+          website: 'https://www.adidas.com',
+          instagram: '@adidas',
+          twitter: '@adidas',
         },
       },
     }),
     prisma.vendor.create({
       data: {
         userId: vendorUsers[2].id,
-        slug: 'nova-performance',
-        name: 'Nova Performance',
+        slug: 'puma',
+        name: 'Puma',
         description:
-          'Innovation meets style. Nova Performance brings you the latest in sportswear technology with sustainable manufacturing practices.',
-        logoUrl: img('nova-logo', 200, 200),
-        bannerUrl: img('nova-banner', 1600, 400),
+          'PUMA SE is a German multinational corporation that designs and manufactures athletic and casual footwear, apparel and accessories, headquartered in Herzogenaurach, Germany.',
+        logoUrl: img('photo-1608234807905-4466023792f5', 200, 200),
+        bannerUrl: img('photo-1605348532760-6753d2c43329', 1600, 400),
         status: VendorStatus.APPROVED,
-        rating: 4.3,
-        totalSales: 720,
+        rating: 4.5,
+        totalSales: 8920,
         socialLinks: {
-          website: 'https://novaperformance.com',
-          instagram: '@novaperformance',
+          website: 'https://www.puma.com',
+          instagram: '@puma',
+          twitter: '@puma',
         },
       },
     }),
     prisma.vendor.create({
       data: {
         userId: vendorUsers[3].id,
-        slug: 'zenith-gear',
-        name: 'Zenith Gear',
+        slug: 'under-armour',
+        name: 'Under Armour',
         description:
-          'High-performance equipment for court sports. From tennis to volleyball, we provide professional-grade gear trusted by athletes worldwide.',
-        logoUrl: img('zenith-logo', 200, 200),
-        bannerUrl: img('zenith-banner', 1600, 400),
+          'Under Armour, Inc. is an American company that manufactures footwear, sports and casual apparel. It was founded in 1996 and is headquartered in Baltimore, Maryland.',
+        logoUrl: img('photo-1612892483236-5245769ee88d', 200, 200),
+        bannerUrl: img('photo-1571019613454-1cb2f99b2d8b', 1600, 400),
+        status: VendorStatus.APPROVED,
+        rating: 4.4,
+        totalSales: 7650,
+        socialLinks: {
+          website: 'https://www.underarmour.com',
+          instagram: '@underarmour',
+          twitter: '@underarmour',
+        },
+      },
+    }),
+    prisma.vendor.create({
+      data: {
+        userId: vendorUsers[4].id,
+        slug: 'new-balance',
+        name: 'New Balance',
+        description:
+          'New Balance Athletics, Inc. is an American multinational corporation that designs and manufactures athletic footwear and apparel. It was founded in 1906 and is headquartered in Boston, Massachusetts.',
+        logoUrl: img('photo-1539185441755-769473a23570', 200, 200),
+        bannerUrl: img('photo-1595950653106-6c9ebd614d3a', 1600, 400),
         status: VendorStatus.APPROVED,
         rating: 4.6,
-        totalSales: 650,
+        totalSales: 6340,
         socialLinks: {
-          website: 'https://zenithgear.com',
-          instagram: '@zenithgear',
+          website: 'https://www.newbalance.com',
+          instagram: '@newbalance',
+          twitter: '@newbalance',
+        },
+      },
+    }),
+    prisma.vendor.create({
+      data: {
+        userId: vendorUsers[5].id,
+        slug: 'reebok',
+        name: 'Reebok',
+        description:
+          'Reebok is an American-inspired global brand with a deep fitness heritage and a clear mission: to be the best fitness brand in the world. Founded in 1958, it is now part of the Adidas Group.',
+        logoUrl: img('photo-1600185365483-26d7a4cc7519', 200, 200),
+        bannerUrl: img('photo-1517836357463-d25dfeac3438', 1600, 400),
+        status: VendorStatus.APPROVED,
+        rating: 4.3,
+        totalSales: 5210,
+        socialLinks: {
+          website: 'https://www.reebok.com',
+          instagram: '@reebok',
+          twitter: '@reebok',
         },
       },
     }),
@@ -244,42 +304,31 @@ async function main() {
   // CATEGORIES - Sports
   // ============================================================
   const sports = await Promise.all([
-    prisma.category.create({ data: { name: 'Running', slug: 'running', type: CategoryType.SPORT, icon: '🏃', description: 'Running shoes, apparel and accessories', sortOrder: 1 } }),
-    prisma.category.create({ data: { name: 'Football', slug: 'football', type: CategoryType.SPORT, icon: '⚽', description: 'Football boots, jerseys and equipment', sortOrder: 2 } }),
-    prisma.category.create({ data: { name: 'Basketball', slug: 'basketball', type: CategoryType.SPORT, icon: '🏀', description: 'Basketball shoes, jerseys and gear', sortOrder: 3 } }),
-    prisma.category.create({ data: { name: 'Baseball', slug: 'baseball', type: CategoryType.SPORT, icon: '⚾', description: 'Baseball equipment and apparel', sortOrder: 4 } }),
-    prisma.category.create({ data: { name: 'Cricket', slug: 'cricket', type: CategoryType.SPORT, icon: '🏏', description: 'Cricket bats, balls and protective gear', sortOrder: 5 } }),
-    prisma.category.create({ data: { name: 'Tennis', slug: 'tennis', type: CategoryType.SPORT, icon: '🎾', description: 'Tennis rackets, shoes and apparel', sortOrder: 6 } }),
-    prisma.category.create({ data: { name: 'Volleyball', slug: 'volleyball', type: CategoryType.SPORT, icon: '🏐', description: 'Volleyball equipment and apparel', sortOrder: 7 } }),
-    prisma.category.create({ data: { name: 'Cycling', slug: 'cycling', type: CategoryType.SPORT, icon: '🚴', description: 'Cycling gear, helmets and accessories', sortOrder: 8 } }),
-    prisma.category.create({ data: { name: 'Gym & Fitness', slug: 'gym-fitness', type: CategoryType.SPORT, icon: '🏋️', description: 'Gym equipment, weights and fitness apparel', sortOrder: 9 } }),
-    prisma.category.create({ data: { name: 'Boxing', slug: 'boxing', type: CategoryType.SPORT, icon: '🥊', description: 'Boxing gloves, bags and protective gear', sortOrder: 10 } }),
-    prisma.category.create({ data: { name: 'Golf', slug: 'golf', type: CategoryType.SPORT, icon: '⛳', description: 'Golf clubs, balls and apparel', sortOrder: 11 } }),
-    prisma.category.create({ data: { name: 'Swimming', slug: 'swimming', type: CategoryType.SPORT, icon: '🏊', description: 'Swimsuits, goggles and swim gear', sortOrder: 12 } }),
-    prisma.category.create({ data: { name: 'Hiking', slug: 'hiking', type: CategoryType.SPORT, icon: '🥾', description: 'Hiking boots, backpacks and outdoor gear', sortOrder: 13 } }),
-    prisma.category.create({ data: { name: 'Training', slug: 'training', type: CategoryType.SPORT, icon: '💪', description: 'Training apparel and accessories', sortOrder: 14 } }),
-    prisma.category.create({ data: { name: 'Other Sports', slug: 'other-sports', type: CategoryType.SPORT, icon: '🏅', description: 'Equipment for all other sports', sortOrder: 15 } }),
+    prisma.category.create({ data: { name: 'Running', slug: 'running', type: CategoryType.SPORT, icon: 'runner', description: 'Running shoes, apparel and accessories', sortOrder: 1 } }),
+    prisma.category.create({ data: { name: 'Football', slug: 'football', type: CategoryType.SPORT, icon: 'football', description: 'Football boots, jerseys and equipment', sortOrder: 2 } }),
+    prisma.category.create({ data: { name: 'Basketball', slug: 'basketball', type: CategoryType.SPORT, icon: 'basketball', description: 'Basketball shoes, jerseys and gear', sortOrder: 3 } }),
+    prisma.category.create({ data: { name: 'Tennis', slug: 'tennis', type: CategoryType.SPORT, icon: 'tennis', description: 'Tennis rackets, shoes and apparel', sortOrder: 4 } }),
+    prisma.category.create({ data: { name: 'Gym & Fitness', slug: 'gym-fitness', type: CategoryType.SPORT, icon: 'gym', description: 'Gym equipment, weights and fitness apparel', sortOrder: 5 } }),
+    prisma.category.create({ data: { name: 'Training', slug: 'training', type: CategoryType.SPORT, icon: 'training', description: 'Training apparel and accessories', sortOrder: 6 } }),
   ]);
 
   // ============================================================
   // CATEGORIES - Product Types
   // ============================================================
   const productTypes = await Promise.all([
-    prisma.category.create({ data: { name: 'Shoes', slug: 'shoes', type: CategoryType.PRODUCT_TYPE, icon: '👟', description: 'Athletic footwear for all sports', sortOrder: 1 } }),
-    prisma.category.create({ data: { name: 'T-Shirts', slug: 't-shirts', type: CategoryType.PRODUCT_TYPE, icon: '👕', description: 'Athletic tops and t-shirts', sortOrder: 2 } }),
-    prisma.category.create({ data: { name: 'Jerseys', slug: 'jerseys', type: CategoryType.PRODUCT_TYPE, icon: '🎽', description: 'Team jerseys and kits', sortOrder: 3 } }),
-    prisma.category.create({ data: { name: 'Shorts', slug: 'shorts', type: CategoryType.PRODUCT_TYPE, icon: '🩳', description: 'Athletic shorts', sortOrder: 4 } }),
-    prisma.category.create({ data: { name: 'Pants', slug: 'pants', type: CategoryType.PRODUCT_TYPE, icon: '👖', description: 'Athletic pants and tights', sortOrder: 5 } }),
-    prisma.category.create({ data: { name: 'Hoodies', slug: 'hoodies', type: CategoryType.PRODUCT_TYPE, icon: '🧥', description: 'Hoodies and sweatshirts', sortOrder: 6 } }),
-    prisma.category.create({ data: { name: 'Jackets', slug: 'jackets', type: CategoryType.PRODUCT_TYPE, icon: '🧥', description: 'Sports jackets and windbreakers', sortOrder: 7 } }),
-    prisma.category.create({ data: { name: 'Tracksuits', slug: 'tracksuits', type: CategoryType.PRODUCT_TYPE, icon: '🏃', description: 'Matching tracksuit sets', sortOrder: 8 } }),
-    prisma.category.create({ data: { name: 'Socks', slug: 'socks', type: CategoryType.PRODUCT_TYPE, icon: '🧦', description: 'Athletic socks', sortOrder: 9 } }),
-    prisma.category.create({ data: { name: 'Caps', slug: 'caps', type: CategoryType.PRODUCT_TYPE, icon: '🧢', description: 'Caps, visors and headwear', sortOrder: 10 } }),
-    prisma.category.create({ data: { name: 'Gloves', slug: 'gloves', type: CategoryType.PRODUCT_TYPE, icon: '🧤', description: 'Sports gloves', sortOrder: 11 } }),
-    prisma.category.create({ data: { name: 'Bags', slug: 'bags', type: CategoryType.PRODUCT_TYPE, icon: '🎒', description: 'Sports bags and backpacks', sortOrder: 12 } }),
-    prisma.category.create({ data: { name: 'Accessories', slug: 'accessories', type: CategoryType.PRODUCT_TYPE, icon: '⌚', description: 'Sports accessories', sortOrder: 13 } }),
-    prisma.category.create({ data: { name: 'Equipment', slug: 'equipment', type: CategoryType.PRODUCT_TYPE, icon: '🏐', description: 'Sports equipment', sortOrder: 14 } }),
-    prisma.category.create({ data: { name: 'Other', slug: 'other', type: CategoryType.PRODUCT_TYPE, icon: '📦', description: 'Other products', sortOrder: 15 } }),
+    prisma.category.create({ data: { name: 'Shoes', slug: 'shoes', type: CategoryType.PRODUCT_TYPE, icon: 'shoe', description: 'Athletic footwear for all sports', sortOrder: 1 } }),
+    prisma.category.create({ data: { name: 'T-Shirts', slug: 't-shirts', type: CategoryType.PRODUCT_TYPE, icon: 'shirt', description: 'Athletic tops and t-shirts', sortOrder: 2 } }),
+    prisma.category.create({ data: { name: 'Jerseys', slug: 'jerseys', type: CategoryType.PRODUCT_TYPE, icon: 'jersey', description: 'Team jerseys and kits', sortOrder: 3 } }),
+    prisma.category.create({ data: { name: 'Shorts', slug: 'shorts', type: CategoryType.PRODUCT_TYPE, icon: 'shorts', description: 'Athletic shorts', sortOrder: 4 } }),
+    prisma.category.create({ data: { name: 'Pants', slug: 'pants', type: CategoryType.PRODUCT_TYPE, icon: 'pants', description: 'Athletic pants and tights', sortOrder: 5 } }),
+    prisma.category.create({ data: { name: 'Hoodies', slug: 'hoodies', type: CategoryType.PRODUCT_TYPE, icon: 'jacket', description: 'Hoodies and sweatshirts', sortOrder: 6 } }),
+    prisma.category.create({ data: { name: 'Jackets', slug: 'jackets', type: CategoryType.PRODUCT_TYPE, icon: 'jacket', description: 'Sports jackets and windbreakers', sortOrder: 7 } }),
+    prisma.category.create({ data: { name: 'Tracksuits', slug: 'tracksuits', type: CategoryType.PRODUCT_TYPE, icon: 'runner', description: 'Matching tracksuit sets', sortOrder: 8 } }),
+    prisma.category.create({ data: { name: 'Socks', slug: 'socks', type: CategoryType.PRODUCT_TYPE, icon: 'socks', description: 'Athletic socks', sortOrder: 9 } }),
+    prisma.category.create({ data: { name: 'Caps', slug: 'caps', type: CategoryType.PRODUCT_TYPE, icon: 'cap', description: 'Caps, visors and headwear', sortOrder: 10 } }),
+    prisma.category.create({ data: { name: 'Bags', slug: 'bags', type: CategoryType.PRODUCT_TYPE, icon: 'bag', description: 'Sports bags and backpacks', sortOrder: 11 } }),
+    prisma.category.create({ data: { name: 'Accessories', slug: 'accessories', type: CategoryType.PRODUCT_TYPE, icon: 'watch', description: 'Sports accessories', sortOrder: 12 } }),
+    prisma.category.create({ data: { name: 'Equipment', slug: 'equipment', type: CategoryType.PRODUCT_TYPE, icon: 'volleyball', description: 'Sports equipment', sortOrder: 13 } }),
   ]);
 
   // ============================================================
@@ -288,14 +337,14 @@ async function main() {
   const brands = await Promise.all([
     prisma.brand.create({ data: { name: 'Nike', slug: 'nike' } }),
     prisma.brand.create({ data: { name: 'Adidas', slug: 'adidas' } }),
-    prisma.brand.create({ data: { name: 'Under Armour', slug: 'under-armour' } }),
     prisma.brand.create({ data: { name: 'Puma', slug: 'puma' } }),
-    prisma.brand.create({ data: { name: 'Reebok', slug: 'reebok' } }),
+    prisma.brand.create({ data: { name: 'Under Armour', slug: 'under-armour' } }),
     prisma.brand.create({ data: { name: 'New Balance', slug: 'new-balance' } }),
+    prisma.brand.create({ data: { name: 'Reebok', slug: 'reebok' } }),
   ]);
 
   // ============================================================
-  // PRODUCTS
+  // PRODUCTS - Real products with real photos
   // ============================================================
   const shoeSizes = ['7', '8', '9', '10', '11', '12'];
   const apparelSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
@@ -315,86 +364,423 @@ async function main() {
     isFeatured?: boolean;
     isNewArrival?: boolean;
     isTrending?: boolean;
-    imageSeed: string;
+    imageIds: string[];
     variants: { color: string; size: string; stock: number }[];
   }
 
   const products: ProductSeed[] = [
-    // Running shoes
-    { name: 'Nike Air Zoom Pegasus 40', description: 'The Nike Air Zoom Pegasus 40 is a versatile running shoe with responsive cushioning and a breathable mesh upper. Perfect for daily training and long runs.', shortDescription: 'Versatile running shoe with responsive cushioning', price: 129.99, discountPrice: 99.99, brandIdx: 0, sportIdx: 0, typeIdx: 0, vendorIdx: 0, tags: ['running', 'shoes', 'nike', 'pegasus'], isFeatured: true, isTrending: true, imageSeed: 'nike-pegasus', variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 20) + 5 }))) },
-    { name: 'Adidas Ultraboost 23', description: 'The Adidas Ultraboost 23 features Primeknit upper and Boost midsole for incredible energy return. A premium running shoe for serious athletes.', shortDescription: 'Premium running shoe with Boost technology', price: 189.99, discountPrice: null, brandIdx: 1, sportIdx: 0, typeIdx: 0, vendorIdx: 0, tags: ['running', 'shoes', 'adidas', 'ultraboost'], isFeatured: true, imageSeed: 'adidas-ultraboost', variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 15) + 3 }))) },
-    { name: 'Nike ZoomX Invincible 3', description: 'The Nike ZoomX Invincible 3 offers maximum cushioning for long-distance running. ZoomX foam provides the highest energy return of any Nike running shoe.', shortDescription: 'Maximum cushioning for long-distance running', price: 179.99, discountPrice: 149.99, brandIdx: 0, sportIdx: 0, typeIdx: 0, vendorIdx: 0, tags: ['running', 'shoes', 'nike', 'zoomx', 'invincible'], isFeatured: true, imageSeed: 'nike-invincible', variants: shoeSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 12) + 2 }))) },
-    { name: 'New Balance Fresh Foam 1080v13', description: 'The New Balance Fresh Foam 1080v13 delivers plush comfort for neutral runners. Fresh Foam X cushioning provides a smooth, soft ride.', shortDescription: 'Plush comfort for neutral runners', price: 164.99, discountPrice: null, brandIdx: 5, sportIdx: 0, typeIdx: 0, vendorIdx: 0, tags: ['running', 'shoes', 'new-balance', 'fresh-foam'], imageSeed: 'nb-1080', variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 18) + 4 }))) },
-    { name: 'Adidas Terrex Agravic Trail', description: 'The Adidas Terrex Agravic Trail is built for off-road running with Continental rubber outsole and protective rock plate.', shortDescription: 'Trail running shoe with superior grip', price: 149.99, discountPrice: 119.99, brandIdx: 1, sportIdx: 0, typeIdx: 0, vendorIdx: 0, tags: ['trail', 'running', 'shoes', 'adidas', 'terrex'], imageSeed: 'adidas-terrex', variants: shoeSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 10) + 2 }))) },
-    { name: 'UA Charged Assert 10', description: 'The Under Armour Charged Assert 10 offers responsive cushioning for everyday running. Durable leather upper provides stability.', shortDescription: 'Responsive cushioning for everyday running', price: 74.99, discountPrice: 59.99, brandIdx: 2, sportIdx: 0, typeIdx: 0, vendorIdx: 0, tags: ['running', 'shoes', 'under-armour', 'charged'], imageSeed: 'ua-assert', variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 25) + 8 }))) },
+    // Nike Running Shoes
+    {
+      name: 'Nike Air Zoom Pegasus 40',
+      description: 'The Nike Air Zoom Pegasus 40 is a versatile running shoe with responsive cushioning and a breathable mesh upper. Perfect for daily training and long runs. Features Zoom Air units in the forefoot and heel for responsive cushioning.',
+      shortDescription: 'Versatile running shoe with responsive cushioning',
+      price: 129.99,
+      discountPrice: 99.99,
+      brandIdx: 0,
+      sportIdx: 0,
+      typeIdx: 0,
+      vendorIdx: 0,
+      tags: ['running', 'shoes', 'nike', 'pegasus'],
+      isFeatured: true,
+      isTrending: true,
+      imageIds: ['photo-1542291026-7eec264c27ff', 'photo-1606107557195-0e29a4b5b4aa', 'photo-1600185365483-26d7a4cc7519'],
+      variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 20) + 5 }))),
+    },
+    {
+      name: 'Nike Air Force 1 \'07',
+      description: 'The Nike Air Force 1 \'07 is a classic basketball shoe with timeless style. Premium leather and Air cushioning make it a staple for any sneaker collection.',
+      shortDescription: 'Classic basketball shoe with Air cushioning',
+      price: 109.99,
+      discountPrice: null,
+      brandIdx: 0,
+      sportIdx: 2,
+      typeIdx: 0,
+      vendorIdx: 0,
+      tags: ['basketball', 'shoes', 'nike', 'air-force'],
+      isTrending: true,
+      imageIds: ['photo-1595950653106-6c9ebd614d3a', 'photo-1600269452121-4f2416e55c28', 'photo-1608231387042-66d1773070a5'],
+      variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 20) + 5 }))),
+    },
+    {
+      name: 'Nike Mercurial Vapor 15 Elite',
+      description: 'The Nike Mercurial Vapor 15 Elite is built for speed with a lightweight Flyknit upper and responsive Zoom Air unit. Designed for elite players who demand the best.',
+      shortDescription: 'Lightweight speed boot for elite players',
+      price: 274.99,
+      discountPrice: 229.99,
+      brandIdx: 0,
+      sportIdx: 1,
+      typeIdx: 0,
+      vendorIdx: 0,
+      tags: ['football', 'boots', 'nike', 'mercurial'],
+      isFeatured: true,
+      isTrending: true,
+      imageIds: ['photo-1606107557195-0e29a4b5b4aa', 'photo-1600185365483-26d7a4cc7519', 'photo-1595950653106-6c9ebd614d3a'],
+      variants: shoeSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 15) + 3 }))),
+    },
+    {
+      name: 'Nike Dri-FIT Academy T-Shirt',
+      description: 'The Nike Dri-FIT Academy T-Shirt keeps you dry during intense training sessions. Lightweight and breathable fabric with a comfortable fit.',
+      shortDescription: 'Dri-FIT training t-shirt',
+      price: 29.99,
+      discountPrice: null,
+      brandIdx: 0,
+      sportIdx: 5,
+      typeIdx: 1,
+      vendorIdx: 0,
+      tags: ['t-shirt', 'training', 'nike', 'dri-fit'],
+      imageIds: ['photo-1521572163474-6864f9cf17ab', 'photo-1581655353564-df123a1eb820', 'photo-1576566588028-4147f3842f27'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 4).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 40) + 15 }))),
+    },
+    {
+      name: 'Nike Sportswear Club Fleece Pullover Hoodie',
+      description: 'The Nike Sportswear Club Fleece Pullover Hoodie is a wardrobe essential. Soft fleece with a relaxed fit for everyday comfort.',
+      shortDescription: 'Soft fleece pullover hoodie',
+      price: 59.99,
+      discountPrice: 44.99,
+      brandIdx: 0,
+      sportIdx: 5,
+      typeIdx: 5,
+      vendorIdx: 0,
+      tags: ['hoodie', 'nike', 'fleece', 'casual'],
+      isTrending: true,
+      imageIds: ['photo-1556821840-3a63f95609a7', 'photo-1578768079052-aa7c55954dc5', 'photo-1618354691373-d851c5c3a990'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 4).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 30) + 10 }))),
+    },
+    {
+      name: 'Nike Academy Woven Shorts',
+      description: 'The Nike Academy Woven Shorts are lightweight and breathable for training. Elastic waistband with drawcord for a secure fit.',
+      shortDescription: 'Lightweight training shorts',
+      price: 39.99,
+      discountPrice: null,
+      brandIdx: 0,
+      sportIdx: 1,
+      typeIdx: 3,
+      vendorIdx: 0,
+      tags: ['shorts', 'nike', 'academy'],
+      imageIds: ['photo-1591195853828-11db59a44f6b', 'photo-1571945153237-4929e783af4a', 'photo-1552902865-b72c031ac5ea'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 30) + 10 }))),
+    },
+    {
+      name: 'Nike Everyday Cushioned Training Socks 3-Pack',
+      description: 'The Nike Everyday Cushioned Training Socks 3-Pack provides comfort and support for daily training. Moisture-wicking fabric keeps feet dry.',
+      shortDescription: '3-pack training socks',
+      price: 16.99,
+      discountPrice: 12.99,
+      brandIdx: 0,
+      sportIdx: 5,
+      typeIdx: 8,
+      vendorIdx: 0,
+      tags: ['socks', 'nike', 'training', '3-pack'],
+      imageIds: ['photo-1586350977771-b3b95a03628e', 'photo-1606107557195-0e29a4b5b4aa', 'photo-1600185365483-26d7a4cc7519'],
+      variants: [{ color: 'White', size: 'M', stock: 120 }, { color: 'Black', size: 'M', stock: 100 }, { color: 'White', size: 'L', stock: 110 }, { color: 'Black', size: 'L', stock: 90 }],
+    },
+    {
+      name: 'Nike Dri-FIT Swoosh Cap',
+      description: 'The Nike Dri-FIT Swoosh Cap features moisture-wicking fabric and adjustable fit for all-day comfort.',
+      shortDescription: 'Moisture-wicking adjustable cap',
+      price: 27.99,
+      discountPrice: null,
+      brandIdx: 0,
+      sportIdx: 5,
+      typeIdx: 9,
+      vendorIdx: 0,
+      tags: ['cap', 'nike', 'dri-fit'],
+      imageIds: ['photo-1588850561407-ed78c282e89b', 'photo-1521369909029-2afed882baee', 'photo-1534215754734-18e55d13e346'],
+      variants: [{ color: 'Black', size: 'One Size', stock: 60 }, { color: 'White', size: 'One Size', stock: 50 }, { color: 'Navy', size: 'One Size', stock: 40 }],
+    },
 
-    // Football
-    { name: 'Nike Mercurial Vapor 15 Elite', description: 'The Nike Mercurial Vapor 15 Elite is built for speed with a lightweight Flyknit upper and responsive Zoom Air unit.', shortDescription: 'Lightweight speed boot for elite players', price: 274.99, discountPrice: 229.99, brandIdx: 0, sportIdx: 1, typeIdx: 0, vendorIdx: 1, tags: ['football', 'boots', 'nike', 'mercurial'], isFeatured: true, isTrending: true, imageSeed: 'nike-mercurial', variants: shoeSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 15) + 3 }))) },
-    { name: 'Adidas Copa Pure 2 Elite', description: 'The Adidas Copa Pure 2 Elite features premium K-leather upper for ultimate touch and comfort. A classic football boot reimagined.', shortDescription: 'Premium leather football boot', price: 279.99, discountPrice: null, brandIdx: 1, sportIdx: 1, typeIdx: 0, vendorIdx: 1, tags: ['football', 'boots', 'adidas', 'copa'], imageSeed: 'adidas-copa', variants: shoeSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 12) + 2 }))) },
-    { name: 'Puma Future 7 Play', description: 'The Puma Future 7 Play offers adaptive fit for creative players. FUZIONFIT360 upper provides lockdown and agility.', shortDescription: 'Adaptive fit for creative players', price: 129.99, discountPrice: 99.99, brandIdx: 3, sportIdx: 1, typeIdx: 0, vendorIdx: 1, tags: ['football', 'boots', 'puma', 'future'], imageSeed: 'puma-future', variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 18) + 5 }))) },
-    { name: 'Nike Academy Team Jersey', description: 'The Nike Academy Team Jersey features Dri-FIT technology to keep you dry during matches. Lightweight and breathable.', shortDescription: 'Dri-FIT match jersey', price: 49.99, discountPrice: null, brandIdx: 0, sportIdx: 1, typeIdx: 2, vendorIdx: 1, tags: ['jersey', 'football', 'nike', 'academy'], imageSeed: 'nike-jersey', variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 30) + 10 }))) },
-    { name: 'Adidas Condivo 24 Training Jersey', description: 'The Adidas Condivo 24 Training Jersey is designed for intense practice sessions. AEROREADY fabric keeps you cool and dry.', shortDescription: 'Training jersey with AEROREADY', price: 34.99, discountPrice: 27.99, brandIdx: 1, sportIdx: 1, typeIdx: 2, vendorIdx: 1, tags: ['jersey', 'football', 'adidas', 'training'], imageSeed: 'adidas-jersey', variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 25) + 8 }))) },
-    { name: 'Nike Strike Team Football', description: 'The Nike Strike Team Football is built for practice and match play. Durable construction with excellent flight stability.', shortDescription: 'Durable practice and match football', price: 29.99, discountPrice: 24.99, brandIdx: 0, sportIdx: 1, typeIdx: 13, vendorIdx: 1, tags: ['football', 'ball', 'nike', 'strike'], imageSeed: 'nike-ball', variants: [{ color: 'White', size: '5', stock: 50 }, { color: 'Yellow', size: '5', stock: 30 }] },
+    // Adidas Products
+    {
+      name: 'Adidas Ultraboost 23',
+      description: 'The Adidas Ultraboost 23 features Primeknit upper and Boost midsole for incredible energy return. A premium running shoe for serious athletes.',
+      shortDescription: 'Premium running shoe with Boost technology',
+      price: 189.99,
+      discountPrice: null,
+      brandIdx: 1,
+      sportIdx: 0,
+      typeIdx: 0,
+      vendorIdx: 1,
+      tags: ['running', 'shoes', 'adidas', 'ultraboost'],
+      isFeatured: true,
+      imageIds: ['photo-1608231387042-66d1773070a5', 'photo-1606107557195-0e29a4b5b4aa', 'photo-1600185365483-26d7a4cc7519'],
+      variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 15) + 3 }))),
+    },
+    {
+      name: 'Adidas Copa Pure 2 Elite',
+      description: 'The Adidas Copa Pure 2 Elite features premium K-leather upper for ultimate touch and comfort. A classic football boot reimagined for the modern game.',
+      shortDescription: 'Premium leather football boot',
+      price: 279.99,
+      discountPrice: null,
+      brandIdx: 1,
+      sportIdx: 1,
+      typeIdx: 0,
+      vendorIdx: 1,
+      tags: ['football', 'boots', 'adidas', 'copa'],
+      imageIds: ['photo-1606107557195-0e29a4b5b4aa', 'photo-1600185365483-26d7a4cc7519', 'photo-1595950653106-6c9ebd614d3a'],
+      variants: shoeSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 12) + 2 }))),
+    },
+    {
+      name: 'Adidas Tiro 24 Training Jacket',
+      description: 'The Adidas Tiro 24 Training Jacket offers warmth and mobility for cold-weather training. Slim fit with AEROREADY technology.',
+      shortDescription: 'Warm training jacket for cold weather',
+      price: 59.99,
+      discountPrice: 49.99,
+      brandIdx: 1,
+      sportIdx: 1,
+      typeIdx: 6,
+      vendorIdx: 1,
+      tags: ['jacket', 'adidas', 'tiro', 'training'],
+      imageIds: ['photo-1551028719-00167b16eac5', 'photo-1591047139829-d91aecb6caea', 'photo-1578768079052-aa7c55954dc5'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 18) + 4 }))),
+    },
+    {
+      name: 'Adidas Own The Run Tee',
+      description: 'The Adidas Own The Run Tee features AEROREADY technology for moisture management during workouts. Lightweight and breathable.',
+      shortDescription: 'AEROREADY running tee',
+      price: 29.99,
+      discountPrice: 24.99,
+      brandIdx: 1,
+      sportIdx: 0,
+      typeIdx: 1,
+      vendorIdx: 1,
+      tags: ['t-shirt', 'running', 'adidas'],
+      imageIds: ['photo-1581655353564-df123a1eb820', 'photo-1576566588028-4147f3842f27', 'photo-1521572163474-6864f9cf17ab'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 35) + 10 }))),
+    },
+    {
+      name: 'Adidas Tastigo 24 Shorts',
+      description: 'The Adidas Tastigo 24 Shorts are lightweight and breathable for training. AEROREADY fabric keeps you dry.',
+      shortDescription: 'Lightweight training shorts',
+      price: 29.99,
+      discountPrice: 24.99,
+      brandIdx: 1,
+      sportIdx: 1,
+      typeIdx: 3,
+      vendorIdx: 1,
+      tags: ['shorts', 'adidas', 'tastigo'],
+      imageIds: ['photo-1591195853828-11db59a44f6b', 'photo-1571945153237-4929e783af4a', 'photo-1552902865-b72c031ac5ea'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 35) + 12 }))),
+    },
+    {
+      name: 'Adidas Defender IV Duffel Bag',
+      description: 'The Adidas Defender IV Duffel Bag offers spacious storage with durable construction. Ventilated shoe compartment keeps gear separate.',
+      shortDescription: 'Spacious duffel with shoe compartment',
+      price: 39.99,
+      discountPrice: 29.99,
+      brandIdx: 1,
+      sportIdx: 5,
+      typeIdx: 10,
+      vendorIdx: 1,
+      tags: ['bag', 'adidas', 'duffel', 'defender'],
+      imageIds: ['photo-1553062407-98eeb64c6a62', 'photo-1547949003-9792a18a2601', 'photo-1571019613454-1cb2f99b2d8b'],
+      variants: [{ color: 'Black', size: 'One Size', stock: 55 }, { color: 'Grey', size: 'One Size', stock: 35 }],
+    },
 
-    // Basketball
-    { name: 'Nike Air Force 1 \'07', description: 'The Nike Air Force 1 \'07 is a classic basketball shoe with timeless style. Premium leather and Air cushioning.', shortDescription: 'Classic basketball shoe with Air cushioning', price: 109.99, discountPrice: null, brandIdx: 0, sportIdx: 2, typeIdx: 0, vendorIdx: 0, tags: ['basketball', 'shoes', 'nike', 'air-force'], isTrending: true, imageSeed: 'nike-af1', variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 20) + 5 }))) },
-    { name: 'Nike Zoom Freak 5', description: 'The Nike Zoom Freak 5 is built for explosive basketball performance. Designed for Giannis Antetokounmpo.', shortDescription: 'Explosive performance basketball shoe', price: 139.99, discountPrice: null, brandIdx: 0, sportIdx: 2, typeIdx: 0, vendorIdx: 1, tags: ['basketball', 'shoes', 'nike', 'freak'], imageSeed: 'nike-freak', variants: shoeSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 15) + 3 }))) },
-    { name: 'UA Baseline Basketball Shorts', description: 'The Under Armour Baseline Basketball Shorts offer lightweight comfort on the court. HeatGear fabric keeps you cool.', shortDescription: 'Lightweight basketball shorts', price: 34.99, discountPrice: null, brandIdx: 2, sportIdx: 2, typeIdx: 3, vendorIdx: 1, tags: ['basketball', 'shorts', 'under-armour'], imageSeed: 'ua-shorts', variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 35) + 12 }))) },
+    // Puma Products
+    {
+      name: 'Puma Future 7 Play',
+      description: 'The Puma Future 7 Play offers adaptive fit for creative players. FUZIONFIT360 upper provides lockdown and agility on the pitch.',
+      shortDescription: 'Adaptive fit for creative players',
+      price: 129.99,
+      discountPrice: 99.99,
+      brandIdx: 2,
+      sportIdx: 1,
+      typeIdx: 0,
+      vendorIdx: 2,
+      tags: ['football', 'boots', 'puma', 'future'],
+      imageIds: ['photo-1606107557195-0e29a4b5b4aa', 'photo-1600185365483-26d7a4cc7519', 'photo-1595950653106-6c9ebd614d3a'],
+      variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 18) + 5 }))),
+    },
+    {
+      name: 'Puma Essentials Logo Hoodie',
+      description: 'The Puma Essentials Logo Hoodie offers everyday comfort with a classic look. Soft cotton blend fleece for warmth.',
+      shortDescription: 'Everyday comfort hoodie',
+      price: 49.99,
+      discountPrice: 39.99,
+      brandIdx: 2,
+      sportIdx: 5,
+      typeIdx: 5,
+      vendorIdx: 2,
+      tags: ['hoodie', 'puma', 'essentials'],
+      imageIds: ['photo-1556821840-3a63f95609a7', 'photo-1578768079052-aa7c55954dc5', 'photo-1618354691373-d851c5c3a990'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 22) + 7 }))),
+    },
+    {
+      name: 'Puma evoKNIT Shorts',
+      description: 'The Puma evoKNIT Shorts offer a seamless fit for unrestricted movement. Lightweight and breathable for intense training.',
+      shortDescription: 'Seamless training shorts',
+      price: 34.99,
+      discountPrice: 27.99,
+      brandIdx: 2,
+      sportIdx: 5,
+      typeIdx: 3,
+      vendorIdx: 2,
+      tags: ['shorts', 'puma', 'evoknit', 'training'],
+      imageIds: ['photo-1591195853828-11db59a44f6b', 'photo-1571945153237-4929e783af4a', 'photo-1552902865-b72c031ac5ea'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 22) + 6 }))),
+    },
 
-    // Tennis
-    { name: 'Nike Court Legacy Next Nature', description: 'The Nike Court Legacy Next Nature brings sustainable materials to a classic court shoe design. Durable and comfortable.', shortDescription: 'Sustainable classic court shoe', price: 59.99, discountPrice: null, brandIdx: 0, sportIdx: 5, typeIdx: 0, vendorIdx: 0, tags: ['tennis', 'shoes', 'nike', 'court'], imageSeed: 'nike-court', variants: shoeSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 18) + 4 }))) },
-    { name: 'Adidas Gamecourt 2.0', description: 'The Adidas Gamecourt 2.0 is a versatile tennis shoe with Adiwear outsole and Bounce cushioning.', shortDescription: 'Versatile tennis shoe with Bounce', price: 74.99, discountPrice: 59.99, brandIdx: 1, sportIdx: 5, typeIdx: 0, vendorIdx: 3, tags: ['tennis', 'shoes', 'adidas', 'gamecourt'], imageSeed: 'adidas-gamecourt', variants: shoeSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 14) + 3 }))) },
+    // Under Armour Products
+    {
+      name: 'UA Charged Assert 10',
+      description: 'The Under Armour Charged Assert 10 offers responsive cushioning for everyday running. Durable leather upper provides stability.',
+      shortDescription: 'Responsive cushioning for everyday running',
+      price: 74.99,
+      discountPrice: 59.99,
+      brandIdx: 3,
+      sportIdx: 0,
+      typeIdx: 0,
+      vendorIdx: 3,
+      tags: ['running', 'shoes', 'under-armour', 'charged'],
+      imageIds: ['photo-1542291026-7eec264c27ff', 'photo-1606107557195-0e29a4b5b4aa', 'photo-1600185365483-26d7a4cc7519'],
+      variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 25) + 8 }))),
+    },
+    {
+      name: 'UA Tech 2.0 Short Sleeve',
+      description: 'The Under Armour Tech 2.0 Short Sleeve is soft, light, and quick-drying. Perfect for training and everyday wear.',
+      shortDescription: 'Soft, light, quick-drying training tee',
+      price: 24.99,
+      discountPrice: 19.99,
+      brandIdx: 3,
+      sportIdx: 5,
+      typeIdx: 1,
+      vendorIdx: 3,
+      tags: ['t-shirt', 'training', 'under-armour'],
+      imageIds: ['photo-1581655353564-df123a1eb820', 'photo-1576566588028-4147f3842f27', 'photo-1521572163474-6864f9cf17ab'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 4).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 45) + 18 }))),
+    },
+    {
+      name: 'UA Rival Fleece Full-Zip Hoodie',
+      description: 'The Under Armour Rival Fleece Full-Zip Hoodie offers versatile warmth for training and casual wear. Soft fleece interior.',
+      shortDescription: 'Versatile full-zip fleece hoodie',
+      price: 54.99,
+      discountPrice: 44.99,
+      brandIdx: 3,
+      sportIdx: 5,
+      typeIdx: 5,
+      vendorIdx: 3,
+      tags: ['hoodie', 'under-armour', 'fleece'],
+      imageIds: ['photo-1556821840-3a63f95609a7', 'photo-1578768079052-aa7c55954dc5', 'photo-1618354691373-d851c5c3a990'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 28) + 9 }))),
+    },
+    {
+      name: 'UA Baseline Basketball Shorts',
+      description: 'The Under Armour Baseline Basketball Shorts offer lightweight comfort on the court. HeatGear fabric keeps you cool.',
+      shortDescription: 'Lightweight basketball shorts',
+      price: 34.99,
+      discountPrice: null,
+      brandIdx: 3,
+      sportIdx: 2,
+      typeIdx: 3,
+      vendorIdx: 3,
+      tags: ['basketball', 'shorts', 'under-armour'],
+      imageIds: ['photo-1591195853828-11db59a44f6b', 'photo-1571945153237-4929e783af4a', 'photo-1552902865-b72c031ac5ea'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 35) + 12 }))),
+    },
 
-    // Training / Gym
-    { name: 'Nike Dri-FIT Academy T-Shirt', description: 'The Nike Dri-FIT Academy T-Shirt keeps you dry during intense training sessions. Lightweight and breathable.', shortDescription: 'Dri-FIT training t-shirt', price: 29.99, discountPrice: null, brandIdx: 0, sportIdx: 13, typeIdx: 1, vendorIdx: 1, tags: ['t-shirt', 'training', 'nike', 'dri-fit'], imageSeed: 'nike-drifit-tee', variants: apparelSizes.flatMap((s) => colors.slice(0, 4).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 40) + 15 }))) },
-    { name: 'Adidas Own The Run Tee', description: 'The Adidas Own The Run Tee features AEROREADY technology for moisture management during workouts.', shortDescription: 'AEROREADY running tee', price: 29.99, discountPrice: 24.99, brandIdx: 1, sportIdx: 0, typeIdx: 1, vendorIdx: 0, tags: ['t-shirt', 'running', 'adidas'], imageSeed: 'adidas-run-tee', variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 35) + 10 }))) },
-    { name: 'UA Tech 2.0 Short Sleeve', description: 'The Under Armour Tech 2.0 Short Sleeve is soft, light, and quick-drying. Perfect for training.', shortDescription: 'Soft, light, quick-drying training tee', price: 24.99, discountPrice: 19.99, brandIdx: 2, sportIdx: 13, typeIdx: 1, vendorIdx: 2, tags: ['t-shirt', 'training', 'under-armour'], imageSeed: 'ua-tech-tee', variants: apparelSizes.flatMap((s) => colors.slice(0, 4).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 45) + 18 }))) },
-    { name: 'Nike Pro Hyperstrong Compression Top', description: 'The Nike Pro Hyperstrong Compression Top provides support and flexibility for intense workouts.', shortDescription: 'Compression top for support', price: 44.99, discountPrice: null, brandIdx: 0, sportIdx: 13, typeIdx: 1, vendorIdx: 2, tags: ['compression', 'training', 'nike', 'pro'], imageSeed: 'nike-compression', variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 25) + 8 }))) },
+    // New Balance Products
+    {
+      name: 'New Balance Fresh Foam 1080v13',
+      description: 'The New Balance Fresh Foam 1080v13 delivers plush comfort for neutral runners. Fresh Foam X cushioning provides a smooth, soft ride.',
+      shortDescription: 'Plush comfort for neutral runners',
+      price: 164.99,
+      discountPrice: null,
+      brandIdx: 4,
+      sportIdx: 0,
+      typeIdx: 0,
+      vendorIdx: 4,
+      tags: ['running', 'shoes', 'new-balance', 'fresh-foam'],
+      imageIds: ['photo-1539185441755-769473a23570', 'photo-1595950653106-6c9ebd614d3a', 'photo-1606107557195-0e29a4b5b4aa'],
+      variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 18) + 4 }))),
+    },
+    {
+      name: 'New Balance Sport Style Hoodie',
+      description: 'The New Balance Sport Style Hoodie combines comfort and style. Soft fleece with a modern athletic fit.',
+      shortDescription: 'Comfortable sport style hoodie',
+      price: 54.99,
+      discountPrice: 44.99,
+      brandIdx: 4,
+      sportIdx: 5,
+      typeIdx: 5,
+      vendorIdx: 4,
+      tags: ['hoodie', 'new-balance', 'sport'],
+      imageIds: ['photo-1556821840-3a63f95609a7', 'photo-1578768079052-aa7c55954dc5', 'photo-1618354691373-d851c5c3a990'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 25) + 8 }))),
+    },
 
-    // Hoodies
-    { name: 'Nike Sportswear Club Fleece Pullover Hoodie', description: 'The Nike Sportswear Club Fleece Pullover Hoodie is a wardrobe essential. Soft fleece with a relaxed fit.', shortDescription: 'Soft fleece pullover hoodie', price: 59.99, discountPrice: 44.99, brandIdx: 0, sportIdx: 13, typeIdx: 5, vendorIdx: 2, tags: ['hoodie', 'nike', 'fleece', 'casual'], isTrending: true, imageSeed: 'nike-hoodie', variants: apparelSizes.flatMap((s) => colors.slice(0, 4).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 30) + 10 }))) },
-    { name: 'UA Rival Fleece Full-Zip Hoodie', description: 'The Under Armour Rival Fleece Full-Zip Hoodie offers versatile warmth for training and casual wear.', shortDescription: 'Versatile full-zip fleece hoodie', price: 54.99, discountPrice: 44.99, brandIdx: 2, sportIdx: 13, typeIdx: 5, vendorIdx: 2, tags: ['hoodie', 'under-armour', 'fleece'], imageSeed: 'ua-hoodie', variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 28) + 9 }))) },
-    { name: 'Puma Essentials Logo Hoodie', description: 'The Puma Essentials Logo Hoodie offers everyday comfort with a classic look. Soft cotton blend fleece.', shortDescription: 'Everyday comfort hoodie', price: 49.99, discountPrice: 39.99, brandIdx: 3, sportIdx: 13, typeIdx: 5, vendorIdx: 2, tags: ['hoodie', 'puma', 'essentials'], imageSeed: 'puma-hoodie', variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 22) + 7 }))) },
-
-    // Jackets
-    { name: 'Nike Sportswear Tech Fleece Windrunner', description: 'The Nike Sportswear Tech Fleece Windrunner is a modern classic. Lightweight warmth with zippered pockets.', shortDescription: 'Modern classic windrunner jacket', price: 119.99, discountPrice: 99.99, brandIdx: 0, sportIdx: 13, typeIdx: 6, vendorIdx: 2, tags: ['jacket', 'nike', 'tech-fleece', 'windrunner'], imageSeed: 'nike-windrunner', variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 20) + 5 }))) },
-    { name: 'Adidas Tiro 24 Training Jacket', description: 'The Adidas Tiro 24 Training Jacket offers warmth and mobility for cold-weather training. Slim fit with AEROREADY.', shortDescription: 'Warm training jacket for cold weather', price: 59.99, discountPrice: 49.99, brandIdx: 1, sportIdx: 1, typeIdx: 6, vendorIdx: 1, tags: ['jacket', 'adidas', 'tiro', 'training'], imageSeed: 'adidas-tiro', variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 18) + 4 }))) },
-    { name: 'Nike Academy Woven Full-Zip Jacket', description: 'The Nike Academy Woven Full-Zip Jacket provides lightweight protection from the elements.', shortDescription: 'Lightweight woven jacket', price: 69.99, discountPrice: 54.99, brandIdx: 0, sportIdx: 1, typeIdx: 6, vendorIdx: 1, tags: ['jacket', 'nike', 'academy', 'woven'], imageSeed: 'nike-woven-jacket', variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 16) + 3 }))) },
-
-    // Pants / Tights
-    { name: 'Nike Sportswear Tech Fleece Joggers', description: 'The Nike Sportswear Tech Fleece Joggers combine warmth with a modern look. Tapered fit for a sleek silhouette.', shortDescription: 'Warm tapered joggers', price: 109.99, discountPrice: 89.99, brandIdx: 0, sportIdx: 13, typeIdx: 4, vendorIdx: 2, tags: ['joggers', 'nike', 'tech-fleece'], imageSeed: 'nike-joggers', variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 25) + 8 }))) },
-    { name: 'Adidas Own The Run Tights', description: 'The Adidas Own The Run Tights provide support and comfort for runners. AEROREADY fabric keeps you dry.', shortDescription: 'Supportive running tights', price: 39.99, discountPrice: 32.99, brandIdx: 1, sportIdx: 0, typeIdx: 4, vendorIdx: 0, tags: ['tights', 'adidas', 'running'], imageSeed: 'adidas-tights', variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 20) + 5 }))) },
-    { name: 'UA Meridian Joggers', description: 'The Under Armour Meridian Joggers offer a sleek fit with stretch fabric for maximum mobility.', shortDescription: 'Sleek stretch joggers', price: 59.99, discountPrice: 49.99, brandIdx: 2, sportIdx: 13, typeIdx: 4, vendorIdx: 2, tags: ['joggers', 'under-armour', 'meridian'], imageSeed: 'ua-joggers', variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 18) + 4 }))) },
-
-    // Shorts
-    { name: 'Nike Academy Woven Shorts', description: 'The Nike Academy Woven Shorts are lightweight and breathable for training. Elastic waistband with drawcord.', shortDescription: 'Lightweight training shorts', price: 39.99, discountPrice: null, brandIdx: 0, sportIdx: 1, typeIdx: 3, vendorIdx: 1, tags: ['shorts', 'nike', 'academy'], imageSeed: 'nike-shorts', variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 30) + 10 }))) },
-    { name: 'Adidas Tastigo 24 Shorts', description: 'The Adidas Tastigo 24 Shorts are lightweight and breathable for training. AEROREADY fabric.', shortDescription: 'Lightweight training shorts', price: 29.99, discountPrice: 24.99, brandIdx: 1, sportIdx: 1, typeIdx: 3, vendorIdx: 1, tags: ['shorts', 'adidas', 'tastigo'], imageSeed: 'adidas-shorts', variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 35) + 12 }))) },
-    { name: 'Puma evoKNIT Shorts', description: 'The Puma evoKNIT Shorts offer a seamless fit for unrestricted movement. Lightweight and breathable.', shortDescription: 'Seamless training shorts', price: 34.99, discountPrice: 27.99, brandIdx: 3, sportIdx: 13, typeIdx: 3, vendorIdx: 0, tags: ['shorts', 'puma', 'evoknit', 'training'], imageSeed: 'puma-shorts', variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 22) + 6 }))) },
-
-    // Tracksuits
-    { name: 'Nike Academy Team Tracksuit', description: 'The Nike Academy Team Tracksuit provides matching style for the whole team. Dri-FIT technology throughout.', shortDescription: 'Matching team tracksuit', price: 99.99, discountPrice: 79.99, brandIdx: 0, sportIdx: 1, typeIdx: 7, vendorIdx: 1, tags: ['tracksuit', 'nike', 'academy', 'team'], imageSeed: 'nike-tracksuit', variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 15) + 3 }))) },
-    { name: 'Adidas Tiro 24 Tracksuit', description: 'The Adidas Tiro 24 Tracksuit is a classic design with modern performance. AEROREADY fabric keeps you dry.', shortDescription: 'Classic performance tracksuit', price: 89.99, discountPrice: 74.99, brandIdx: 1, sportIdx: 1, typeIdx: 7, vendorIdx: 1, tags: ['tracksuit', 'adidas', 'tiro'], imageSeed: 'adidas-tracksuit', variants: apparelSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 14) + 3 }))) },
-
-    // Socks
-    { name: 'Nike Everyday Max Cushioned Socks', description: 'The Nike Everyday Max Cushioned Socks provide maximum comfort with extra cushioning in high-impact areas.', shortDescription: 'Maximum cushioning socks', price: 18.99, discountPrice: 14.99, brandIdx: 0, sportIdx: 13, typeIdx: 8, vendorIdx: 2, tags: ['socks', 'nike', 'cushioned'], imageSeed: 'nike-socks', variants: [{ color: 'White', size: 'M', stock: 100 }, { color: 'Black', size: 'M', stock: 80 }, { color: 'White', size: 'L', stock: 90 }, { color: 'Black', size: 'L', stock: 70 }] },
-    { name: 'Nike Everyday Cushioned Training Socks 3-Pack', description: 'The Nike Everyday Cushioned Training Socks 3-Pack provides comfort and support for daily training.', shortDescription: '3-pack training socks', price: 16.99, discountPrice: 12.99, brandIdx: 0, sportIdx: 13, typeIdx: 8, vendorIdx: 2, tags: ['socks', 'nike', 'training', '3-pack'], imageSeed: 'nike-socks-3pack', variants: [{ color: 'White', size: 'M', stock: 120 }, { color: 'Black', size: 'M', stock: 100 }, { color: 'White', size: 'L', stock: 110 }, { color: 'Black', size: 'L', stock: 90 }] },
-
-    // Caps
-    { name: 'Nike Dri-FIT Swoosh Cap', description: 'The Nike Dri-FIT Swoosh Cap features moisture-wicking fabric and adjustable fit for all-day comfort.', shortDescription: 'Moisture-wicking adjustable cap', price: 27.99, discountPrice: null, brandIdx: 0, sportIdx: 13, typeIdx: 9, vendorIdx: 2, tags: ['cap', 'nike', 'dri-fit'], imageSeed: 'nike-cap', variants: [{ color: 'Black', size: 'One Size', stock: 60 }, { color: 'White', size: 'One Size', stock: 50 }, { color: 'Navy', size: 'One Size', stock: 40 }] },
-    { name: 'Nike Dri-FIT Swoosh Visor', description: 'The Nike Dri-FIT Swoosh Visor keeps the sun out of your eyes during workouts and outdoor activities.', shortDescription: 'Sun protection visor', price: 22.99, discountPrice: null, brandIdx: 0, sportIdx: 13, typeIdx: 9, vendorIdx: 2, tags: ['visor', 'nike', 'dri-fit'], imageSeed: 'nike-visor', variants: [{ color: 'Black', size: 'One Size', stock: 45 }, { color: 'White', size: 'One Size', stock: 35 }] },
-
-    // Bags
-    { name: 'Nike Academy Team Backpack', description: 'The Nike Academy Team Backpack features multiple compartments for gear organization. Padded laptop sleeve.', shortDescription: 'Multi-compartment gear backpack', price: 49.99, discountPrice: 39.99, brandIdx: 0, sportIdx: 1, typeIdx: 11, vendorIdx: 1, tags: ['backpack', 'nike', 'academy'], imageSeed: 'nike-backpack', variants: [{ color: 'Black', size: 'One Size', stock: 40 }, { color: 'Navy', size: 'One Size', stock: 30 }] },
-    { name: 'Adidas Defender IV Duffel Bag', description: 'The Adidas Defender IV Duffel Bag offers spacious storage with durable construction. Ventilated shoe compartment.', shortDescription: 'Spacious duffel with shoe compartment', price: 39.99, discountPrice: 29.99, brandIdx: 1, sportIdx: 13, typeIdx: 11, vendorIdx: 2, tags: ['bag', 'adidas', 'duffel', 'defender'], imageSeed: 'adidas-duffel', variants: [{ color: 'Black', size: 'One Size', stock: 55 }, { color: 'Grey', size: 'One Size', stock: 35 }] },
-    { name: 'Adidas Squad 21 Backpack', description: 'The Adidas Squad 21 Backpack offers versatile storage for everyday use. Padded shoulder straps.', shortDescription: 'Versatile everyday backpack', price: 39.99, discountPrice: 32.99, brandIdx: 1, sportIdx: 13, typeIdx: 11, vendorIdx: 2, tags: ['backpack', 'adidas', 'squad'], imageSeed: 'adidas-backpack', variants: [{ color: 'Black', size: 'One Size', stock: 45 }, { color: 'Blue', size: 'One Size', stock: 30 }] },
-
-    // Accessories
-    { name: 'Nike Dri-FIT Swoosh Headband', description: 'The Nike Dri-FIT Swoosh Headband keeps sweat out of your eyes during workouts. Stretchy and comfortable.', shortDescription: 'Sweat-wicking headband', price: 12.99, discountPrice: null, brandIdx: 0, sportIdx: 13, typeIdx: 12, vendorIdx: 2, tags: ['headband', 'nike', 'dri-fit'], imageSeed: 'nike-headband', variants: [{ color: 'Black', size: 'One Size', stock: 80 }, { color: 'White', size: 'One Size', stock: 70 }, { color: 'Pink', size: 'One Size', stock: 50 }] },
-    { name: 'Nike Dri-FIT Swoosh Gloves', description: 'The Nike Dri-FIT Swoosh Gloves provide grip and warmth for outdoor training. Touchscreen compatible.', shortDescription: 'Grip gloves with touchscreen compatibility', price: 24.99, discountPrice: null, brandIdx: 0, sportIdx: 13, typeIdx: 10, vendorIdx: 2, tags: ['gloves', 'nike', 'dri-fit'], imageSeed: 'nike-gloves', variants: [{ color: 'Black', size: 'S', stock: 40 }, { color: 'Black', size: 'M', stock: 50 }, { color: 'Black', size: 'L', stock: 45 }] },
+    // Reebok Products
+    {
+      name: 'Reebok Nano X3',
+      description: 'The Reebok Nano X3 is the ultimate training shoe. Built for CrossFit and high-intensity workouts with responsive cushioning.',
+      shortDescription: 'Ultimate training shoe for CrossFit',
+      price: 149.99,
+      discountPrice: 119.99,
+      brandIdx: 5,
+      sportIdx: 4,
+      typeIdx: 0,
+      vendorIdx: 5,
+      tags: ['training', 'shoes', 'reebok', 'nano'],
+      imageIds: ['photo-1542291026-7eec264c27ff', 'photo-1606107557195-0e29a4b5b4aa', 'photo-1600185365483-26d7a4cc7519'],
+      variants: shoeSizes.flatMap((s) => colors.slice(0, 2).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 15) + 3 }))),
+    },
+    {
+      name: 'Reebok Classic Leather',
+      description: 'The Reebok Classic Leather is a timeless icon. Soft leather upper with a comfortable EVA midsole.',
+      shortDescription: 'Timeless classic leather sneaker',
+      price: 74.99,
+      discountPrice: 59.99,
+      brandIdx: 5,
+      sportIdx: 5,
+      typeIdx: 0,
+      vendorIdx: 5,
+      tags: ['casual', 'shoes', 'reebok', 'classic'],
+      imageIds: ['photo-1595950653106-6c9ebd614d3a', 'photo-1606107557195-0e29a4b5b4aa', 'photo-1600185365483-26d7a4cc7519'],
+      variants: shoeSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 20) + 5 }))),
+    },
+    {
+      name: 'Reebok Training T-Shirt',
+      description: 'The Reebok Training T-Shirt is designed for intense workouts. Lightweight and breathable with a comfortable fit.',
+      shortDescription: 'Lightweight training t-shirt',
+      price: 24.99,
+      discountPrice: 19.99,
+      brandIdx: 5,
+      sportIdx: 5,
+      typeIdx: 1,
+      vendorIdx: 5,
+      tags: ['t-shirt', 'training', 'reebok'],
+      imageIds: ['photo-1581655353564-df123a1eb820', 'photo-1576566588028-4147f3842f27', 'photo-1521572163474-6864f9cf17ab'],
+      variants: apparelSizes.flatMap((s) => colors.slice(0, 3).map((c) => ({ color: c, size: s, stock: Math.floor(Math.random() * 30) + 10 }))),
+    },
 
     // Equipment
-    { name: 'Nike Strike Team Football', description: 'The Nike Strike Team Football is built for practice and match play. Durable construction with excellent flight stability.', shortDescription: 'Durable practice and match football', price: 29.99, discountPrice: 24.99, brandIdx: 0, sportIdx: 1, typeIdx: 13, vendorIdx: 1, tags: ['football', 'ball', 'nike', 'strike'], imageSeed: 'nike-football', variants: [{ color: 'White', size: '5', stock: 50 }, { color: 'Yellow', size: '5', stock: 30 }] },
-    { name: 'Adidas Tiro 24 Training Ball', description: 'The Adidas Tiro 24 Training Ball is designed for consistent flight and durability on all surfaces.', shortDescription: 'Durable training ball', price: 24.99, discountPrice: 19.99, brandIdx: 1, sportIdx: 1, typeIdx: 13, vendorIdx: 1, tags: ['football', 'ball', 'adidas', 'training'], imageSeed: 'adidas-ball', variants: [{ color: 'White', size: '5', stock: 60 }, { color: 'Orange', size: '5', stock: 40 }] },
+    {
+      name: 'Nike Strike Team Football',
+      description: 'The Nike Strike Team Football is built for practice and match play. Durable construction with excellent flight stability.',
+      shortDescription: 'Durable practice and match football',
+      price: 29.99,
+      discountPrice: 24.99,
+      brandIdx: 0,
+      sportIdx: 1,
+      typeIdx: 12,
+      vendorIdx: 0,
+      tags: ['football', 'ball', 'nike', 'strike'],
+      imageIds: ['photo-1579952363873-27f3b990ef6b', 'photo-1606107557195-0e29a4b5b4aa', 'photo-1600185365483-26d7a4cc7519'],
+      variants: [{ color: 'White', size: '5', stock: 50 }, { color: 'Yellow', size: '5', stock: 30 }],
+    },
+    {
+      name: 'Adidas Tiro 24 Training Ball',
+      description: 'The Adidas Tiro 24 Training Ball is designed for consistent flight and durability on all surfaces.',
+      shortDescription: 'Durable training ball',
+      price: 24.99,
+      discountPrice: 19.99,
+      brandIdx: 1,
+      sportIdx: 1,
+      typeIdx: 12,
+      vendorIdx: 1,
+      tags: ['football', 'ball', 'adidas', 'training'],
+      imageIds: ['photo-1579952363873-27f3b990ef6b', 'photo-1606107557195-0e29a4b5b4aa', 'photo-1600185365483-26d7a4cc7519'],
+      variants: [{ color: 'White', size: '5', stock: 60 }, { color: 'Orange', size: '5', stock: 40 }],
+    },
   ];
 
   // Create products with variants and images
@@ -446,8 +832,8 @@ async function main() {
           })),
         },
         images: {
-          create: [0, 1, 2].map((imgIdx) => ({
-            url: img(`${p.imageSeed}-${imgIdx}`),
+          create: p.imageIds.map((imgId, imgIdx) => ({
+            url: img(imgId),
             alt: `${p.name} - view ${imgIdx + 1}`,
             isPrimary: imgIdx === 0,
             sortOrder: imgIdx,
@@ -589,7 +975,7 @@ async function main() {
     data: {
       title: 'Summer Sale',
       subtitle: 'Up to 30% off on selected items',
-      imageUrl: img('promo-summer', 1200, 400),
+      imageUrl: img('photo-1556906781-9a412961c28c', 1200, 400),
       linkUrl: '/products?onSale=true',
       isActive: true,
       sortOrder: 1,
@@ -600,7 +986,7 @@ async function main() {
     data: {
       title: 'New Arrivals',
       subtitle: 'Check out the latest gear',
-      imageUrl: img('promo-new', 1200, 400),
+      imageUrl: img('photo-1517836357463-d25dfeac3438', 1200, 400),
       linkUrl: '/products?sort=newest',
       isActive: true,
       sortOrder: 2,
@@ -611,7 +997,7 @@ async function main() {
     data: {
       title: 'Free Shipping',
       subtitle: 'On orders over $100',
-      imageUrl: img('promo-shipping', 1200, 400),
+      imageUrl: img('photo-1571019613454-1cb2f99b2d8b', 1200, 400),
       linkUrl: '/products',
       isActive: true,
       sortOrder: 3,
@@ -674,7 +1060,7 @@ async function main() {
 
   console.log('Seed completed successfully!');
   console.log(`  Admin: admin@xeno.com / Admin123!`);
-  console.log(`  Vendors: velocity@xeno.com, apex@xeno.com, nova@xeno.com, zenith@xeno.com / Vendor123!`);
+  console.log(`  Vendors: nike@xeno.com, adidas@xeno.com, puma@xeno.com, underarmour@xeno.com, newbalance@xeno.com, reebok@xeno.com / Vendor123!`);
   console.log(`  Customers: john@example.com, jane@example.com, etc. / Customer123!`);
   console.log(`  Products: ${createdProducts.length}`);
   console.log(`  Categories: ${sports.length} sports, ${productTypes.length} product types`);

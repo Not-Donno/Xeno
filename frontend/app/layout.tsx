@@ -6,6 +6,7 @@ import { CartProvider } from '@/lib/cart';
 import { WishlistProvider } from '@/lib/wishlist';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { Starfield } from '@/components/layout/Starfield';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,10 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Starfield />
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>
-              <div className="min-h-screen flex flex-col">
+              <div className="relative min-h-screen flex flex-col z-10">
                 <Header />
                 <main className="flex-1">{children}</main>
                 <Footer />

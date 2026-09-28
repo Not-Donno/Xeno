@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { api, serverFetch } from '@/lib/api';
+import { serverFetch } from '@/lib/api';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Button } from '@/components/ui/Button';
 import { Rating } from '@/components/ui/Rating';
+import { Icon } from '@/components/ui/Icon';
 import type { Product, Vendor, Category, Promotion } from '@/lib/types';
 
 async function getHomeData() {
@@ -47,26 +48,19 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-brand-950 text-white overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="https://picsum.photos/seed/xeno-hero/1920/600"
-            alt="Hero"
-            fill
-            className="object-cover opacity-40"
-            priority
-          />
-        </div>
-        <div className="relative container-x py-20 md:py-32">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              Gear Up.<br />
-              <span className="text-accent">Play Hard.</span>
+      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-space-950 via-space-950/90 to-space-950" />
+        <div className="relative container-x">
+          <div className="max-w-2xl animate-fade-in-up">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+              Gear Up.
+              <br />
+              <span className="text-gradient">Play Hard.</span>
             </h1>
-            <p className="mt-4 text-lg text-brand-300 max-w-lg">
+            <p className="mt-6 text-lg md:text-xl text-star-blue/80 max-w-lg leading-relaxed">
               Premium sportswear, athletic clothing, and equipment from the world&apos;s top vendors.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-10 flex flex-wrap gap-4">
               <Link href="/products">
                 <Button variant="accent" size="lg">
                   Shop Now
@@ -76,7 +70,7 @@ export default async function HomePage() {
                 <Button
                   variant="ghost"
                   size="lg"
-                  className="text-white border border-white/30 hover:bg-white/10 hover:text-white"
+                  className="text-white border border-white/20 hover:bg-white/10 hover:text-white hover:border-white/40"
                 >
                   Explore Categories
                 </Button>
@@ -88,22 +82,23 @@ export default async function HomePage() {
 
       {/* Popular Sports */}
       {data.sports.length > 0 && (
-        <section className="container-x py-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-brand-950">Popular Sports</h2>
-            <Link href="/categories" className="text-sm text-brand-500 hover:text-brand-950">
+        <section className="container-x py-16 md:py-24">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-star-white">Popular Sports</h2>
+            <Link href="/categories" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-8 gap-3">
-            {data.sports.slice(0, 8).map((sport) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-4">
+            {data.sports.slice(0, 8).map((sport, i) => (
               <Link
                 key={sport.id}
                 href={`/products?sport=${sport.slug}`}
-                className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-brand-50 transition-colors"
+                className="flex flex-col items-center gap-3 p-5 rounded-xl hover:bg-surface-light/50 transition-all duration-300 hover:-translate-y-1 animate-fade-in-up"
+                style={{ animationDelay: `${i * 60}ms` }}
               >
-                <span className="text-2xl">{sport.icon}</span>
-                <span className="text-xs text-center text-brand-600 font-medium">
+                <Icon name={sport.icon || 'trophy'} size={28} className="text-accent" />
+                <span className="text-sm text-center text-star-blue/80 font-medium">
                   {sport.name}
                 </span>
               </Link>
@@ -114,22 +109,23 @@ export default async function HomePage() {
 
       {/* Shop by Product Type */}
       {data.productTypes.length > 0 && (
-        <section className="container-x py-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-brand-950">Shop by Category</h2>
-            <Link href="/products" className="text-sm text-brand-500 hover:text-brand-950">
+        <section className="container-x py-16 md:py-24">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-star-white">Shop by Category</h2>
+            <Link href="/products" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3">
-            {data.productTypes.slice(0, 10).map((type) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            {data.productTypes.slice(0, 10).map((type, i) => (
               <Link
                 key={type.id}
                 href={`/products?type=${type.slug}`}
-                className="relative group overflow-hidden rounded-lg aspect-[4/3] bg-brand-100"
+                className="relative group overflow-hidden rounded-xl aspect-[4/3] bg-surface-light animate-fade-in-up"
+                style={{ animationDelay: `${i * 60}ms` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-3">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-accent/30 transition-all duration-500" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 transform group-hover:-translate-y-1 transition-transform duration-300">
                   <span className="text-white text-sm font-medium">{type.name}</span>
                 </div>
               </Link>
@@ -140,25 +136,25 @@ export default async function HomePage() {
 
       {/* Promotional Banner */}
       {data.promotions.length > 0 && (
-        <section className="container-x py-6">
-          <Link href={data.promotions[0].linkUrl || '/products'} className="block relative overflow-hidden rounded-xl">
-            <div className="relative aspect-[3/1] bg-brand-900">
+        <section className="container-x py-8">
+          <Link href={data.promotions[0].linkUrl || '/products'} className="block relative overflow-hidden rounded-2xl group animate-fade-in">
+            <div className="relative aspect-[3/1] bg-surface-light">
               {data.promotions[0].imageUrl && (
                 <Image
                   src={data.promotions[0].imageUrl}
                   alt={data.promotions[0].title}
                   fill
-                  className="object-cover"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               )}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent group-hover:from-accent/20 transition-all duration-500" />
               <div className="absolute inset-0 flex items-center">
                 <div className="p-6 md:p-10">
-                  <h3 className="text-white text-xl md:text-2xl font-bold">
+                  <h3 className="text-white text-xl md:text-3xl font-bold">
                     {data.promotions[0].title}
                   </h3>
                   {data.promotions[0].subtitle && (
-                    <p className="text-brand-200 text-sm mt-1">{data.promotions[0].subtitle}</p>
+                    <p className="text-star-blue/80 text-sm md:text-base mt-2">{data.promotions[0].subtitle}</p>
                   )}
                 </div>
               </div>
@@ -169,16 +165,18 @@ export default async function HomePage() {
 
       {/* Featured Products */}
       {data.featured.length > 0 && (
-        <section className="container-x py-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-brand-950">Featured Products</h2>
-            <Link href="/products" className="text-sm text-brand-500 hover:text-brand-950">
+        <section className="container-x py-16 md:py-24">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-star-white">Featured Products</h2>
+            <Link href="/products" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {data.featured.slice(0, 8).map((product) => (
-              <ProductCard key={product.id} product={product} />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
+            {data.featured.slice(0, 8).map((product, i) => (
+              <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${i * 80}ms` }}>
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         </section>
@@ -186,16 +184,18 @@ export default async function HomePage() {
 
       {/* Trending Products */}
       {data.trending.length > 0 && (
-        <section className="container-x py-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-brand-950">Trending Now</h2>
-            <Link href="/products?sort=popular" className="text-sm text-brand-500 hover:text-brand-950">
+        <section className="container-x py-16 md:py-24">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-star-white">Trending Now</h2>
+            <Link href="/products?sort=popular" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {data.trending.slice(0, 8).map((product) => (
-              <ProductCard key={product.id} product={product} />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
+            {data.trending.slice(0, 8).map((product, i) => (
+              <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${i * 80}ms` }}>
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         </section>
@@ -203,39 +203,40 @@ export default async function HomePage() {
 
       {/* Popular Vendors */}
       {data.vendors.length > 0 && (
-        <section className="container-x py-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-brand-950">Popular Vendors</h2>
-            <Link href="/vendors" className="text-sm text-brand-500 hover:text-brand-950">
+        <section className="container-x py-16 md:py-24">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-star-white">Popular Vendors</h2>
+            <Link href="/vendors" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {data.vendors.map((vendor) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            {data.vendors.map((vendor, i) => (
               <Link
                 key={vendor.id}
                 href={`/vendors/${vendor.slug}`}
-                className="card p-4 text-center hover:shadow-md transition-shadow"
+                className="card card-hover p-6 text-center animate-fade-in-up"
+                style={{ animationDelay: `${i * 100}ms` }}
               >
-                <div className="w-16 h-16 mx-auto rounded-full bg-brand-100 flex items-center justify-center mb-3 overflow-hidden">
+                <div className="w-20 h-20 mx-auto rounded-full bg-surface-lighter flex items-center justify-center mb-4 overflow-hidden">
                   {vendor.logoUrl ? (
                     <Image
                       src={vendor.logoUrl}
                       alt={vendor.name}
-                      width={64}
-                      height={64}
+                      width={80}
+                      height={80}
                       className="object-cover"
                     />
                   ) : (
-                    <span className="text-lg font-bold text-brand-400">
+                    <span className="text-2xl font-bold text-accent">
                       {vendor.name[0]}
                     </span>
                   )}
                 </div>
-                <h3 className="text-sm font-semibold text-brand-900">{vendor.name}</h3>
-                <div className="flex items-center justify-center gap-1 mt-1">
+                <h3 className="text-sm font-semibold text-star-white">{vendor.name}</h3>
+                <div className="flex items-center justify-center gap-1 mt-2">
                   <Rating value={vendor.rating} size="sm" />
-                  <span className="text-xs text-brand-400">({vendor.totalSales})</span>
+                  <span className="text-xs text-star-blue/60">({vendor.totalSales})</span>
                 </div>
               </Link>
             ))}
@@ -245,33 +246,37 @@ export default async function HomePage() {
 
       {/* New Arrivals */}
       {data.newArrivals.length > 0 && (
-        <section className="container-x py-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-brand-950">New Arrivals</h2>
-            <Link href="/products?sort=newest" className="text-sm text-brand-500 hover:text-brand-950">
+        <section className="container-x py-16 md:py-24">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-star-white">New Arrivals</h2>
+            <Link href="/products?sort=newest" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {data.newArrivals.slice(0, 8).map((product) => (
-              <ProductCard key={product.id} product={product} />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
+            {data.newArrivals.slice(0, 8).map((product, i) => (
+              <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${i * 80}ms` }}>
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         </section>
       )}
 
       {/* CTA Section */}
-      <section className="container-x py-12">
-        <div className="bg-brand-950 rounded-xl p-8 md:p-12 text-center text-white">
-          <h2 className="text-2xl md:text-3xl font-bold">Start Selling on Xeno</h2>
-          <p className="mt-2 text-brand-300 max-w-lg mx-auto">
-            Join thousands of vendors selling premium sportswear to customers worldwide.
-          </p>
-          <Link href="/auth/register" className="inline-block mt-6">
-            <Button variant="accent" size="lg">
-              Become a Vendor
-            </Button>
-          </Link>
+      <section className="container-x py-16 md:py-24">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-space-900 via-cosmic-900 to-space-900 p-10 md:p-16 text-center">
+          <div className="relative z-10">
+            <h2 className="text-2xl md:text-4xl font-bold text-white">Start Selling on Xeno</h2>
+            <p className="mt-3 text-star-blue/70 max-w-lg mx-auto text-base md:text-lg">
+              Join thousands of vendors selling premium sportswear to customers worldwide.
+            </p>
+            <Link href="/auth/register" className="inline-block mt-8">
+              <Button variant="accent" size="lg">
+                Become a Vendor
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>

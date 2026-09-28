@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn('animate-pulse bg-brand-100 rounded', className)} />;
+  return <div className={cn('animate-pulse bg-surface-lighter rounded', className)} />;
 }
 
 export function ProductCardSkeleton() {

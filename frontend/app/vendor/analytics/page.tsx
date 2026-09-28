@@ -46,12 +46,12 @@ interface AnalyticsData {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  PENDING: 'bg-yellow-400',
+  PENDING: 'bg-amber-500',
   CONFIRMED: 'bg-blue-400',
   PROCESSING: 'bg-blue-500',
   SHIPPED: 'bg-blue-600',
   OUT_FOR_DELIVERY: 'bg-indigo-500',
-  DELIVERED: 'bg-green-500',
+  DELIVERED: 'bg-emerald-500',
   CANCELLED: 'bg-red-500',
 };
 
@@ -91,14 +91,18 @@ export default function VendorAnalyticsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
+        <div className="animate-fade-in">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-64 mt-2" />
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-24" />
+            <Skeleton key={i} className="h-28" />
           ))}
         </div>
         <div className="grid lg:grid-cols-2 gap-6">
-          <Skeleton className="h-80" />
-          <Skeleton className="h-80" />
+          <Skeleton className="h-96" />
+          <Skeleton className="h-96" />
         </div>
       </div>
     );
@@ -106,9 +110,14 @@ export default function VendorAnalyticsPage() {
 
   if (error) {
     return (
-      <div className="card p-8 text-center">
-        <p className="text-red-600 mb-4">{error}</p>
-        <Button variant="primary" onClick={fetchAnalytics}>Retry</Button>
+      <div className="card p-8 text-center animate-fade-in">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
+          <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+        </div>
+        <p className="text-red-400 mb-4">{error}</p>
+        <Button variant="accent" onClick={fetchAnalytics}>Retry</Button>
       </div>
     );
   }
@@ -128,29 +137,32 @@ export default function VendorAnalyticsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-brand-950">Analytics</h1>
-        <p className="text-sm text-brand-500 mt-1">Performance insights for your store</p>
+      <div className="animate-fade-in-down">
+        <h1 className="text-2xl font-bold text-star-white">Analytics</h1>
+        <p className="text-sm text-star-blue/50 mt-1">Performance insights for your store</p>
       </div>
 
       {/* Revenue Overview */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="card p-5">
-          <p className="text-sm text-brand-500">Total Revenue</p>
-          <p className="text-2xl font-bold text-brand-950 mt-1">{formatPrice(stats.totalRevenue)}</p>
+        <div className="card card-hover p-5 animate-fade-in-up" style={{ animationDelay: '0ms' }}>
+          <p className="text-sm text-star-blue/60">Total Revenue</p>
+          <p className="text-2xl font-bold text-star-white mt-1">{formatPrice(stats.totalRevenue)}</p>
+          <p className="text-xs text-emerald-400 mt-1">All time</p>
         </div>
-        <div className="card p-5">
-          <p className="text-sm text-brand-500">Total Orders</p>
-          <p className="text-2xl font-bold text-brand-950 mt-1">{stats.totalOrders}</p>
+        <div className="card card-hover p-5 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+          <p className="text-sm text-star-blue/60">Total Orders</p>
+          <p className="text-2xl font-bold text-star-white mt-1">{stats.totalOrders}</p>
+          <p className="text-xs text-star-blue/40 mt-1">Lifetime</p>
         </div>
-        <div className="card p-5">
-          <p className="text-sm text-brand-500">Pending Orders</p>
-          <p className="text-2xl font-bold text-brand-950 mt-1">{stats.pendingOrders}</p>
+        <div className="card card-hover p-5 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+          <p className="text-sm text-star-blue/60">Pending Orders</p>
+          <p className="text-2xl font-bold text-star-white mt-1">{stats.pendingOrders}</p>
+          <p className="text-xs text-amber-400 mt-1">Needs attention</p>
         </div>
-        <div className="card p-5">
-          <p className="text-sm text-brand-500">Store Rating</p>
+        <div className="card card-hover p-5 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+          <p className="text-sm text-star-blue/60">Store Rating</p>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-2xl font-bold text-brand-950">{stats.rating.toFixed(1)}</span>
+            <span className="text-2xl font-bold text-gradient">{stats.rating.toFixed(1)}</span>
             <Rating value={stats.rating} size="sm" />
           </div>
         </div>
@@ -158,29 +170,29 @@ export default function VendorAnalyticsPage() {
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Sales by Product (bar chart) */}
-        <div className="card">
-          <div className="p-5 border-b border-brand-100">
-            <h2 className="text-base font-semibold text-brand-950">Sales by Product</h2>
-            <p className="text-xs text-brand-400 mt-0.5">Top 5 products by units sold</p>
+        <div className="card animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+          <div className="p-5 border-b border-surface-border/50">
+            <h2 className="text-base font-semibold text-star-white">Sales by Product</h2>
+            <p className="text-xs text-star-blue/40 mt-0.5">Top 5 products by units sold</p>
           </div>
           {topProducts.length === 0 ? (
             <EmptyState title="No sales data" description="Sales data will appear once products are sold." />
           ) : (
-            <div className="p-5 space-y-4">
-              {topProducts.map((product) => (
-                <div key={product.id}>
-                  <div className="flex items-center justify-between mb-1">
+            <div className="p-5 space-y-5">
+              {topProducts.map((product, i) => (
+                <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${300 + i * 80}ms` }}>
+                  <div className="flex items-center justify-between mb-2">
                     <Link
                       href={`/product/${product.slug}`}
-                      className="text-sm font-medium text-brand-900 hover:underline truncate max-w-[70%]"
+                      className="text-sm font-medium text-star-white hover:text-accent-light transition-colors truncate max-w-[70%]"
                     >
                       {product.name}
                     </Link>
-                    <span className="text-sm text-brand-600 shrink-0">{product.salesCount} sold</span>
+                    <span className="text-sm text-star-blue/50 shrink-0">{product.salesCount} sold</span>
                   </div>
-                  <div className="w-full h-3 bg-brand-50 rounded-full overflow-hidden">
+                  <div className="w-full h-3 bg-surface-lighter/50 rounded-full overflow-hidden border border-surface-border/30">
                     <div
-                      className="h-full bg-brand-950 rounded-full transition-all duration-500"
+                      className="h-full bg-gradient-to-r from-accent to-cosmic-400 rounded-full transition-all duration-700 ease-out"
                       style={{ width: `${Math.max((product.salesCount / maxSales) * 100, 2)}%` }}
                     />
                   </div>
@@ -191,21 +203,21 @@ export default function VendorAnalyticsPage() {
         </div>
 
         {/* Order Status Breakdown */}
-        <div className="card">
-          <div className="p-5 border-b border-brand-100">
-            <h2 className="text-base font-semibold text-brand-950">Order Status Breakdown</h2>
-            <p className="text-xs text-brand-400 mt-0.5">Based on recent orders</p>
+        <div className="card animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+          <div className="p-5 border-b border-surface-border/50">
+            <h2 className="text-base font-semibold text-star-white">Order Status Breakdown</h2>
+            <p className="text-xs text-star-blue/40 mt-0.5">Based on recent orders</p>
           </div>
           {recentOrders.length === 0 ? (
             <EmptyState title="No orders yet" description="Order status breakdown will appear once orders come in." />
           ) : (
             <div className="p-5">
               {/* Stacked bar */}
-              <div className="flex h-4 rounded-full overflow-hidden mb-6">
+              <div className="flex h-5 rounded-full overflow-hidden mb-6 border border-surface-border/30 shadow-card">
                 {Object.entries(statusCounts).map(([status, count]) => (
                   <div
                     key={status}
-                    className={cn('h-full', STATUS_COLORS[status] || 'bg-brand-300')}
+                    className={cn('h-full transition-all duration-700 ease-out', STATUS_COLORS[status] || 'bg-star-blue/30')}
                     style={{ width: `${(count / totalForBreakdown) * 100}%` }}
                     title={`${STATUS_LABELS[status]}: ${count}`}
                   />
@@ -216,13 +228,17 @@ export default function VendorAnalyticsPage() {
               <div className="grid grid-cols-2 gap-3">
                 {Object.entries(statusCounts)
                   .sort((a, b) => b[1] - a[1])
-                  .map(([status, count]) => (
-                    <div key={status} className="flex items-center gap-2">
-                      <div className={cn('w-3 h-3 rounded-sm shrink-0', STATUS_COLORS[status] || 'bg-brand-300')} />
-                      <span className="text-sm text-brand-700">
+                  .map(([status, count], i) => (
+                    <div
+                      key={status}
+                      className="flex items-center gap-2 animate-fade-in-up"
+                      style={{ animationDelay: `${400 + i * 60}ms` }}
+                    >
+                      <div className={cn('w-3 h-3 rounded-sm shrink-0', STATUS_COLORS[status] || 'bg-star-blue/30')} />
+                      <span className="text-sm text-star-blue/70">
                         {STATUS_LABELS[status] || status}
                       </span>
-                      <span className="text-sm text-brand-400 ml-auto">{count}</span>
+                      <span className="text-sm text-star-blue/40 ml-auto">{count}</span>
                     </div>
                   ))}
               </div>
@@ -232,9 +248,9 @@ export default function VendorAnalyticsPage() {
       </div>
 
       {/* Top Performing Products Table */}
-      <div className="card">
-        <div className="p-5 border-b border-brand-100">
-          <h2 className="text-base font-semibold text-brand-950">Top Performing Products</h2>
+      <div className="card animate-fade-in-up" style={{ animationDelay: '400ms' }}>
+        <div className="p-5 border-b border-surface-border/50">
+          <h2 className="text-base font-semibold text-star-white">Top Performing Products</h2>
         </div>
         {topProducts.length === 0 ? (
           <EmptyState title="No products yet" description="Add products to see performance data." />
@@ -242,22 +258,26 @@ export default function VendorAnalyticsPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-brand-100">
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">#</th>
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Product</th>
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Price</th>
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Units Sold</th>
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Rating</th>
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Revenue</th>
+                <tr className="border-b border-surface-border/50">
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">#</th>
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Product</th>
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Price</th>
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Units Sold</th>
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Rating</th>
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Revenue</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-brand-100">
+              <tbody className="divide-y divide-surface-border/30">
                 {topProducts.map((product, i) => (
-                  <tr key={product.id} className="hover:bg-brand-50/50 transition-colors">
-                    <td className="px-4 py-3 text-sm font-bold text-brand-300">#{i + 1}</td>
+                  <tr
+                    key={product.id}
+                    className="hover:bg-surface-light/30 transition-colors animate-fade-in-up"
+                    style={{ animationDelay: `${500 + i * 60}ms` }}
+                  >
+                    <td className="px-4 py-3 text-sm font-bold text-accent-light/60">#{i + 1}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-md bg-brand-50 overflow-hidden shrink-0">
+                        <div className="w-10 h-10 rounded-lg bg-surface-lighter/50 overflow-hidden shrink-0 border border-surface-border/30">
                           {product.images?.[0] ? (
                             <Image
                               src={product.images[0].url}
@@ -267,7 +287,7 @@ export default function VendorAnalyticsPage() {
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-brand-300">
+                            <div className="w-full h-full flex items-center justify-center text-star-blue/30">
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                               </svg>
@@ -276,21 +296,21 @@ export default function VendorAnalyticsPage() {
                         </div>
                         <Link
                           href={`/product/${product.slug}`}
-                          className="text-sm font-medium text-brand-900 hover:underline truncate max-w-[200px]"
+                          className="text-sm font-medium text-star-white hover:text-accent-light transition-colors truncate max-w-[200px]"
                         >
                           {product.name}
                         </Link>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-sm text-brand-700">{formatPrice(product.price)}</td>
-                    <td className="px-4 py-3 text-sm font-medium text-brand-900">{product.salesCount}</td>
+                    <td className="px-4 py-3 text-sm text-star-blue/70">{formatPrice(product.price)}</td>
+                    <td className="px-4 py-3 text-sm font-medium text-star-white">{product.salesCount}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1">
                         <Rating value={product.rating} size="sm" />
-                        <span className="text-xs text-brand-400">({product.rating.toFixed(1)})</span>
+                        <span className="text-xs text-star-blue/40">({product.rating.toFixed(1)})</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-sm font-medium text-brand-900">
+                    <td className="px-4 py-3 text-sm font-medium text-emerald-400">
                       {formatPrice(product.price * product.salesCount)}
                     </td>
                   </tr>

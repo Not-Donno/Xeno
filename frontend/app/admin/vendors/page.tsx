@@ -81,14 +81,14 @@ export default function AdminVendorsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-bold text-brand-950">Vendors</h2>
-        <p className="text-sm text-brand-500 mt-1">{total} total vendors</p>
+    <div className="space-y-6 animate-fade-in">
+      <div className="animate-fade-in-up">
+        <h2 className="text-xl font-bold text-star-white">Vendors</h2>
+        <p className="text-sm text-star-blue/60 mt-1">{total} total vendors</p>
       </div>
 
       {/* Status tabs */}
-      <div className="flex gap-1 border-b border-brand-100">
+      <div className="flex gap-1 border-b border-surface-border animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         {STATUS_TABS.map((tab) => (
           <button
             key={tab.value}
@@ -99,8 +99,8 @@ export default function AdminVendorsPage() {
             className={cn(
               'px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors',
               status === tab.value
-                ? 'border-brand-950 text-brand-950'
-                : 'border-transparent text-brand-500 hover:text-brand-900'
+                ? 'border-accent text-accent'
+                : 'border-transparent text-star-blue/50 hover:text-star-white'
             )}
           >
             {tab.label}
@@ -109,7 +109,7 @@ export default function AdminVendorsPage() {
       </div>
 
       {/* Table */}
-      <div className="card overflow-hidden">
+      <div className="card overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
         {loading ? (
           <div className="p-6 space-y-3">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -129,42 +129,42 @@ export default function AdminVendorsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-brand-100 bg-brand-50/50">
-                    <th className="text-left px-6 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Vendor</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Products</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Rating</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Status</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Joined</th>
-                    <th className="text-right px-6 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Actions</th>
+                  <tr className="border-b border-surface-border bg-surface-light/50">
+                    <th className="text-left px-6 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Vendor</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Products</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Rating</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Status</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Joined</th>
+                    <th className="text-right px-6 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-brand-100">
+                <tbody className="divide-y divide-surface-border">
                   {vendors.map((vendor) => (
-                    <tr key={vendor.id} className="hover:bg-brand-50/50">
+                    <tr key={vendor.id} className="hover:bg-surface-light/50 transition-colors">
                       <td className="px-6 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-brand-100 flex items-center justify-center shrink-0 overflow-hidden">
+                          <div className="w-9 h-9 rounded-full bg-surface-lighter flex items-center justify-center shrink-0 overflow-hidden">
                             {vendor.logoUrl ? (
                               // eslint-disable-next-line @next/next/no-img-element
                               <img src={vendor.logoUrl} alt={vendor.name} className="w-full h-full object-cover" />
                             ) : (
-                              <span className="text-xs font-semibold text-brand-600">
+                              <span className="text-xs font-semibold text-accent-light">
                                 {vendor.name.charAt(0)}
                               </span>
                             )}
                           </div>
                           <div>
-                            <p className="font-medium text-brand-950">{vendor.name}</p>
-                            <p className="text-xs text-brand-400">{vendor.slug}</p>
+                            <p className="font-medium text-star-white">{vendor.name}</p>
+                            <p className="text-xs text-star-blue/40">{vendor.slug}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-brand-600">{vendor._count?.products || 0}</td>
-                      <td className="px-4 py-3 text-brand-600">
+                      <td className="px-4 py-3 text-star-blue/70">{vendor._count?.products || 0}</td>
+                      <td className="px-4 py-3 text-star-blue/70">
                         {vendor.rating.toFixed(1)} ({vendor.totalSales} sales)
                       </td>
                       <td className="px-4 py-3">{vendorStatusBadge(vendor.status)}</td>
-                      <td className="px-4 py-3 text-brand-500">
+                      <td className="px-4 py-3 text-star-blue/60">
                         {vendor.createdAt ? formatDate(vendor.createdAt) : '—'}
                       </td>
                       <td className="px-6 py-3">
@@ -229,8 +229,8 @@ export default function AdminVendorsPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between px-6 py-4 border-t border-brand-100">
-                <p className="text-sm text-brand-500">
+              <div className="flex items-center justify-between px-6 py-4 border-t border-surface-border">
+                <p className="text-sm text-star-blue/60">
                   Page {page} of {totalPages}
                 </p>
                 <div className="flex gap-2">
@@ -259,12 +259,12 @@ export default function AdminVendorsPage() {
 
       {/* Reason modal */}
       {reasonModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
-            <h3 className="text-lg font-semibold text-brand-950 mb-1">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-surface border border-surface-border rounded-xl shadow-2xl w-full max-w-md p-6 animate-scale-in">
+            <h3 className="text-lg font-semibold text-star-white mb-1">
               {reasonModal.action === 'REJECTED' ? 'Reject Vendor' : 'Suspend Vendor'}
             </h3>
-            <p className="text-sm text-brand-500 mb-4">
+            <p className="text-sm text-star-blue/60 mb-4">
               Please provide a reason for this action.
             </p>
             <textarea

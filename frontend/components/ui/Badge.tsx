@@ -11,12 +11,12 @@ export function Badge({ children, variant = 'default', className }: BadgeProps) 
   return (
     <span
       className={cn(
-        'badge',
-        variant === 'default' && 'bg-brand-100 text-brand-700',
-        variant === 'success' && 'bg-green-100 text-green-800',
-        variant === 'warning' && 'bg-yellow-100 text-yellow-800',
-        variant === 'danger' && 'bg-red-100 text-red-800',
-        variant === 'info' && 'bg-blue-100 text-blue-800',
+        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+        variant === 'default' && 'bg-surface-lighter text-star-blue',
+        variant === 'success' && 'bg-emerald-500/10 text-emerald-400',
+        variant === 'warning' && 'bg-amber-500/10 text-amber-400',
+        variant === 'danger' && 'bg-red-500/10 text-red-400',
+        variant === 'info' && 'bg-accent/10 text-accent-light',
         className
       )}
     >

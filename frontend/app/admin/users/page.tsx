@@ -8,7 +8,7 @@ import { Input, Select } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { formatDate } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
 import type { User, PaginatedResponse } from '@/lib/types';
 
 const PAGE_SIZE = 15;
@@ -19,6 +19,7 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [role, setRole] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -26,13 +27,18 @@ export default function AdminUsersPage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError(null);
     const params = new URLSearchParams();
     params.set('page', String(page));
     params.set('limit', String(PAGE_SIZE));
-    if (search) params.set('search', search);
+    if (debouncedSearch) params.set('search', debouncedSearch);
     if (role) params.set('role', role);
     try {
       const res = await api.get<PaginatedResponse<User>>(`/admin/users?${params.toString()}`, token);
@@ -44,7 +50,7 @@ export default function AdminUsersPage() {
     } finally {
       setLoading(false);
     }
-  }, [token, page, search, role]);
+  }, [token, page, debouncedSearch, role]);
 
   useEffect(() => {
     fetchUsers();
@@ -88,25 +94,29 @@ export default function AdminUsersPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold text-brand-950">Users</h2>
-          <p className="text-sm text-brand-500 mt-1">{total} total users</p>
-        </div>
+    <div className="space-y-6 animate-fade-in">
+      <div className="animate-fade-in-up">
+        <h2 className="text-xl font-bold text-star-white">Users</h2>
+        <p className="text-sm text-star-blue/60 mt-1">{total} total users</p>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-3">
-        <Input
-          placeholder="Search by name or email..."
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
-          className="w-72"
-        />
+      <div className="flex flex-wrap items-center gap-3 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+        <div className="relative">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-star-blue/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Search by name or email..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
+            className="input pl-10 w-72"
+          />
+        </div>
         <Select
           value={role}
           onChange={(e) => {
@@ -124,7 +134,7 @@ export default function AdminUsersPage() {
       </div>
 
       {/* Table */}
-      <div className="card overflow-hidden">
+      <div className="card overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
         {loading ? (
           <div className="p-6 space-y-3">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -144,29 +154,29 @@ export default function AdminUsersPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-brand-100 bg-brand-50/50">
-                    <th className="text-left px-6 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">User</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Role</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Status</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Joined</th>
-                    <th className="text-right px-6 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Actions</th>
+                  <tr className="border-b border-surface-border bg-surface-light/50">
+                    <th className="text-left px-6 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">User</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Role</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Status</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Joined</th>
+                    <th className="text-right px-6 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-brand-100">
+                <tbody className="divide-y divide-surface-border">
                   {users.map((user) => (
-                    <tr key={user.id} className="hover:bg-brand-50/50">
+                    <tr key={user.id} className="hover:bg-surface-light/50 transition-colors">
                       <td className="px-6 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-brand-100 flex items-center justify-center shrink-0">
-                            <span className="text-xs font-semibold text-brand-600">
+                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center shrink-0">
+                            <span className="text-xs font-semibold text-white">
                               {user.firstName?.[0]}{user.lastName?.[0]}
                             </span>
                           </div>
                           <div>
-                            <p className="font-medium text-brand-950">
+                            <p className="font-medium text-star-white">
                               {user.firstName} {user.lastName}
                             </p>
-                            <p className="text-xs text-brand-400">{user.email}</p>
+                            <p className="text-xs text-star-blue/40">{user.email}</p>
                           </div>
                         </div>
                       </td>
@@ -187,7 +197,7 @@ export default function AdminUsersPage() {
                           {user.isActive ? 'Active' : 'Inactive'}
                         </Badge>
                       </td>
-                      <td className="px-4 py-3 text-brand-500">
+                      <td className="px-4 py-3 text-star-blue/60">
                         {user.createdAt ? formatDate(user.createdAt) : '—'}
                       </td>
                       <td className="px-6 py-3">
@@ -219,7 +229,7 @@ export default function AdminUsersPage() {
                               variant="ghost"
                               size="sm"
                               onClick={() => setDeleteConfirm(user.id)}
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                              className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
                             >
                               Delete
                             </Button>
@@ -234,8 +244,8 @@ export default function AdminUsersPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between px-6 py-4 border-t border-brand-100">
-                <p className="text-sm text-brand-500">
+              <div className="flex items-center justify-between px-6 py-4 border-t border-surface-border">
+                <p className="text-sm text-star-blue/60">
                   Page {page} of {totalPages}
                 </p>
                 <div className="flex gap-2">

@@ -124,11 +124,11 @@ export default function AdminPromotionsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex items-center justify-between animate-fade-in-up">
         <div>
-          <h2 className="text-xl font-bold text-brand-950">Promotions</h2>
-          <p className="text-sm text-brand-500 mt-1">{promotions.length} promotions</p>
+          <h2 className="text-xl font-bold text-star-white">Promotions</h2>
+          <p className="text-sm text-star-blue/60 mt-1">{promotions.length} promotions</p>
         </div>
         <Button variant="primary" onClick={openAdd}>
           + Add Promotion
@@ -136,7 +136,7 @@ export default function AdminPromotionsPage() {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-md">
+        <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded-lg animate-fade-in-up">
           {error}
         </div>
       )}
@@ -145,7 +145,7 @@ export default function AdminPromotionsPage() {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="card overflow-hidden">
+            <div key={i} className="card overflow-hidden animate-pulse">
               <Skeleton className="h-32 rounded-none" />
               <div className="p-4 space-y-2">
                 <Skeleton className="h-4 w-3/4" />
@@ -162,9 +162,13 @@ export default function AdminPromotionsPage() {
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {promotions.map((promo) => (
-            <div key={promo.id} className="card overflow-hidden">
-              <div className="h-32 bg-brand-100 relative">
+          {promotions.map((promo, i) => (
+            <div
+              key={promo.id}
+              className="card card-hover overflow-hidden animate-fade-in-up"
+              style={{ animationDelay: `${i * 80}ms` }}
+            >
+              <div className="h-32 bg-surface-lighter relative">
                 {promo.imageUrl && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -180,12 +184,12 @@ export default function AdminPromotionsPage() {
                 </div>
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-brand-950">{promo.title}</h3>
+                <h3 className="font-semibold text-star-white">{promo.title}</h3>
                 {promo.subtitle && (
-                  <p className="text-sm text-brand-500 mt-1">{promo.subtitle}</p>
+                  <p className="text-sm text-star-blue/60 mt-1">{promo.subtitle}</p>
                 )}
                 {promo.linkUrl && (
-                  <p className="text-xs text-brand-400 mt-2 truncate">{promo.linkUrl}</p>
+                  <p className="text-xs text-star-blue/40 mt-2 truncate">{promo.linkUrl}</p>
                 )}
                 <div className="flex items-center gap-2 mt-4">
                   <Button
@@ -218,7 +222,7 @@ export default function AdminPromotionsPage() {
                       variant="ghost"
                       size="sm"
                       onClick={() => setDeleteConfirm(promo.id)}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
                     >
                       Delete
                     </Button>
@@ -232,9 +236,9 @@ export default function AdminPromotionsPage() {
 
       {/* Add/Edit modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
-            <h3 className="text-lg font-semibold text-brand-950 mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-surface border border-surface-border rounded-xl shadow-2xl w-full max-w-md p-6 animate-scale-in">
+            <h3 className="text-lg font-semibold text-star-white mb-4">
               {editing ? 'Edit Promotion' : 'Add Promotion'}
             </h3>
             <div className="space-y-4">
@@ -262,12 +266,12 @@ export default function AdminPromotionsPage() {
                 onChange={(e) => setForm((f) => ({ ...f, linkUrl: e.target.value }))}
                 placeholder="https://..."
               />
-              <label className="flex items-center gap-2 text-sm text-brand-700">
+              <label className="flex items-center gap-2 text-sm text-star-blue/80">
                 <input
                   type="checkbox"
                   checked={form.isActive}
                   onChange={(e) => setForm((f) => ({ ...f, isActive: e.target.checked }))}
-                  className="rounded border-brand-300"
+                  className="rounded border-surface-border bg-surface-light text-accent focus:ring-accent"
                 />
                 Active
               </label>

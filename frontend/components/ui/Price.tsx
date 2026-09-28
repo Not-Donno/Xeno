@@ -17,7 +17,7 @@ export function Price({ price, discountPrice, size = 'md', className }: PricePro
     <div className={cn('flex items-baseline gap-2', className)}>
       <span
         className={cn(
-          'font-semibold text-brand-950',
+          'font-semibold text-star-white',
           size === 'sm' && 'text-sm',
           size === 'md' && 'text-base',
           size === 'lg' && 'text-xl'
@@ -29,7 +29,7 @@ export function Price({ price, discountPrice, size = 'md', className }: PricePro
         <>
           <span
             className={cn(
-              'text-brand-400 line-through',
+              'text-star-blue/40 line-through',
               size === 'sm' && 'text-xs',
               size === 'md' && 'text-sm',
               size === 'lg' && 'text-base'
@@ -37,7 +37,9 @@ export function Price({ price, discountPrice, size = 'md', className }: PricePro
           >
             {formatPrice(price)}
           </span>
-          <span className="text-xs font-medium text-green-600">-{discount}%</span>
+          <span className="text-xs font-bold text-emerald-400 bg-emerald-400/10 px-1.5 py-0.5 rounded">
+            -{discount}%
+          </span>
         </>
       )}
     </div>

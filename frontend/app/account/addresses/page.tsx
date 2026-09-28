@@ -1,65 +1,56 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { Badge } from '@/components/ui/Badge';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import type { Address } from '@/lib/types';
-
-const emptyForm = {
-  label: '',
-  name: '',
-  phone: '',
-  line1: '',
-  line2: '',
-  city: '',
-  state: '',
-  postalCode: '',
-  country: 'US',
-  isDefault: false,
-};
 
 export default function AddressesPage() {
   const { token } = useAuth();
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState(emptyForm);
-  const [formError, setFormError] = useState('');
+  const [form, setForm] = useState({
+    label: '', name: '', phone: '', line1: '', line2: '',
+    city: '', state: '', postalCode: '', country: '', isDefault: false,
+  });
   const [saving, setSaving] = useState(false);
 
-  const fetchAddresses = useCallback(async () => {
+  const fetchAddresses = async () => {
     if (!token) return;
-    setLoading(true);
     try {
       const res = await api.get<{ addresses: Address[] }>('/users/me/addresses', token);
       setAddresses(res.addresses || []);
-    } catch (err: any) {
-      setError(err.message || 'Failed to load addresses');
-    } finally {
-      setLoading(false);
-    }
-  }, [token]);
+    } catch { /* ignore */ }
+    finally { setLoading(false); }
+  };
 
-  useEffect(() => {
-    fetchAddresses();
-  }, [fetchAddresses]);
+  useEffect(() => { fetchAddresses(); }, [token]);
+
+  const resetForm = () => {
+    setForm({ label: '', name: '', phone: '', line1: '', line2: '', city: '', state: '', postalCode: '', country: '', isDefault: false });
+    setEditingId(null);
+    setShowForm(false);
+  };
+
+  const handleEdit = (addr: Address) => {
+    setForm({
+      label: addr.label, name: addr.name, phone: addr.phone,
+      line1: addr.line1, line2: addr.line2 || '', city: addr.city,
+      state: addr.state, postalCode: addr.postalCode, country: addr.country,
+      isDefault: addr.isDefault,
+    });
+    setEditingId(addr.id);
+    setShowForm(true);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormError('');
-
-    if (!form.label || !form.name || !form.phone || !form.line1 || !form.city || !form.state || !form.postalCode) {
-      setFormError('Please fill in all required fields');
-      return;
-    }
-
+    if (!token) return;
     setSaving(true);
     try {
       if (editingId) {
@@ -68,232 +59,131 @@ export default function AddressesPage() {
         await api.post('/users/me/addresses', form, token);
       }
       await fetchAddresses();
-      setShowForm(false);
-      setEditingId(null);
-      setForm(emptyForm);
+      resetForm();
     } catch (err: any) {
-      setFormError(err.message || 'Failed to save address');
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleEdit = (addr: Address) => {
-    setForm({
-      label: addr.label,
-      name: addr.name,
-      phone: addr.phone,
-      line1: addr.line1,
-      line2: addr.line2 || '',
-      city: addr.city,
-      state: addr.state,
-      postalCode: addr.postalCode,
-      country: addr.country,
-      isDefault: addr.isDefault,
-    });
-    setEditingId(addr.id);
-    setShowForm(true);
-    setFormError('');
+      alert(err.message);
+    } finally { setSaving(false); }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this address?')) return;
+    if (!token || !confirm('Delete this address?')) return;
     try {
       await api.delete(`/users/me/addresses/${id}`, token);
       await fetchAddresses();
-    } catch (err: any) {
-      alert(err.message || 'Failed to delete address');
-    }
-  };
-
-  const handleSetDefault = async (id: string) => {
-    try {
-      await api.patch(`/users/me/addresses/${id}`, { isDefault: true }, token);
-      await fetchAddresses();
-    } catch (err: any) {
-      alert(err.message || 'Failed to set default address');
-    }
-  };
-
-  const handleCancel = () => {
-    setShowForm(false);
-    setEditingId(null);
-    setForm(emptyForm);
-    setFormError('');
+    } catch (err: any) { alert(err.message); }
   };
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-brand-950">My Addresses</h1>
+      <div className="space-y-6 animate-fade-in">
+        <div className="h-8 w-48 bg-surface-lighter rounded animate-pulse" />
         <div className="grid md:grid-cols-2 gap-4">
-          <Skeleton className="h-40 w-full" />
-          <Skeleton className="h-40 w-full" />
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="card p-6 animate-pulse space-y-3">
+              <div className="h-4 bg-surface-lighter rounded w-1/3" />
+              <div className="h-3 bg-surface-lighter rounded w-2/3" />
+              <div className="h-3 bg-surface-lighter rounded w-1/2" />
+            </div>
+          ))}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-brand-950">My Addresses</h1>
-        {!showForm && (
-          <Button variant="primary" onClick={() => setShowForm(true)}>Add Address</Button>
-        )}
+        <h1 className="text-2xl md:text-3xl font-bold text-star-white">My Addresses</h1>
+        <Button variant="primary" onClick={() => { resetForm(); setShowForm(true); }}>
+          Add Address
+        </Button>
       </div>
 
-      {error && (
-        <EmptyState
-          title="Error loading addresses"
-          description={error}
-          action={{ label: 'Retry', onClick: fetchAddresses }}
-        />
-      )}
-
-      {/* Add/Edit Form */}
       {showForm && (
-        <div className="card p-6">
-          <h2 className="text-lg font-semibold text-brand-950 mb-4">
-            {editingId ? 'Edit Address' : 'Add New Address'}
+        <form onSubmit={handleSubmit} className="card p-6 md:p-8 animate-scale-in">
+          <h2 className="text-lg font-semibold text-star-white mb-6">
+            {editingId ? 'Edit Address' : 'New Address'}
           </h2>
-          {formError && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700 mb-4">
-              {formError}
-            </div>
-          )}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
-              <Input
-                label="Label *"
-                value={form.label}
-                onChange={(e) => setForm({ ...form, label: e.target.value })}
-                placeholder="Home, Work, etc."
-                required
-              />
-              <Input
-                label="Full Name *"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required
-              />
-            </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              <Input
-                label="Phone *"
-                value={form.phone}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                required
-              />
-              <Input
-                label="Address Line 1 *"
-                value={form.line1}
-                onChange={(e) => setForm({ ...form, line1: e.target.value })}
-                required
-              />
-            </div>
-            <Input
-              label="Address Line 2"
-              value={form.line2}
-              onChange={(e) => setForm({ ...form, line2: e.target.value })}
-              placeholder="Apt, Suite, etc. (optional)"
+          <div className="grid md:grid-cols-2 gap-5">
+            <Input label="Label" value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value })} required placeholder="Home, Work..." />
+            <Input label="Full Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+            <Input label="Phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required />
+            <Input label="Address Line 1" value={form.line1} onChange={(e) => setForm({ ...form, line1: e.target.value })} required />
+            <Input label="Address Line 2" value={form.line2} onChange={(e) => setForm({ ...form, line2: e.target.value })} />
+            <Input label="City" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} required />
+            <Input label="State" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} required />
+            <Input label="Postal Code" value={form.postalCode} onChange={(e) => setForm({ ...form, postalCode: e.target.value })} required />
+            <Input label="Country" value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} required />
+          </div>
+          <label className="flex items-center gap-2.5 mt-5 text-sm text-star-blue cursor-pointer">
+            <input
+              type="checkbox"
+              checked={form.isDefault}
+              onChange={(e) => setForm({ ...form, isDefault: e.target.checked })}
+              className="rounded border-surface-border accent-accent"
             />
-            <div className="grid md:grid-cols-3 gap-4">
-              <Input
-                label="City *"
-                value={form.city}
-                onChange={(e) => setForm({ ...form, city: e.target.value })}
-                required
-              />
-              <Input
-                label="State *"
-                value={form.state}
-                onChange={(e) => setForm({ ...form, state: e.target.value })}
-                required
-              />
-              <Input
-                label="Postal Code *"
-                value={form.postalCode}
-                onChange={(e) => setForm({ ...form, postalCode: e.target.value })}
-                required
-              />
-            </div>
-            <div className="flex items-center gap-4">
-              <Input
-                label="Country"
-                value={form.country}
-                onChange={(e) => setForm({ ...form, country: e.target.value })}
-                className="w-32"
-              />
-              <label className="flex items-center gap-2 text-sm text-brand-700">
-                <input
-                  type="checkbox"
-                  checked={form.isDefault}
-                  onChange={(e) => setForm({ ...form, isDefault: e.target.checked })}
-                  className="rounded border-brand-300"
-                />
-                Set as default
-              </label>
-            </div>
-            <div className="flex gap-3">
-              <Button type="submit" variant="primary" loading={saving}>
-                {editingId ? 'Update Address' : 'Add Address'}
-              </Button>
-              <Button type="button" variant="secondary" onClick={handleCancel}>Cancel</Button>
-            </div>
-          </form>
-        </div>
+            Set as default address
+          </label>
+          <div className="flex gap-3 mt-6">
+            <Button type="submit" variant="primary" loading={saving}>
+              {editingId ? 'Update' : 'Save'}
+            </Button>
+            <Button type="button" variant="secondary" onClick={resetForm}>
+              Cancel
+            </Button>
+          </div>
+        </form>
       )}
 
-      {/* Address List */}
-      {!error && addresses.length === 0 && !showForm ? (
-        <div className="card p-8">
-          <EmptyState
-            title="No addresses saved"
-            description="Add a shipping address for faster checkout."
-            action={{ label: 'Add Address', onClick: () => setShowForm(true) }}
-          />
-        </div>
+      {addresses.length === 0 ? (
+        <EmptyState
+          title="No addresses saved"
+          description="Add a shipping address for faster checkout."
+          action={{ label: 'Add Address', onClick: () => setShowForm(true) }}
+        />
       ) : (
-        <div className="grid md:grid-cols-2 gap-4">
-          {addresses.map((addr) => (
-            <div key={addr.id} className="card p-5">
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-brand-900">{addr.label}</h3>
-                  {addr.isDefault && <Badge variant="info">Default</Badge>}
+        <div className="grid md:grid-cols-2 gap-5">
+          {addresses.map((addr, i) => (
+            <div
+              key={addr.id}
+              className="card card-hover p-6 animate-fade-in-up"
+              style={{ animationDelay: `${i * 80}ms` }}
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-star-white">{addr.label}</span>
+                    {addr.isDefault && (
+                      <span className="badge bg-accent/10 text-accent text-[10px]">Default</span>
+                    )}
+                  </div>
+                  <p className="text-sm text-star-blue/70 mt-2">{addr.name}</p>
+                  <p className="text-sm text-star-blue/50 mt-1">
+                    {addr.line1}{addr.line2 ? `, ${addr.line2}` : ''}<br />
+                    {addr.city}, {addr.state} {addr.postalCode}<br />
+                    {addr.country}
+                  </p>
+                  <p className="text-xs text-star-blue/40 mt-2">{addr.phone}</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-1">
                   <button
                     onClick={() => handleEdit(addr)}
-                    className="text-xs text-brand-500 hover:text-brand-950"
+                    className="p-2 text-star-blue/40 hover:text-accent rounded-lg hover:bg-accent/10 transition-all"
                   >
-                    Edit
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
                   </button>
                   <button
                     onClick={() => handleDelete(addr.id)}
-                    className="text-xs text-red-500 hover:text-red-700"
+                    className="p-2 text-star-blue/40 hover:text-red-400 rounded-lg hover:bg-red-500/10 transition-all"
                   >
-                    Delete
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
                   </button>
                 </div>
               </div>
-              <div className="text-sm text-brand-600 space-y-1">
-                <p className="font-medium text-brand-900">{addr.name}</p>
-                <p>{addr.line1}</p>
-                {addr.line2 && <p>{addr.line2}</p>}
-                <p>{addr.city}, {addr.state} {addr.postalCode}</p>
-                <p>{addr.country}</p>
-                <p className="text-brand-500">{addr.phone}</p>
-              </div>
-              {!addr.isDefault && (
-                <button
-                  onClick={() => handleSetDefault(addr.id)}
-                  className="mt-3 text-xs text-brand-600 hover:text-brand-950 underline"
-                >
-                  Set as default
-                </button>
-              )}
             </div>
           ))}
         </div>

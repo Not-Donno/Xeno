@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Icon } from '@/components/ui/Icon';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -30,62 +31,67 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-brand-950">Welcome back</h1>
-          <p className="text-sm text-brand-500 mt-1">Sign in to your Xeno account</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700">
-              {error}
-            </div>
-          )}
-
-          <Input
-            label="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="you@example.com"
-          />
-
-          <Input
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            placeholder="Enter your password"
-          />
-
-          <div className="flex items-center justify-between">
-            <Link href="/auth/forgot-password" className="text-sm text-brand-500 hover:text-brand-950">
-              Forgot password?
-            </Link>
+    <div className="min-h-[70vh] flex items-center justify-center py-12">
+      <div className="w-full max-w-md animate-fade-in-up">
+        <div className="card p-8 md:p-10">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold text-star-white">Welcome back</h1>
+            <p className="text-sm text-star-blue/60 mt-2">Sign in to your Xeno account</p>
           </div>
 
-          <Button type="submit" variant="primary" size="lg" loading={loading} className="w-full">
-            Sign In
-          </Button>
-        </form>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400 animate-fade-in">
+                {error}
+              </div>
+            )}
 
-        <p className="text-center text-sm text-brand-500 mt-6">
-          Don&apos;t have an account?{' '}
-          <Link href="/auth/register" className="text-brand-950 font-medium hover:underline">
-            Sign up
-          </Link>
-        </p>
+            <Input
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="you@example.com"
+            />
 
-        <div className="mt-8 p-4 bg-brand-50 rounded-lg">
-          <p className="text-xs font-medium text-brand-700 mb-2">Demo Accounts:</p>
-          <div className="space-y-1 text-xs text-brand-600">
-            <p>Admin: admin@xeno.com / Admin123!</p>
-            <p>Vendor: velocity@xeno.com / Vendor123!</p>
-            <p>Customer: john@example.com / Customer123!</p>
+            <Input
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Enter your password"
+            />
+
+            <div className="flex items-center justify-between">
+              <Link
+                href="/auth/forgot-password"
+                className="text-xs text-star-blue/60 hover:text-accent transition-colors"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
+            <Button type="submit" variant="primary" size="lg" loading={loading} className="w-full">
+              Sign In
+            </Button>
+          </form>
+
+          <p className="text-center text-sm text-star-blue/50 mt-6">
+            Don&apos;t have an account?{' '}
+            <Link href="/auth/register" className="text-accent font-medium hover:underline">
+              Sign up
+            </Link>
+          </p>
+
+          <div className="mt-8 p-4 bg-surface-light/50 rounded-xl border border-surface-border/50">
+            <p className="text-xs font-medium text-star-blue/70 mb-3 uppercase tracking-wider">Demo Accounts</p>
+            <div className="space-y-2 text-xs text-star-blue/60">
+              <p><span className="text-accent">Admin:</span> admin@xeno.com / Admin123!</p>
+              <p><span className="text-accent">Vendor:</span> velocity@xeno.com / Vendor123!</p>
+              <p><span className="text-accent">Customer:</span> john@example.com / Customer123!</p>
+            </div>
           </div>
         </div>
       </div>
