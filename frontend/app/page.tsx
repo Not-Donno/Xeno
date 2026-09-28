@@ -7,25 +7,6 @@ import { Rating } from '@/components/ui/Rating';
 import { Icon } from '@/components/ui/Icon';
 import type { Product, Vendor, Category, Promotion } from '@/lib/types';
 
-function StarField() {
-  return (
-    <div className="star-field">
-      {Array.from({ length: 50 }).map((_, i) => (
-        <div
-          key={i}
-          className="star"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 3}s`,
-            opacity: Math.random() * 0.7 + 0.3,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
 async function getHomeData() {
   try {
     const [featured, trending, newArrivals, vendors, sports, productTypes, promotions] =
@@ -68,17 +49,7 @@ export default async function HomePage() {
     <div>
       {/* Hero Section */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
-        <StarField />
-        <div className="absolute inset-0">
-          <Image
-            src="https://picsum.photos/seed/xeno-hero/1920/800"
-            alt="Hero"
-            fill
-            className="object-cover opacity-30"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-space-950 via-space-950/80 to-transparent" />
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-space-950 via-space-950/90 to-space-950" />
         <div className="relative container-x">
           <div className="max-w-2xl animate-fade-in-up">
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
@@ -295,7 +266,6 @@ export default async function HomePage() {
       {/* CTA Section */}
       <section className="container-x py-16 md:py-24">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-space-900 via-cosmic-900 to-space-900 p-10 md:p-16 text-center">
-          <StarField />
           <div className="relative z-10">
             <h2 className="text-2xl md:text-4xl font-bold text-white">Start Selling on Xeno</h2>
             <p className="mt-3 text-star-blue/70 max-w-lg mx-auto text-base md:text-lg">

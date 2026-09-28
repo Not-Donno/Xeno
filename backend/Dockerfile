@@ -27,9 +27,9 @@ COPY prisma ./prisma
 
 RUN mkdir -p /app/storage
 
-# Wait for database to be ready before starting
-RUN printf '#!/bin/sh\necho "Waiting for database..."\nfor i in $(seq 1 30); do\n  if node -e "const {PrismaClient}=require(\"@prisma/client\");const p=new PrismaClient();p.\$queryRaw\`SELECT 1\`.then(()=>process.exit(0)).catch(()=>process.exit(1))" 2>/dev/null; then\n    echo "Database is ready!"\n    echo "Seeding database..."\n    node dist/seed/seed.js\n    echo "Starting application..."\n    exec node dist/src/main.js\n  fi\n  echo "Database not ready yet, waiting... ($i)"\n  sleep 2\ndone\necho "Database failed to start"\nexit 1\n' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+COPY wait-for-db.sh /app/wait-for-db.sh
+RUN chmod +x /app/wait-for-db.sh
 
 EXPOSE 3001
 
-CMD ["sh", "/app/entrypoint.sh"]
+CMD ["sh", "/app/wait-for-db.sh"]
