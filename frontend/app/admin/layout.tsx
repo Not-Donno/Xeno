@@ -29,75 +29,46 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   }, [loading, token, user, router]);
 
-  if (loading || !token || user?.role !== 'ADMIN') {
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-brand-950 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm text-brand-500">Loading admin panel...</p>
-        </div>
+      <div className="flex h-screen items-center justify-center">
+        <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
+  if (!token || user?.role !== 'ADMIN') return null;
+
   return (
-    <div className="min-h-screen bg-brand-50/50 flex">
+    <div className="flex min-h-[calc(100vh-4rem)]">
       {/* Sidebar */}
-      <aside className="w-60 bg-brand-950 text-white flex flex-col fixed inset-y-0 left-0 z-30">
-        <div className="px-5 py-5 border-b border-white/10">
-          <Link href="/admin" className="flex items-center gap-2">
-            <span className="text-lg font-bold tracking-tight">XENO</span>
-            <span className="text-[10px] font-semibold bg-accent text-brand-950 px-1.5 py-0.5 rounded">
-              ADMIN
-            </span>
-          </Link>
-        </div>
-        <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-0.5">
+      <aside className="w-56 shrink-0 border-r border-surface-border/50 bg-surface-light/30 backdrop-blur-sm hidden md:block">
+        <nav className="p-4 space-y-1">
           {NAV_ITEMS.map((item) => {
-            const isActive =
-              item.href === '/admin' ? pathname === '/admin' : pathname.startsWith(item.href);
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors',
+                  'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-300',
                   isActive
-                    ? 'bg-white/10 text-white font-medium'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                    ? 'bg-accent/10 text-accent font-medium'
+                    : 'text-star-blue/60 hover:text-star-white hover:bg-surface-light/50'
                 )}
               >
-                <svg
-                  className="w-4.5 h-4.5 w-[18px] h-[18px] shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+                <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
                 </svg>
                 {item.label}
               </Link>
             );
           })}
         </nav>
-        <div className="px-5 py-4 border-t border-white/10">
-          <Link
-            href="/"
-            className="text-xs text-white/50 hover:text-white transition-colors"
-          >
-            &larr; Back to store
-          </Link>
-        </div>
       </aside>
 
-      {/* Main content */}
-      <div className="flex-1 ml-60 flex flex-col min-h-screen">
-        <header className="bg-white border-b border-brand-100 px-8 py-4 sticky top-0 z-20">
-          <h1 className="text-lg font-semibold text-brand-950">Admin</h1>
-        </header>
-        <main className="flex-1 p-8">{children}</main>
-      </div>
+      {/* Main Content */}
+      <main className="flex-1 p-6 md:p-8">{children}</main>
     </div>
   );
 }

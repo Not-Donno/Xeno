@@ -50,73 +50,77 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-brand-950">Create account</h1>
-          <p className="text-sm text-brand-500 mt-1">Join Xeno today</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700">
-              {error}
-            </div>
-          )}
-
-          <div className="grid grid-cols-2 gap-3">
-            <Input
-              label="First Name"
-              value={form.firstName}
-              onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-              required
-            />
-            <Input
-              label="Last Name"
-              value={form.lastName}
-              onChange={(e) => setForm({ ...form, lastName: e.target.value })}
-              required
-            />
+    <div className="min-h-[70vh] flex items-center justify-center py-12">
+      <div className="w-full max-w-md animate-fade-in-up">
+        <div className="card p-8 md:p-10">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold text-star-white">Create account</h1>
+            <p className="text-sm text-star-blue/60 mt-2">Join Xeno today</p>
           </div>
 
-          <Input
-            label="Email"
-            type="email"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            required
-            placeholder="you@example.com"
-          />
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400 animate-fade-in">
+                {error}
+              </div>
+            )}
 
-          <Input
-            label="Password"
-            type="password"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            required
-            placeholder="Min 8 characters"
-          />
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                label="First Name"
+                value={form.firstName}
+                onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+                required
+                placeholder="John"
+              />
+              <Input
+                label="Last Name"
+                value={form.lastName}
+                onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+                required
+                placeholder="Doe"
+              />
+            </div>
 
-          <Input
-            label="Confirm Password"
-            type="password"
-            value={form.confirmPassword}
-            onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-            required
-            placeholder="Confirm your password"
-          />
+            <Input
+              label="Email"
+              type="email"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              required
+              placeholder="you@example.com"
+            />
 
-          <Button type="submit" variant="primary" size="lg" loading={loading} className="w-full">
-            Create Account
-          </Button>
-        </form>
+            <Input
+              label="Password"
+              type="password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              required
+              placeholder="Min 8 characters"
+            />
 
-        <p className="text-center text-sm text-brand-500 mt-6">
-          Already have an account?{' '}
-          <Link href="/auth/login" className="text-brand-950 font-medium hover:underline">
-            Sign in
-          </Link>
-        </p>
+            <Input
+              label="Confirm Password"
+              type="password"
+              value={form.confirmPassword}
+              onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+              required
+              placeholder="Confirm your password"
+            />
+
+            <Button type="submit" variant="primary" size="lg" loading={loading} className="w-full">
+              Create Account
+            </Button>
+          </form>
+
+          <p className="text-center text-sm text-star-blue/50 mt-6">
+            Already have an account?{' '}
+            <Link href="/auth/login" className="text-accent font-medium hover:underline">
+              Sign in
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ export function Input({ label, error, className, id, ...props }: InputProps) {
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-sm font-medium text-brand-700 mb-1"
+          className="block text-sm font-medium text-star-blue mb-1"
         >
           {label}
         </label>
@@ -25,7 +25,7 @@ export function Input({ label, error, className, id, ...props }: InputProps) {
         className={cn('input', error && 'border-red-500 focus:ring-red-500', className)}
         {...props}
       />
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
     </div>
   );
 }
@@ -43,7 +43,7 @@ export function Select({ label, error, options, className, id, ...props }: Selec
       {label && (
         <label
           htmlFor={selectId}
-          className="block text-sm font-medium text-brand-700 mb-1"
+          className="block text-sm font-medium text-star-blue mb-1"
         >
           {label}
         </label>
@@ -59,7 +59,7 @@ export function Select({ label, error, options, className, id, ...props }: Selec
           </option>
         ))}
       </select>
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
     </div>
   );
 }
@@ -76,7 +76,7 @@ export function Textarea({ label, error, className, id, ...props }: TextareaProp
       {label && (
         <label
           htmlFor={textareaId}
-          className="block text-sm font-medium text-brand-700 mb-1"
+          className="block text-sm font-medium text-star-blue mb-1"
         >
           {label}
         </label>
@@ -86,7 +86,7 @@ export function Textarea({ label, error, className, id, ...props }: TextareaProp
         className={cn('input min-h-[100px]', error && 'border-red-500', className)}
         {...props}
       />
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
     </div>
   );
 }

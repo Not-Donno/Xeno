@@ -135,22 +135,22 @@ export default function VendorOrdersPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-brand-950">Orders</h1>
-        <p className="text-sm text-brand-500 mt-1">Manage and track your order fulfillments</p>
+      <div className="animate-fade-in-down">
+        <h1 className="text-2xl font-bold text-star-white">Orders</h1>
+        <p className="text-sm text-star-blue/50 mt-1">Manage and track your order fulfillments</p>
       </div>
 
       {/* Status filter tabs */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         {FILTER_TABS.map((tab) => (
           <button
             key={tab.value}
             onClick={() => setStatusFilter(tab.value)}
             className={cn(
-              'px-3 py-1.5 rounded-full text-sm font-medium transition-colors',
+              'px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border',
               statusFilter === tab.value
-                ? 'bg-brand-950 text-white'
-                : 'bg-white border border-brand-200 text-brand-600 hover:bg-brand-50'
+                ? 'bg-accent text-white border-accent shadow-glow'
+                : 'bg-surface-light text-star-blue/70 border-surface-border hover:border-accent/30 hover:text-star-white'
             )}
           >
             {tab.label}
@@ -159,16 +159,18 @@ export default function VendorOrdersPage() {
       </div>
 
       {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700">{error}</div>
+        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400 animate-fade-in">
+          {error}
+        </div>
       )}
 
       {/* Table */}
       {loading ? (
-        <div className="card overflow-hidden">
-          <div className="divide-y divide-brand-100">
+        <div className="card overflow-hidden animate-fade-in">
+          <div className="divide-y divide-surface-border/30">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex items-center gap-4 p-4">
-                <Skeleton className="w-12 h-12 rounded-md" />
+                <Skeleton className="w-12 h-12 rounded-lg" />
                 <div className="flex-1 space-y-2">
                   <Skeleton className="h-4 w-1/3" />
                   <Skeleton className="h-3 w-1/4" />
@@ -180,7 +182,7 @@ export default function VendorOrdersPage() {
           </div>
         </div>
       ) : orders.length === 0 ? (
-        <div className="card">
+        <div className="card animate-fade-in-up">
           <EmptyState
             title="No orders found"
             description={statusFilter ? 'No orders with this status.' : 'Orders will appear here when customers purchase your products.'}
@@ -188,43 +190,47 @@ export default function VendorOrdersPage() {
         </div>
       ) : (
         <>
-          <div className="card overflow-x-auto">
+          <div className="card overflow-x-auto animate-fade-in-up" style={{ animationDelay: '150ms' }}>
             <table className="w-full">
               <thead>
-                <tr className="border-b border-brand-100">
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Order</th>
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Product</th>
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Variant</th>
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Qty</th>
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Price</th>
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Date</th>
-                  <th className="text-left text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Status</th>
-                  <th className="text-right text-xs font-medium text-brand-500 uppercase tracking-wide px-4 py-3">Actions</th>
+                <tr className="border-b border-surface-border/50">
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Order</th>
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Product</th>
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Variant</th>
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Qty</th>
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Price</th>
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Date</th>
+                  <th className="text-left text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Status</th>
+                  <th className="text-right text-xs font-medium text-star-blue/50 uppercase tracking-wide px-4 py-3">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-brand-100">
-                {orders.map((item) => {
+              <tbody className="divide-y divide-surface-border/30">
+                {orders.map((item, i) => {
                   const nextStatuses = NEXT_STATUSES[item.status] || [];
                   const isExpanded = expandedId === item.id;
                   return (
                     <React.Fragment key={item.id}>
                       <tr
-                        className={cn('hover:bg-brand-50/50 transition-colors', isExpanded && 'bg-brand-50/30')}
+                        className={cn(
+                          'hover:bg-surface-light/30 transition-colors animate-fade-in-up',
+                          isExpanded && 'bg-surface-light/20'
+                        )}
+                        style={{ animationDelay: `${200 + i * 40}ms` }}
                       >
                         <td className="px-4 py-3">
                           <button
                             onClick={() => setExpandedId(isExpanded ? null : item.id)}
-                            className="text-sm font-medium text-brand-950 hover:underline"
+                            className="text-sm font-medium text-accent-light hover:text-accent transition-colors"
                           >
                             {item.order.orderNumber}
                           </button>
-                          <p className="text-xs text-brand-400">
+                          <p className="text-xs text-star-blue/40">
                             {item.order.user.firstName} {item.order.user.lastName}
                           </p>
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-md bg-brand-50 overflow-hidden shrink-0">
+                            <div className="w-10 h-10 rounded-lg bg-surface-lighter/50 overflow-hidden shrink-0 border border-surface-border/30">
                               {item.product.images?.[0] ? (
                                 <Image
                                   src={item.product.images[0].url}
@@ -234,7 +240,7 @@ export default function VendorOrdersPage() {
                                   className="w-full h-full object-cover"
                                 />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center text-brand-300">
+                                <div className="w-full h-full flex items-center justify-center text-star-blue/30">
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                   </svg>
@@ -242,19 +248,19 @@ export default function VendorOrdersPage() {
                               )}
                             </div>
                             <div className="min-w-0">
-                              <p className="text-sm font-medium text-brand-900 truncate max-w-[180px]">{item.product.name}</p>
-                              <p className="text-xs text-brand-400">{item.variant.sku}</p>
+                              <p className="text-sm font-medium text-star-white truncate max-w-[180px]">{item.product.name}</p>
+                              <p className="text-xs text-star-blue/40">{item.variant.sku}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-sm text-brand-700">
+                        <td className="px-4 py-3 text-sm text-star-blue/70">
                           {item.variant.color} / {item.variant.size}
                         </td>
-                        <td className="px-4 py-3 text-sm text-brand-700">{item.quantity}</td>
-                        <td className="px-4 py-3 text-sm font-medium text-brand-900">
+                        <td className="px-4 py-3 text-sm text-star-blue/70">{item.quantity}</td>
+                        <td className="px-4 py-3 text-sm font-medium text-star-white">
                           {formatPrice(item.totalPrice)}
                         </td>
-                        <td className="px-4 py-3 text-sm text-brand-500">
+                        <td className="px-4 py-3 text-sm text-star-blue/50">
                           {formatDate(item.order.createdAt)}
                         </td>
                         <td className="px-4 py-3">
@@ -271,7 +277,7 @@ export default function VendorOrdersPage() {
                                   if (e.target.value) handleStatusUpdate(item.id, e.target.value as OrderStatus);
                                 }}
                                 disabled={updatingId === item.id}
-                                className="input text-xs py-1 px-2 w-auto"
+                                className="input text-xs py-1.5 px-3 w-auto bg-surface-lighter/50"
                               >
                                 <option value="">
                                   {updatingId === item.id ? 'Updating...' : 'Update status'}
@@ -285,7 +291,7 @@ export default function VendorOrdersPage() {
                             )}
                             <button
                               onClick={() => setExpandedId(isExpanded ? null : item.id)}
-                              className="btn btn-secondary px-3 py-1.5 text-xs rounded"
+                              className="btn btn-secondary px-3 py-1.5 text-xs rounded-lg"
                             >
                               {isExpanded ? 'Hide' : 'Details'}
                             </button>
@@ -296,23 +302,23 @@ export default function VendorOrdersPage() {
                       {/* Expanded detail row */}
                       {isExpanded && (
                         <tr>
-                          <td colSpan={8} className="px-4 py-4 bg-brand-50/50">
+                          <td colSpan={8} className="px-4 py-5 bg-surface-light/20 border-t border-surface-border/20">
                             <div className="grid sm:grid-cols-3 gap-4">
                               <div>
-                                <h4 className="text-xs font-semibold text-brand-500 uppercase tracking-wide mb-2">
+                                <h4 className="text-xs font-semibold text-accent-light uppercase tracking-wide mb-2">
                                   Customer
                                 </h4>
-                                <p className="text-sm text-brand-900">
+                                <p className="text-sm text-star-white">
                                   {item.order.user.firstName} {item.order.user.lastName}
                                 </p>
-                                <p className="text-sm text-brand-500">{item.order.user.email}</p>
+                                <p className="text-sm text-star-blue/50">{item.order.user.email}</p>
                               </div>
                               <div>
-                                <h4 className="text-xs font-semibold text-brand-500 uppercase tracking-wide mb-2">
+                                <h4 className="text-xs font-semibold text-accent-light uppercase tracking-wide mb-2">
                                   Shipping Address
                                 </h4>
                                 {item.order.shippingAddress ? (
-                                  <div className="text-sm text-brand-700">
+                                  <div className="text-sm text-star-blue/70">
                                     <p>{item.order.shippingAddress.name}</p>
                                     <p>{item.order.shippingAddress.line1}</p>
                                     {item.order.shippingAddress.line2 && <p>{item.order.shippingAddress.line2}</p>}
@@ -323,37 +329,37 @@ export default function VendorOrdersPage() {
                                     <p>{item.order.shippingAddress.country}</p>
                                   </div>
                                 ) : (
-                                  <p className="text-sm text-brand-400">No address provided</p>
+                                  <p className="text-sm text-star-blue/40">No address provided</p>
                                 )}
                               </div>
                               <div>
-                                <h4 className="text-xs font-semibold text-brand-500 uppercase tracking-wide mb-2">
+                                <h4 className="text-xs font-semibold text-accent-light uppercase tracking-wide mb-2">
                                   Order Summary
                                 </h4>
                                 <div className="space-y-1 text-sm">
                                   <div className="flex justify-between">
-                                    <span className="text-brand-500">Order Total</span>
-                                    <span className="text-brand-900">{formatPrice(item.order.total)}</span>
+                                    <span className="text-star-blue/50">Order Total</span>
+                                    <span className="text-star-white">{formatPrice(item.order.total)}</span>
                                   </div>
                                   <div className="flex justify-between">
-                                    <span className="text-brand-500">Item Price</span>
-                                    <span className="text-brand-900">{formatPrice(item.unitPrice)}</span>
+                                    <span className="text-star-blue/50">Item Price</span>
+                                    <span className="text-star-white">{formatPrice(item.unitPrice)}</span>
                                   </div>
                                   <div className="flex justify-between">
-                                    <span className="text-brand-500">Quantity</span>
-                                    <span className="text-brand-900">{item.quantity}</span>
+                                    <span className="text-star-blue/50">Quantity</span>
+                                    <span className="text-star-white">{item.quantity}</span>
                                   </div>
                                   <div className="flex justify-between">
-                                    <span className="text-brand-500">Item Total</span>
-                                    <span className="text-brand-900 font-medium">{formatPrice(item.totalPrice)}</span>
+                                    <span className="text-star-blue/50">Item Total</span>
+                                    <span className="text-star-white font-medium">{formatPrice(item.totalPrice)}</span>
                                   </div>
                                 </div>
                               </div>
                             </div>
 
                             {nextStatuses.length > 0 && (
-                              <div className="mt-4 pt-4 border-t border-brand-100">
-                                <h4 className="text-xs font-semibold text-brand-500 uppercase tracking-wide mb-2">
+                              <div className="mt-5 pt-4 border-t border-surface-border/30">
+                                <h4 className="text-xs font-semibold text-accent-light uppercase tracking-wide mb-3">
                                   Update Status
                                 </h4>
                                 <div className="flex flex-wrap gap-2">
@@ -361,7 +367,7 @@ export default function VendorOrdersPage() {
                                     <Button
                                       key={s}
                                       size="sm"
-                                      variant={s === 'CANCELLED' ? 'danger' : 'primary'}
+                                      variant={s === 'CANCELLED' ? 'danger' : 'accent'}
                                       loading={updatingId === item.id}
                                       onClick={() => handleStatusUpdate(item.id, s)}
                                     >
@@ -383,21 +389,21 @@ export default function VendorOrdersPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-3 animate-fade-in">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="btn btn-secondary text-sm px-3 py-1.5"
+                className="btn btn-secondary text-sm px-4 py-2 rounded-lg"
               >
                 Previous
               </button>
-              <span className="text-sm text-brand-600">
+              <span className="text-sm text-star-blue/60 px-2">
                 Page {page} of {totalPages}
               </span>
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="btn btn-secondary text-sm px-3 py-1.5"
+                className="btn btn-secondary text-sm px-4 py-2 rounded-lg"
               >
                 Next
               </button>

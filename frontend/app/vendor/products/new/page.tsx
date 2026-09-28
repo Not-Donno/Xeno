@@ -183,21 +183,25 @@ export default function NewProductPage() {
 
   return (
     <div className="max-w-3xl">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-brand-950">Create New Product</h1>
-        <p className="text-sm text-brand-500 mt-1">Fill in the details to add a new product to your store</p>
+      {/* Header */}
+      <div className="mb-6 animate-fade-in-down">
+        <h1 className="text-2xl font-bold text-star-white">Create New Product</h1>
+        <p className="text-sm text-star-blue/50 mt-1">Fill in the details to add a new product to your store</p>
       </div>
 
       {submitError && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700">
+        <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400 animate-fade-in">
           {submitError}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Info */}
-        <div className="card p-6 space-y-4">
-          <h2 className="text-base font-semibold text-brand-950">Basic Information</h2>
+        <div className="card p-6 space-y-4 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+          <h2 className="text-base font-semibold text-star-white flex items-center gap-2">
+            <span className="w-6 h-6 rounded-md bg-accent/15 flex items-center justify-center text-accent-light text-xs font-bold">1</span>
+            Basic Information
+          </h2>
 
           <Input
             label="Product Name"
@@ -237,7 +241,7 @@ export default function NewProductPage() {
           />
 
           <div>
-            <label className="block text-sm font-medium text-brand-700 mb-1">Tags</label>
+            <label className="block text-sm font-medium text-star-blue mb-1">Tags</label>
             <input
               type="text"
               value={form.tags}
@@ -249,8 +253,11 @@ export default function NewProductPage() {
         </div>
 
         {/* Pricing */}
-        <div className="card p-6 space-y-4">
-          <h2 className="text-base font-semibold text-brand-950">Pricing</h2>
+        <div className="card p-6 space-y-4 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+          <h2 className="text-base font-semibold text-star-white flex items-center gap-2">
+            <span className="w-6 h-6 rounded-md bg-accent/15 flex items-center justify-center text-accent-light text-xs font-bold">2</span>
+            Pricing
+          </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <Input
               label="Price"
@@ -277,8 +284,11 @@ export default function NewProductPage() {
         </div>
 
         {/* Categorization */}
-        <div className="card p-6 space-y-4">
-          <h2 className="text-base font-semibold text-brand-950">Categorization</h2>
+        <div className="card p-6 space-y-4 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+          <h2 className="text-base font-semibold text-star-white flex items-center gap-2">
+            <span className="w-6 h-6 rounded-md bg-accent/15 flex items-center justify-center text-accent-light text-xs font-bold">3</span>
+            Categorization
+          </h2>
           <div className="grid sm:grid-cols-3 gap-4">
             <Select
               label="Brand"
@@ -313,9 +323,12 @@ export default function NewProductPage() {
         </div>
 
         {/* Variants */}
-        <div className="card p-6 space-y-4">
+        <div className="card p-6 space-y-4 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold text-brand-950">Variants</h2>
+            <h2 className="text-base font-semibold text-star-white flex items-center gap-2">
+              <span className="w-6 h-6 rounded-md bg-accent/15 flex items-center justify-center text-accent-light text-xs font-bold">4</span>
+              Variants
+            </h2>
             <Button type="button" variant="secondary" size="sm" onClick={addVariant}>
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -323,11 +336,14 @@ export default function NewProductPage() {
               Add Variant
             </Button>
           </div>
-          <p className="text-xs text-brand-500">Add color and size combinations for this product</p>
+          <p className="text-xs text-star-blue/40">Add color and size combinations for this product</p>
 
           <div className="space-y-3">
             {variants.map((variant, i) => (
-              <div key={i} className="flex flex-col sm:flex-row gap-2 p-3 bg-brand-50/50 rounded-md border border-brand-100">
+              <div
+                key={i}
+                className="flex flex-col sm:flex-row gap-2 p-3 bg-surface-lighter/30 rounded-lg border border-surface-border/30 animate-fade-in"
+              >
                 <div className="flex-1 grid grid-cols-2 sm:grid-cols-4 gap-2">
                   <div>
                     <input
@@ -338,7 +354,7 @@ export default function NewProductPage() {
                       className={cn('input text-sm', errors[`variant_${i}_color`] && 'border-red-500')}
                     />
                     {errors[`variant_${i}_color`] && (
-                      <p className="mt-1 text-xs text-red-600">{errors[`variant_${i}_color`]}</p>
+                      <p className="mt-1 text-xs text-red-400">{errors[`variant_${i}_color`]}</p>
                     )}
                   </div>
                   <div>
@@ -350,7 +366,7 @@ export default function NewProductPage() {
                       className={cn('input text-sm', errors[`variant_${i}_size`] && 'border-red-500')}
                     />
                     {errors[`variant_${i}_size`] && (
-                      <p className="mt-1 text-xs text-red-600">{errors[`variant_${i}_size`]}</p>
+                      <p className="mt-1 text-xs text-red-400">{errors[`variant_${i}_size`]}</p>
                     )}
                   </div>
                   <div>
@@ -362,7 +378,7 @@ export default function NewProductPage() {
                       className={cn('input text-sm', errors[`variant_${i}_sku`] && 'border-red-500')}
                     />
                     {errors[`variant_${i}_sku`] && (
-                      <p className="mt-1 text-xs text-red-600">{errors[`variant_${i}_sku`]}</p>
+                      <p className="mt-1 text-xs text-red-400">{errors[`variant_${i}_sku`]}</p>
                     )}
                   </div>
                   <div>
@@ -375,7 +391,7 @@ export default function NewProductPage() {
                       className={cn('input text-sm', errors[`variant_${i}_stock`] && 'border-red-500')}
                     />
                     {errors[`variant_${i}_stock`] && (
-                      <p className="mt-1 text-xs text-red-600">{errors[`variant_${i}_stock`]}</p>
+                      <p className="mt-1 text-xs text-red-400">{errors[`variant_${i}_stock`]}</p>
                     )}
                   </div>
                 </div>
@@ -383,7 +399,7 @@ export default function NewProductPage() {
                   type="button"
                   onClick={() => removeVariant(i)}
                   disabled={variants.length === 1}
-                  className="self-start sm:self-center p-2 text-brand-400 hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="self-start sm:self-center p-2 text-star-blue/40 hover:text-red-400 disabled:opacity-30 disabled:cursor-not-allowed transition-colors rounded-lg hover:bg-red-500/10"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -395,9 +411,12 @@ export default function NewProductPage() {
         </div>
 
         {/* Images */}
-        <div className="card p-6 space-y-4">
+        <div className="card p-6 space-y-4 animate-fade-in-up" style={{ animationDelay: '500ms' }}>
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold text-brand-950">Images</h2>
+            <h2 className="text-base font-semibold text-star-white flex items-center gap-2">
+              <span className="w-6 h-6 rounded-md bg-accent/15 flex items-center justify-center text-accent-light text-xs font-bold">5</span>
+              Images
+            </h2>
             <Button type="button" variant="secondary" size="sm" onClick={addImage}>
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -405,23 +424,32 @@ export default function NewProductPage() {
               Add Image
             </Button>
           </div>
-          <p className="text-xs text-brand-500">Add image URLs. The first image will be the primary image.</p>
+          <p className="text-xs text-star-blue/40">Add image URLs. The first image will be the primary image.</p>
 
           <div className="space-y-2">
             {images.map((image, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <input
-                  type="url"
-                  placeholder={`Image URL ${i + 1}${i === 0 ? ' (primary)' : ''}`}
-                  value={image.url}
-                  onChange={(e) => updateImage(i, e.target.value)}
-                  className="input text-sm"
-                />
+              <div key={i} className="flex items-center gap-2 animate-fade-in">
+                <div className="flex-1 relative">
+                  <input
+                    type="url"
+                    placeholder={`Image URL ${i + 1}${i === 0 ? ' (primary)' : ''}`}
+                    value={image.url}
+                    onChange={(e) => updateImage(i, e.target.value)}
+                    className="input text-sm pr-10"
+                  />
+                  {i === 0 && image.url && (
+                    <div className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded bg-accent/20 flex items-center justify-center">
+                      <svg className="w-3.5 h-3.5 text-accent-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3l3.586 3.586a2 2 0 012.828 0L15 3m-6 0h6a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2z" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
                 <button
                   type="button"
                   onClick={() => removeImage(i)}
                   disabled={images.length === 1}
-                  className="p-2 text-brand-400 hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+                  className="p-2 text-star-blue/40 hover:text-red-400 disabled:opacity-30 disabled:cursor-not-allowed transition-colors rounded-lg hover:bg-red-500/10 shrink-0"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -433,8 +461,8 @@ export default function NewProductPage() {
         </div>
 
         {/* Submit */}
-        <div className="flex items-center gap-3">
-          <Button type="submit" variant="primary" size="lg" loading={submitting}>
+        <div className="flex items-center gap-3 animate-fade-in-up" style={{ animationDelay: '600ms' }}>
+          <Button type="submit" variant="accent" size="lg" loading={submitting}>
             Create Product
           </Button>
           <Button type="button" variant="ghost" onClick={() => router.back()}>

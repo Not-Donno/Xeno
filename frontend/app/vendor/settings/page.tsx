@@ -9,24 +9,36 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { cn } from '@/lib/utils';
 import type { Vendor } from '@/lib/types';
 
-function Toggle({ enabled, onChange, label, description }: { enabled: boolean; onChange: (v: boolean) => void; label: string; description: string }) {
+function Toggle({
+  enabled,
+  onChange,
+  label,
+  description,
+}: {
+  enabled: boolean;
+  onChange: (v: boolean) => void;
+  label: string;
+  description: string;
+}) {
   return (
     <div className="flex items-center justify-between py-3">
       <div>
-        <p className="text-sm font-medium text-brand-900">{label}</p>
-        <p className="text-xs text-brand-500">{description}</p>
+        <p className="text-sm font-medium text-star-white">{label}</p>
+        <p className="text-xs text-star-blue/50">{description}</p>
       </div>
       <button
         type="button"
         onClick={() => onChange(!enabled)}
         className={cn(
-          'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
-          enabled ? 'bg-brand-950' : 'bg-brand-200'
+          'relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 border',
+          enabled
+            ? 'bg-accent border-accent shadow-glow'
+            : 'bg-surface-lighter border-surface-border'
         )}
       >
         <span
           className={cn(
-            'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
+            'inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300',
             enabled ? 'translate-x-6' : 'translate-x-1'
           )}
         />
@@ -164,22 +176,25 @@ export default function VendorSettingsPage() {
   return (
     <div className="max-w-2xl space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-brand-950">Settings</h1>
-        <p className="text-sm text-brand-500 mt-1">Manage your store preferences and account security</p>
+      <div className="animate-fade-in-down">
+        <h1 className="text-2xl font-bold text-star-white">Settings</h1>
+        <p className="text-sm text-star-blue/50 mt-1">Manage your store preferences and account security</p>
       </div>
 
       {/* Store Settings */}
-      <div className="card p-6">
-        <h2 className="text-base font-semibold text-brand-950 mb-4">Store Settings</h2>
+      <div className="card p-6 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+        <h2 className="text-base font-semibold text-star-white mb-4 flex items-center gap-2">
+          <span className="w-6 h-6 rounded-md bg-accent/15 flex items-center justify-center text-accent-light text-xs font-bold">1</span>
+          Store Settings
+        </h2>
 
         {settingsSuccess && (
-          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-md text-sm text-green-700">
+          <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-sm text-emerald-400 animate-fade-in">
             {settingsSuccess}
           </div>
         )}
         {settingsError && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700">
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400 animate-fade-in">
             {settingsError}
           </div>
         )}
@@ -195,7 +210,7 @@ export default function VendorSettingsPage() {
             required
           />
           <div>
-            <label className="block text-sm font-medium text-brand-700 mb-1">Store Description</label>
+            <label className="block text-sm font-medium text-star-blue mb-1">Store Description</label>
             <textarea
               value={storeSettings.description}
               onChange={(e) => {
@@ -207,24 +222,27 @@ export default function VendorSettingsPage() {
               placeholder="Describe your store..."
             />
           </div>
-          <Button type="submit" variant="primary" loading={settingsSaving}>
+          <Button type="submit" variant="accent" loading={settingsSaving}>
             Save Store Settings
           </Button>
         </form>
       </div>
 
       {/* Password Change */}
-      <div className="card p-6">
-        <h2 className="text-base font-semibold text-brand-950 mb-1">Change Password</h2>
-        <p className="text-xs text-brand-500 mb-4">Keep your account secure with a strong password</p>
+      <div className="card p-6 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+        <h2 className="text-base font-semibold text-star-white mb-1 flex items-center gap-2">
+          <span className="w-6 h-6 rounded-md bg-accent/15 flex items-center justify-center text-accent-light text-xs font-bold">2</span>
+          Change Password
+        </h2>
+        <p className="text-xs text-star-blue/40 mb-4">Keep your account secure with a strong password</p>
 
         {passwordSuccess && (
-          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-md text-sm text-green-700">
+          <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-sm text-emerald-400 animate-fade-in">
             {passwordSuccess}
           </div>
         )}
         {passwordError && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700">
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400 animate-fade-in">
             {passwordError}
           </div>
         )}
@@ -267,18 +285,21 @@ export default function VendorSettingsPage() {
             error={passwordErrors.confirmPassword}
             required
           />
-          <Button type="submit" variant="primary" loading={passwordSaving}>
+          <Button type="submit" variant="accent" loading={passwordSaving}>
             Change Password
           </Button>
         </form>
       </div>
 
       {/* Notification Preferences */}
-      <div className="card p-6">
-        <h2 className="text-base font-semibold text-brand-950 mb-1">Notification Preferences</h2>
-        <p className="text-xs text-brand-500 mb-4">Choose what updates you want to receive</p>
+      <div className="card p-6 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+        <h2 className="text-base font-semibold text-star-white mb-1 flex items-center gap-2">
+          <span className="w-6 h-6 rounded-md bg-accent/15 flex items-center justify-center text-accent-light text-xs font-bold">3</span>
+          Notification Preferences
+        </h2>
+        <p className="text-xs text-star-blue/40 mb-4">Choose what updates you want to receive</p>
 
-        <div className="divide-y divide-brand-100">
+        <div className="divide-y divide-surface-border/30">
           <Toggle
             enabled={notifications.orderUpdates}
             onChange={(v) => setNotifications((prev) => ({ ...prev, orderUpdates: v }))}
@@ -305,7 +326,7 @@ export default function VendorSettingsPage() {
           />
         </div>
 
-        <div className="mt-4 pt-4 border-t border-brand-100">
+        <div className="mt-4 pt-4 border-t border-surface-border/30">
           <Button variant="secondary" size="sm" loading={notifSaving} onClick={handleSaveNotifications}>
             Save Preferences
           </Button>

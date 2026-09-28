@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { api } from '@/lib/api';
@@ -9,9 +9,10 @@ import { ProductGridSkeleton } from '@/components/ui/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Rating } from '@/components/ui/Rating';
 import { Select } from '@/components/ui/Input';
+import { Icon } from '@/components/ui/Icon';
 import type { Vendor, Product } from '@/lib/types';
 
-export default function VendorStorePage() {
+function VendorStoreContent() {
   const params = useParams();
   const slug = params.slug as string;
   const [vendor, setVendor] = useState<Vendor | null>(null);
@@ -40,7 +41,7 @@ export default function VendorStorePage() {
   if (loading) {
     return (
       <div>
-        <div className="h-48 bg-brand-100 animate-pulse" />
+        <div className="h-48 bg-surface animate-pulse" />
         <div className="container-x py-8">
           <ProductGridSkeleton count={8} />
         </div>
@@ -59,49 +60,52 @@ export default function VendorStorePage() {
   return (
     <div>
       {/* Banner */}
-      <div className="relative h-48 md:h-64 bg-brand-900 overflow-hidden">
+      <div className="relative h-48 md:h-64 bg-surface overflow-hidden">
         {vendor.bannerUrl && (
-          <Image src={vendor.bannerUrl} alt={vendor.name} fill className="object-cover opacity-60" />
+          <Image src={vendor.bannerUrl} alt={vendor.name} fill className="object-cover opacity-50" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-space-950 to-transparent" />
       </div>
 
       <div className="container-x">
         {/* Vendor Header */}
         <div className="relative -mt-16 mb-8">
           <div className="flex flex-col md:flex-row items-start md:items-end gap-4">
-            <div className="w-24 h-24 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden">
+            <div className="w-24 h-24 rounded-full bg-surface-lighter border-4 border-space-950 flex items-center justify-center overflow-hidden shadow-card">
               {vendor.logoUrl ? (
                 <Image src={vendor.logoUrl} alt={vendor.name} width={96} height={96} className="object-cover" />
               ) : (
-                <div className="w-full h-full bg-brand-100 flex items-center justify-center text-2xl font-bold text-brand-400">
-                  {vendor.name[0]}
-                </div>
+                <span className="text-3xl font-bold text-accent">{vendor.name[0]}</span>
               )}
             </div>
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-brand-950">{vendor.name}</h1>
-              <div className="flex items-center gap-4 mt-1 text-sm text-brand-500">
-                <div className="flex items-center gap-1">
-                  <Rating value={vendor.rating} size="sm" showValue />
+              <h1 className="text-2xl md:text-3xl font-bold text-star-white">{vendor.name}</h1>
+              <div className="flex items-center gap-4 mt-2 text-sm text-star-blue/60">
+                <div className="flex items-center gap-1.5">
+                  <Rating value={vendor.rating} size="sm" />
+                  <span>({vendor.totalSales} sales)</span>
                 </div>
                 <span>{vendor._count?.products || 0} products</span>
-                <span>{vendor.totalSales} sales</span>
               </div>
             </div>
           </div>
           {vendor.description && (
-            <p className="mt-4 text-brand-600 max-w-2xl">{vendor.description}</p>
+            <p className="mt-4 text-star-blue/70 max-w-2xl leading-relaxed">{vendor.description}</p>
           )}
           {vendor.socialLinks && (
-            <div className="flex gap-3 mt-3">
+            <div className="flex gap-3 mt-4">
               {vendor.socialLinks.website && (
-                <a href={vendor.socialLinks.website} target="_blank" rel="noopener" className="text-sm text-brand-500 hover:text-brand-950">
+                <a
+                  href={vendor.socialLinks.website}
+                  target="_blank"
+                  rel="noopener"
+                  className="text-sm text-accent/70 hover:text-accent transition-colors"
+                >
                   Website
                 </a>
               )}
               {vendor.socialLinks.instagram && (
-                <span className="text-sm text-brand-500">Instagram: {vendor.socialLinks.instagram}</span>
+                <span className="text-sm text-star-blue/50">Instagram: {vendor.socialLinks.instagram}</span>
               )}
             </div>
           )}
@@ -109,13 +113,15 @@ export default function VendorStorePage() {
 
         {/* Tabs & Sort */}
         <div className="flex items-center justify-between mb-6">
-          <div className="flex gap-4 border-b border-brand-100">
+          <div className="flex gap-4 border-b border-surface-border">
             {['all', 'shoes', 'clothing', 'accessories'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px capitalize ${
-                  activeTab === tab ? 'border-brand-950 text-brand-950' : 'border-transparent text-brand-500'
+                className={`px-3 py-2.5 text-sm font-medium border-b-2 -mb-px capitalize transition-all duration-300 ${
+                  activeTab === tab
+                    ? 'border-accent text-accent'
+                    : 'border-transparent text-star-blue/50 hover:text-star-white'
                 }`}
               >
                 {tab}
@@ -140,13 +146,40 @@ export default function VendorStorePage() {
         {products.length === 0 ? (
           <EmptyState title="No products" description="This vendor hasn't added any products yet." />
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-12">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8 pb-12">
+            {products.map((product, i) => (
+              <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${i * 60}ms` }}>
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+export default function VendorStorePage() {
+  return (
+    <Suspense fallback={
+      <div>
+        <div className="h-48 bg-surface animate-pulse" />
+        <div className="container-x py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="card overflow-hidden">
+                <div className="aspect-square bg-surface-lighter animate-pulse" />
+                <div className="p-4 space-y-2">
+                  <div className="h-4 bg-surface-lighter rounded animate-pulse" />
+                  <div className="h-3 bg-surface-lighter rounded w-1/2 animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    }>
+      <VendorStoreContent />
+    </Suspense>
   );
 }

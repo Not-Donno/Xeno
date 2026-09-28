@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { api } from '@/lib/api';
 import { ProductCard } from '@/components/products/ProductCard';
 import { ProductGridSkeleton } from '@/components/ui/Skeleton';
@@ -11,7 +11,6 @@ import type { Product, Category, Brand } from '@/lib/types';
 
 function ProductsPageContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
@@ -53,9 +52,7 @@ function ProductsPageContent() {
     params.set('limit', '12');
 
     try {
-      const res = await api.get<{ products: Product[]; total: number; totalPages: number }>(
-        `/products?${params.toString()}`
-      );
+      const res = await api.get<{ products: Product[]; total: number; totalPages: number }>(`/products?${params}`);
       setProducts(res.products);
       setTotal(res.total);
       setTotalPages(res.totalPages);
@@ -86,64 +83,59 @@ function ProductsPageContent() {
   const activeFilterCount = Object.entries(filters).filter(([key, value]) => value && key !== 'sort').length;
 
   return (
-    <div className="container-x py-8">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+    <div className="container-x py-8 md:py-12">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-brand-950">All Products</h1>
-          <p className="text-sm text-brand-500 mt-1">{total} products found</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-star-white">All Products</h1>
+          <p className="text-sm text-star-blue/50 mt-1">{total} products found</p>
         </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="md:hidden btn btn-secondary text-sm"
-          >
-            Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
-          </button>
-          <Select
-            value={filters.sort}
-            onChange={(e) => updateFilter('sort', e.target.value)}
-            options={[
-              { value: 'newest', label: 'Newest' },
-              { value: 'price-asc', label: 'Price: Low to High' },
-              { value: 'price-desc', label: 'Price: High to Low' },
-              { value: 'rating', label: 'Top Rated' },
-              { value: 'popular', label: 'Most Popular' },
-              { value: 'name', label: 'Name A-Z' },
-            ]}
-            className="w-40"
-          />
-        </div>
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className="md:hidden btn btn-secondary text-sm"
+        >
+          Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
+        </button>
+        <Select
+          value={filters.sort}
+          onChange={(e) => updateFilter('sort', e.target.value)}
+          options={[
+            { value: 'newest', label: 'Newest' },
+            { value: 'price-asc', label: 'Price: Low to High' },
+            { value: 'price-desc', label: 'Price: High to Low' },
+            { value: 'rating', label: 'Top Rated' },
+            { value: 'popular', label: 'Most Popular' },
+            { value: 'name', label: 'Name A-Z' },
+          ]}
+          className="w-44"
+        />
       </div>
 
       <div className="flex gap-8">
         {/* Sidebar Filters */}
         <aside className={`${showFilters ? 'block' : 'hidden'} md:block w-full md:w-56 shrink-0`}>
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-brand-900">Filters</h3>
+              <h3 className="text-sm font-semibold text-star-white">Filters</h3>
               {activeFilterCount > 0 && (
-                <button onClick={clearFilters} className="text-xs text-brand-500 hover:text-brand-950">
+                <button onClick={clearFilters} className="text-xs text-accent hover:underline">
                   Clear all
                 </button>
               )}
             </div>
 
-            {/* Search */}
             <div>
-              <label className="block text-xs font-medium text-brand-600 mb-1">Search</label>
+              <label className="block text-xs font-medium text-star-blue/60 mb-1.5">Search</label>
               <input
                 type="text"
                 value={filters.search}
                 onChange={(e) => updateFilter('search', e.target.value)}
                 placeholder="Search products..."
-                className="input text-sm"
+                className="input"
               />
             </div>
 
-            {/* Sport */}
             <div>
-              <label className="block text-xs font-medium text-brand-600 mb-1">Sport</label>
+              <label className="block text-xs font-medium text-star-blue/60 mb-1.5">Sport</label>
               <Select
                 value={filters.sport}
                 onChange={(e) => updateFilter('sport', e.target.value)}
@@ -154,9 +146,8 @@ function ProductsPageContent() {
               />
             </div>
 
-            {/* Product Type */}
             <div>
-              <label className="block text-xs font-medium text-brand-600 mb-1">Category</label>
+              <label className="block text-xs font-medium text-star-blue/60 mb-1.5">Category</label>
               <Select
                 value={filters.type}
                 onChange={(e) => updateFilter('type', e.target.value)}
@@ -167,9 +158,8 @@ function ProductsPageContent() {
               />
             </div>
 
-            {/* Brand */}
             <div>
-              <label className="block text-xs font-medium text-brand-600 mb-1">Brand</label>
+              <label className="block text-xs font-medium text-star-blue/60 mb-1.5">Brand</label>
               <Select
                 value={filters.brand}
                 onChange={(e) => updateFilter('brand', e.target.value)}
@@ -180,30 +170,28 @@ function ProductsPageContent() {
               />
             </div>
 
-            {/* Price Range */}
             <div>
-              <label className="block text-xs font-medium text-brand-600 mb-1">Price Range</label>
+              <label className="block text-xs font-medium text-star-blue/60 mb-1.5">Price Range</label>
               <div className="flex gap-2">
                 <input
                   type="number"
                   placeholder="Min"
                   value={filters.minPrice}
                   onChange={(e) => updateFilter('minPrice', e.target.value)}
-                  className="input text-sm w-1/2"
+                  className="input text-sm"
                 />
                 <input
                   type="number"
                   placeholder="Max"
                   value={filters.maxPrice}
                   onChange={(e) => updateFilter('maxPrice', e.target.value)}
-                  className="input text-sm w-1/2"
+                  className="input text-sm"
                 />
               </div>
             </div>
 
-            {/* Size */}
             <div>
-              <label className="block text-xs font-medium text-brand-600 mb-1">Size</label>
+              <label className="block text-xs font-medium text-star-blue/60 mb-1.5">Size</label>
               <input
                 type="text"
                 value={filters.size}
@@ -213,9 +201,8 @@ function ProductsPageContent() {
               />
             </div>
 
-            {/* Color */}
             <div>
-              <label className="block text-xs font-medium text-brand-600 mb-1">Color</label>
+              <label className="block text-xs font-medium text-star-blue/60 mb-1.5">Color</label>
               <input
                 type="text"
                 value={filters.color}
@@ -225,9 +212,8 @@ function ProductsPageContent() {
               />
             </div>
 
-            {/* Rating */}
             <div>
-              <label className="block text-xs font-medium text-brand-600 mb-1">Min Rating</label>
+              <label className="block text-xs font-medium text-star-blue/60 mb-1.5">Min Rating</label>
               <Select
                 value={filters.minRating}
                 onChange={(e) => updateFilter('minRating', e.target.value)}
@@ -240,23 +226,22 @@ function ProductsPageContent() {
               />
             </div>
 
-            {/* Availability */}
-            <div className="space-y-2">
-              <label className="flex items-center gap-2 text-sm text-brand-700">
+            <div className="space-y-2.5">
+              <label className="flex items-center gap-2.5 text-sm text-star-blue/70 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={filters.inStock === 'true'}
                   onChange={(e) => updateFilter('inStock', e.target.checked ? 'true' : '')}
-                  className="rounded border-brand-300"
+                  className="rounded border-surface-border accent-accent"
                 />
                 In Stock Only
               </label>
-              <label className="flex items-center gap-2 text-sm text-brand-700">
+              <label className="flex items-center gap-2.5 text-sm text-star-blue/70 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={filters.onSale === 'true'}
                   onChange={(e) => updateFilter('onSale', e.target.checked ? 'true' : '')}
-                  className="rounded border-brand-300"
+                  className="rounded border-surface-border accent-accent"
                 />
                 On Sale Only
               </label>
@@ -276,29 +261,30 @@ function ProductsPageContent() {
             />
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-6">
+                {products.map((product, i) => (
+                  <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${i * 60}ms` }}>
+                    <ProductCard product={product} />
+                  </div>
                 ))}
               </div>
 
-              {/* Pagination */}
               {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-8">
+                <div className="flex items-center justify-center gap-3 mt-10">
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="btn btn-secondary text-sm px-3 py-1.5"
+                    className="btn btn-secondary text-sm px-4 py-2"
                   >
                     Previous
                   </button>
-                  <span className="text-sm text-brand-600">
+                  <span className="text-sm text-star-blue/50">
                     Page {page} of {totalPages}
                   </span>
                   <button
                     onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                     disabled={page === totalPages}
-                    className="btn btn-secondary text-sm px-3 py-1.5"
+                    className="btn btn-secondary text-sm px-4 py-2"
                   >
                     Next
                   </button>
@@ -311,7 +297,6 @@ function ProductsPageContent() {
     </div>
   );
 }
-
 
 export default function ProductsPage() {
   return (

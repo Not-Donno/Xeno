@@ -87,10 +87,15 @@ export default function VendorLayout({ children }: { children: React.ReactNode }
 
   if (authLoading || !token || !user || user.role !== 'VENDOR') {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-brand-950 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm text-brand-500">Loading...</p>
+      <div className="min-h-screen bg-space-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative">
+            <div className="w-12 h-12 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            </div>
+          </div>
+          <p className="text-sm text-star-blue/60 animate-pulse">Loading vendor dashboard...</p>
         </div>
       </div>
     );
@@ -102,37 +107,54 @@ export default function VendorLayout({ children }: { children: React.ReactNode }
   };
 
   return (
-    <div className="min-h-screen bg-brand-50/50">
-      <div className="flex">
+    <div className="min-h-screen bg-space-950">
+      {/* Background stars effect */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-20 left-[15%] w-1 h-1 bg-white rounded-full animate-twinkle opacity-60" />
+        <div className="absolute top-[30%] left-[70%] w-0.5 h-0.5 bg-star-blue rounded-full animate-twinkle animation-delay-200 opacity-40" />
+        <div className="absolute top-[60%] left-[40%] w-1.5 h-1.5 bg-white rounded-full animate-twinkle animation-delay-400 opacity-30" />
+        <div className="absolute top-[80%] left-[85%] w-0.5 h-0.5 bg-accent-light rounded-full animate-twinkle animation-delay-600 opacity-50" />
+        <div className="absolute top-[15%] left-[55%] w-1 h-1 bg-white rounded-full animate-twinkle animation-delay-200 opacity-40" />
+      </div>
+
+      <div className="relative z-10 flex">
         {/* Sidebar */}
-        <aside className="hidden lg:flex flex-col w-64 min-h-screen bg-white border-r border-brand-100 fixed left-0 top-0 z-40">
-          <div className="p-6 border-b border-brand-100">
-            <Link href="/vendor" className="flex items-center gap-2">
-              <span className="text-lg font-bold tracking-tight text-brand-950">XENO</span>
-              <span className="badge bg-brand-950 text-white text-[10px] font-bold">VENDOR</span>
+        <aside className="hidden lg:flex flex-col w-64 min-h-screen fixed left-0 top-0 z-40 glass border-r border-surface-border/50">
+          <div className="p-6 border-b border-surface-border/50">
+            <Link href="/vendor" className="flex items-center gap-2.5 animate-fade-in">
+              <span className="text-xl font-bold tracking-tight text-gradient">XENO</span>
+              <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-accent/20 text-accent-light border border-accent/30">
+                VENDOR
+              </span>
             </Link>
           </div>
-          <nav className="flex-1 p-4 space-y-1">
-            {NAV_LINKS.map((link) => (
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+            {NAV_LINKS.map((link, index) => (
               <Link
                 key={link.href}
                 href={link.href}
+                style={{ animationDelay: `${index * 80}ms` }}
                 className={cn(
-                  'flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors',
+                  'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 animate-fade-in-up',
                   isActive(link.href)
-                    ? 'bg-brand-950 text-white'
-                    : 'text-brand-600 hover:bg-brand-50 hover:text-brand-950'
+                    ? 'bg-accent/15 text-accent-light border border-accent/25 shadow-glow'
+                    : 'text-star-blue/70 hover:bg-surface-light/50 hover:text-star-white border border-transparent'
                 )}
               >
-                {link.icon}
+                <span className={cn(
+                  'transition-transform duration-300',
+                  isActive(link.href) ? 'scale-110' : 'group-hover:scale-110'
+                )}>
+                  {link.icon}
+                </span>
                 {link.label}
               </Link>
             ))}
           </nav>
-          <div className="p-4 border-t border-brand-100">
+          <div className="p-4 border-t border-surface-border/50">
             <Link
               href="/"
-              className="flex items-center gap-2 px-3 py-2 text-sm text-brand-500 hover:text-brand-950 transition-colors"
+              className="flex items-center gap-2 px-3 py-2.5 text-sm text-star-blue/50 hover:text-accent-light transition-colors rounded-lg hover:bg-surface-light/30"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -143,15 +165,15 @@ export default function VendorLayout({ children }: { children: React.ReactNode }
         </aside>
 
         {/* Mobile nav */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-brand-100 z-40">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 glass border-t border-surface-border/50 z-40">
           <div className="flex justify-around py-2">
             {NAV_LINKS.slice(0, 5).map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'flex flex-col items-center gap-0.5 px-2 py-1 text-[10px] font-medium',
-                  isActive(link.href) ? 'text-brand-950' : 'text-brand-400'
+                  'flex flex-col items-center gap-1 px-2 py-1.5 text-[10px] font-medium transition-colors rounded-lg min-w-[56px]',
+                  isActive(link.href) ? 'text-accent-light' : 'text-star-blue/50'
                 )}
               >
                 {link.icon}
@@ -164,17 +186,20 @@ export default function VendorLayout({ children }: { children: React.ReactNode }
         {/* Main content */}
         <div className="flex-1 lg:ml-64">
           {/* Top bar */}
-          <header className="sticky top-0 z-30 bg-white border-b border-brand-100">
+          <header className="sticky top-0 z-30 glass border-b border-surface-border/50">
             <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
               <div className="flex items-center gap-4">
-                <span className="lg:hidden text-lg font-bold tracking-tight text-brand-950">XENO</span>
-                <h1 className="hidden lg:block text-lg font-semibold text-brand-950">Vendor Dashboard</h1>
+                <span className="lg:hidden text-lg font-bold tracking-tight text-gradient">XENO</span>
+                <h1 className="hidden lg:block text-lg font-semibold text-star-white">Vendor Dashboard</h1>
               </div>
               <div className="flex items-center gap-3">
-                <Link href={`/vendors/${user.vendor?.slug || ''}`} className="text-sm text-brand-500 hover:text-brand-950">
+                <Link
+                  href={`/vendors/${user.vendor?.slug || ''}`}
+                  className="text-sm text-star-blue/60 hover:text-accent-light transition-colors hidden sm:block"
+                >
                   View Store
                 </Link>
-                <div className="w-8 h-8 rounded-full bg-brand-950 text-white flex items-center justify-center text-xs font-medium">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent to-cosmic-500 flex items-center justify-center text-xs font-bold text-white shadow-glow">
                   {user.firstName[0]}{user.lastName[0]}
                 </div>
               </div>

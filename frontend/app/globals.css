@@ -4,10 +4,15 @@
 
 @layer base {
   html {
-    @apply antialiased;
+    @apply antialiased scroll-smooth;
   }
   body {
-    @apply bg-white text-brand-950 font-sans;
+    @apply bg-space-950 text-star-white font-sans;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+    background-attachment: fixed;
+    min-height: 100vh;
   }
 }
 
@@ -16,24 +21,49 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
   .btn {
-    @apply inline-flex items-center justify-center font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg;
   }
   .btn-primary {
-    @apply btn bg-brand-950 text-white hover:bg-brand-800 focus:ring-brand-950;
+    @apply btn bg-gradient-to-r from-accent to-cosmic-500 text-white hover:shadow-glow hover:-translate-y-0.5 focus:ring-accent;
   }
   .btn-secondary {
-    @apply btn bg-white text-brand-950 border border-brand-200 hover:bg-brand-50 focus:ring-brand-300;
+    @apply btn bg-surface-lighter text-star-white border border-surface-border hover:bg-surface-border hover:border-accent/30 hover:-translate-y-0.5 focus:ring-accent;
   }
   .btn-accent {
-    @apply btn bg-accent text-brand-950 hover:bg-accent-dark focus:ring-accent;
+    @apply btn bg-accent text-white hover:bg-accent-light hover:shadow-glow hover:-translate-y-0.5 focus:ring-accent;
   }
   .input {
-    @apply w-full px-3 py-2 border border-brand-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-950 focus:border-transparent placeholder:text-brand-400;
+    @apply w-full px-4 py-3 bg-surface-light border border-surface-border rounded-lg text-star-white placeholder:text-star-blue/40 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300;
   }
   .card {
-    @apply bg-white border border-brand-100 rounded-lg;
+    @apply bg-surface-light/80 backdrop-blur-sm border border-surface-border rounded-xl;
   }
-  .badge {
-    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+  .card-hover {
+    @apply transition-all duration-500 hover:shadow-card-hover hover:border-accent/20 hover:-translate-y-1;
+  }
+  .glass {
+    @apply bg-surface-light/40 backdrop-blur-md border border-surface-border/50;
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-light via-accent to-cosmic-400;
+  }
+  .star-field {
+    @apply absolute inset-0 overflow-hidden pointer-events-none;
+  }
+  .star {
+    @apply absolute w-0.5 h-0.5 bg-white rounded-full;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+}
+
+@layer utilities {
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  .animation-delay-600 {
+    animation-delay: 600ms;
   }
 }

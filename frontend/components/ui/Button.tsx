@@ -25,11 +25,11 @@ export function Button({
         variant === 'primary' && 'btn-primary',
         variant === 'secondary' && 'btn-secondary',
         variant === 'accent' && 'btn-accent',
-        variant === 'ghost' && 'btn text-brand-600 hover:text-brand-950 hover:bg-brand-50',
+        variant === 'ghost' && 'btn text-star-blue/60 hover:text-accent hover:bg-surface-light/50',
         variant === 'danger' && 'btn bg-red-600 text-white hover:bg-red-700',
-        size === 'sm' && 'px-3 py-1.5 text-xs rounded',
-        size === 'md' && 'px-4 py-2 text-sm rounded-md',
-        size === 'lg' && 'px-6 py-3 text-base rounded-md',
+        size === 'sm' && 'px-3 py-1.5 text-xs',
+        size === 'md' && 'px-5 py-2.5 text-sm',
+        size === 'lg' && 'px-8 py-3.5 text-base',
         className
       )}
       disabled={disabled || loading}

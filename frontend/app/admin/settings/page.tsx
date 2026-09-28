@@ -86,10 +86,10 @@ export default function AdminSettingsPage() {
   const settingKeys = Object.keys(SETTING_META);
 
   return (
-    <div className="space-y-6 max-w-2xl">
-      <div>
-        <h2 className="text-xl font-bold text-brand-950">Settings</h2>
-        <p className="text-sm text-brand-500 mt-1">Platform-wide configuration</p>
+    <div className="space-y-6 max-w-2xl animate-fade-in">
+      <div className="animate-fade-in-up">
+        <h2 className="text-xl font-bold text-star-white">Settings</h2>
+        <p className="text-sm text-star-blue/60 mt-1">Platform-wide configuration</p>
       </div>
 
       {error && (
@@ -101,7 +101,7 @@ export default function AdminSettingsPage() {
       )}
 
       {loading ? (
-        <div className="card p-6 space-y-6">
+        <div className="card p-6 space-y-6 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
           {settingKeys.map((key) => (
             <div key={key} className="space-y-2">
               <Skeleton className="h-4 w-40" />
@@ -110,20 +110,20 @@ export default function AdminSettingsPage() {
           ))}
         </div>
       ) : (
-        <div className="card p-6 space-y-6">
-          {settingKeys.map((key) => {
+        <div className="card p-6 space-y-6 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+          {settingKeys.map((key, i) => {
             const meta = SETTING_META[key];
             const value = settings[key] ?? '';
             return (
-              <div key={key}>
-                <label className="block text-sm font-medium text-brand-900 mb-1">
+              <div key={key} className="animate-fade-in-up" style={{ animationDelay: `${150 + i * 80}ms` }}>
+                <label className="block text-sm font-medium text-star-white mb-1">
                   {meta.label}
                 </label>
-                <p className="text-xs text-brand-400 mb-2">{meta.description}</p>
+                <p className="text-xs text-star-blue/40 mb-2">{meta.description}</p>
                 <div className="flex gap-2">
                   <div className="relative flex-1">
                     {meta.prefix && (
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-brand-400">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-star-blue/40">
                         {meta.prefix}
                       </span>
                     )}
@@ -137,7 +137,7 @@ export default function AdminSettingsPage() {
                       className={`input ${meta.prefix ? 'pl-7' : ''} ${meta.suffix ? 'pr-10' : ''}`}
                     />
                     {meta.suffix && (
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-brand-400">
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-star-blue/40">
                         {meta.suffix}
                       </span>
                     )}
@@ -151,7 +151,7 @@ export default function AdminSettingsPage() {
                     Save
                   </Button>
                   {saveSuccess === key && (
-                    <span className="flex items-center text-xs text-green-600 font-medium">
+                    <span className="flex items-center text-xs text-emerald-400 font-medium animate-fade-in">
                       Saved
                     </span>
                   )}

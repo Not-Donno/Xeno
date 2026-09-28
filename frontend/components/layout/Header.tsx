@@ -22,26 +22,28 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-brand-100">
+    <header className="sticky top-0 z-50 glass border-b border-surface-border/50">
       <div className="container-x">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold tracking-tight text-brand-950">XENO</span>
+          <Link href="/" className="flex items-center gap-2 group">
+            <span className="text-2xl font-bold tracking-tight text-star-white group-hover:text-accent transition-colors duration-300">
+              XENO
+            </span>
           </Link>
 
           {/* Desktop Search */}
           <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-8">
-            <div className="relative w-full">
+            <div className="relative w-full group">
               <input
                 type="text"
                 placeholder="Search products, brands, vendors..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 text-sm border border-brand-200 rounded-full focus:outline-none focus:ring-2 focus:ring-brand-950 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2.5 bg-surface-light/50 border border-surface-border rounded-full text-sm text-star-white placeholder:text-star-blue/40 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all duration-300"
               />
               <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-400"
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-star-blue/50 group-focus-within:text-accent transition-colors"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -58,23 +60,32 @@ export function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/products" className="text-sm text-brand-600 hover:text-brand-950">
+            <Link
+              href="/products"
+              className="text-sm text-star-blue/70 hover:text-accent transition-colors duration-300"
+            >
               Shop
             </Link>
-            <Link href="/vendors" className="text-sm text-brand-600 hover:text-brand-950">
+            <Link
+              href="/vendors"
+              className="text-sm text-star-blue/70 hover:text-accent transition-colors duration-300"
+            >
               Vendors
             </Link>
-            <Link href="/categories" className="text-sm text-brand-600 hover:text-brand-950">
+            <Link
+              href="/categories"
+              className="text-sm text-star-blue/70 hover:text-accent transition-colors duration-300"
+            >
               Categories
             </Link>
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
             {/* Wishlist */}
             <Link
               href="/account/wishlist"
-              className="relative p-2 text-brand-600 hover:text-brand-950"
+              className="relative p-2.5 text-star-blue/60 hover:text-accent transition-colors duration-300 rounded-full hover:bg-surface-light/50"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -85,14 +96,17 @@ export function Header() {
                 />
               </svg>
               {wishlistCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-accent text-brand-950 text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-accent text-space-950 text-[10px] font-bold rounded-full flex items-center justify-center animate-scale-in">
                   {wishlistCount}
                 </span>
               )}
             </Link>
 
             {/* Cart */}
-            <Link href="/cart" className="relative p-2 text-brand-600 hover:text-brand-950">
+            <Link
+              href="/cart"
+              className="relative p-2.5 text-star-blue/60 hover:text-accent transition-colors duration-300 rounded-full hover:bg-surface-light/50"
+            >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -102,7 +116,7 @@ export function Header() {
                 />
               </svg>
               {itemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-accent text-brand-950 text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-accent text-space-950 text-[10px] font-bold rounded-full flex items-center justify-center animate-scale-in">
                   {itemCount}
                 </span>
               )}
@@ -111,31 +125,31 @@ export function Header() {
             {/* Account */}
             {user ? (
               <div className="relative group">
-                <button className="flex items-center gap-2 p-2 text-sm text-brand-700 hover:text-brand-950">
-                  <div className="w-7 h-7 rounded-full bg-brand-200 flex items-center justify-center text-xs font-medium">
+                <button className="flex items-center gap-2 p-2 text-sm text-star-blue/70 hover:text-accent transition-colors duration-300 rounded-full hover:bg-surface-light/50">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-cosmic-500 flex items-center justify-center text-xs font-bold text-white">
                     {user.firstName[0]}
                     {user.lastName[0]}
                   </div>
-                  <span className="hidden lg:inline">{user.firstName}</span>
+                  <span className="hidden lg:inline text-sm">{user.firstName}</span>
                 </button>
-                <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-brand-100 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                <div className="absolute right-0 top-full mt-2 w-52 glass rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 shadow-card-hover z-50">
                   <div className="p-2">
                     <Link
                       href="/account"
-                      className="block px-3 py-2 text-sm text-brand-700 hover:bg-brand-50 rounded"
+                      className="block px-3 py-2.5 text-sm text-star-blue/80 hover:bg-surface-light/50 hover:text-accent rounded-lg transition-colors"
                     >
                       My Account
                     </Link>
                     <Link
                       href="/account/orders"
-                      className="block px-3 py-2 text-sm text-brand-700 hover:bg-brand-50 rounded"
+                      className="block px-3 py-2.5 text-sm text-star-blue/80 hover:bg-surface-light/50 hover:text-accent rounded-lg transition-colors"
                     >
                       Orders
                     </Link>
                     {user.role === 'VENDOR' && (
                       <Link
                         href="/vendor"
-                        className="block px-3 py-2 text-sm text-brand-700 hover:bg-brand-50 rounded"
+                        className="block px-3 py-2.5 text-sm text-star-blue/80 hover:bg-surface-light/50 hover:text-accent rounded-lg transition-colors"
                       >
                         Vendor Dashboard
                       </Link>
@@ -143,15 +157,15 @@ export function Header() {
                     {user.role === 'ADMIN' && (
                       <Link
                         href="/admin"
-                        className="block px-3 py-2 text-sm text-brand-700 hover:bg-brand-50 rounded"
+                        className="block px-3 py-2.5 text-sm text-star-blue/80 hover:bg-surface-light/50 hover:text-accent rounded-lg transition-colors"
                       >
                         Admin Dashboard
                       </Link>
                     )}
-                    <hr className="my-1 border-brand-100" />
+                    <hr className="my-2 border-surface-border" />
                     <button
                       onClick={logout}
-                      className="block w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded"
+                      className="block w-full text-left px-3 py-2.5 text-sm text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                     >
                       Logout
                     </button>
@@ -161,7 +175,7 @@ export function Header() {
             ) : (
               <div className="hidden md:flex items-center gap-2">
                 <Link href="/auth/login">
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="text-star-blue/70 hover:text-accent">
                     Login
                   </Button>
                 </Link>
@@ -175,7 +189,7 @@ export function Header() {
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 text-brand-600"
+              className="md:hidden p-2.5 text-star-blue/60 hover:text-accent transition-colors rounded-full"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -191,7 +205,7 @@ export function Header() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-brand-100 py-4 space-y-3">
+          <div className="md:hidden border-t border-surface-border/50 py-6 space-y-4 animate-fade-in-down">
             <form onSubmit={handleSearch}>
               <input
                 type="text"
@@ -201,14 +215,14 @@ export function Header() {
                 className="input"
               />
             </form>
-            <div className="flex flex-col gap-2">
-              <Link href="/products" className="text-sm text-brand-700 py-1" onClick={() => setMobileMenuOpen(false)}>Shop</Link>
-              <Link href="/vendors" className="text-sm text-brand-700 py-1" onClick={() => setMobileMenuOpen(false)}>Vendors</Link>
-              <Link href="/categories" className="text-sm text-brand-700 py-1" onClick={() => setMobileMenuOpen(false)}>Categories</Link>
+            <div className="flex flex-col gap-1">
+              <Link href="/products" className="text-sm text-star-blue/80 py-2.5 px-3 rounded-lg hover:bg-surface-light/50 hover:text-accent transition-colors" onClick={() => setMobileMenuOpen(false)}>Shop</Link>
+              <Link href="/vendors" className="text-sm text-star-blue/80 py-2.5 px-3 rounded-lg hover:bg-surface-light/50 hover:text-accent transition-colors" onClick={() => setMobileMenuOpen(false)}>Vendors</Link>
+              <Link href="/categories" className="text-sm text-star-blue/80 py-2.5 px-3 rounded-lg hover:bg-surface-light/50 hover:text-accent transition-colors" onClick={() => setMobileMenuOpen(false)}>Categories</Link>
               {!user && (
                 <>
-                  <Link href="/auth/login" className="text-sm text-brand-700 py-1" onClick={() => setMobileMenuOpen(false)}>Login</Link>
-                  <Link href="/auth/register" className="text-sm text-brand-700 py-1" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
+                  <Link href="/auth/login" className="text-sm text-star-blue/80 py-2.5 px-3 rounded-lg hover:bg-surface-light/50 hover:text-accent transition-colors" onClick={() => setMobileMenuOpen(false)}>Login</Link>
+                  <Link href="/auth/register" className="text-sm text-star-blue/80 py-2.5 px-3 rounded-lg hover:bg-surface-light/50 hover:text-accent transition-colors" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
                 </>
               )}
             </div>

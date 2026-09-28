@@ -76,14 +76,14 @@ export default function AdminReviewsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-bold text-brand-950">Reviews</h2>
-        <p className="text-sm text-brand-500 mt-1">{total} total reviews</p>
+    <div className="space-y-6 animate-fade-in">
+      <div className="animate-fade-in-up">
+        <h2 className="text-xl font-bold text-star-white">Reviews</h2>
+        <p className="text-sm text-star-blue/60 mt-1">{total} total reviews</p>
       </div>
 
       {/* Status tabs */}
-      <div className="flex gap-1 border-b border-brand-100">
+      <div className="flex gap-1 border-b border-surface-border animate-fade-in-up" style={{ animationDelay: '100ms' }}>
         {STATUS_TABS.map((tab) => (
           <button
             key={tab.value}
@@ -94,8 +94,8 @@ export default function AdminReviewsPage() {
             className={cn(
               'px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors',
               status === tab.value
-                ? 'border-brand-950 text-brand-950'
-                : 'border-transparent text-brand-500 hover:text-brand-900'
+                ? 'border-accent text-accent'
+                : 'border-transparent text-star-blue/50 hover:text-star-white'
             )}
           >
             {tab.label}
@@ -104,7 +104,7 @@ export default function AdminReviewsPage() {
       </div>
 
       {/* Table */}
-      <div className="card overflow-hidden">
+      <div className="card overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
         {loading ? (
           <div className="p-6 space-y-3">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -124,30 +124,30 @@ export default function AdminReviewsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-brand-100 bg-brand-50/50">
-                    <th className="text-left px-6 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Product</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">User</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Rating</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Review</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Status</th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Date</th>
-                    <th className="text-right px-6 py-3 text-xs font-medium text-brand-500 uppercase tracking-wider">Actions</th>
+                  <tr className="border-b border-surface-border bg-surface-light/50">
+                    <th className="text-left px-6 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Product</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">User</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Rating</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Review</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Status</th>
+                    <th className="text-left px-4 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Date</th>
+                    <th className="text-right px-6 py-3 text-xs font-medium text-star-blue/50 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-brand-100">
+                <tbody className="divide-y divide-surface-border">
                   {reviews.map((review) => (
-                    <tr key={review.id} className="hover:bg-brand-50/50">
-                      <td className="px-6 py-3 text-brand-700 max-w-[160px] truncate">
+                    <tr key={review.id} className="hover:bg-surface-light/50 transition-colors">
+                      <td className="px-6 py-3 text-star-blue/80 max-w-[160px] truncate">
                         {review.productId}
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center shrink-0">
-                            <span className="text-[10px] font-semibold text-brand-600">
+                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center shrink-0">
+                            <span className="text-[10px] font-semibold text-white">
                               {review.user?.firstName?.[0]}{review.user?.lastName?.[0]}
                             </span>
                           </div>
-                          <span className="text-brand-900">
+                          <span className="text-star-white">
                             {review.user?.firstName} {review.user?.lastName}
                           </span>
                         </div>
@@ -157,12 +157,12 @@ export default function AdminReviewsPage() {
                       </td>
                       <td className="px-4 py-3 max-w-[280px]">
                         {review.title && (
-                          <p className="font-medium text-brand-900 text-xs mb-0.5">{review.title}</p>
+                          <p className="font-medium text-star-white text-xs mb-0.5">{review.title}</p>
                         )}
-                        <p className="text-brand-600 text-xs">{truncate(review.body, 100)}</p>
+                        <p className="text-star-blue/60 text-xs">{truncate(review.body, 100)}</p>
                       </td>
                       <td className="px-4 py-3">{reviewStatusBadge(review.status)}</td>
-                      <td className="px-4 py-3 text-brand-500">
+                      <td className="px-4 py-3 text-star-blue/60">
                         {review.createdAt ? formatDate(review.createdAt) : '—'}
                       </td>
                       <td className="px-6 py-3">
@@ -197,8 +197,8 @@ export default function AdminReviewsPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between px-6 py-4 border-t border-brand-100">
-                <p className="text-sm text-brand-500">
+              <div className="flex items-center justify-between px-6 py-4 border-t border-surface-border">
+                <p className="text-sm text-star-blue/60">
                   Page {page} of {totalPages}
                 </p>
                 <div className="flex gap-2">
