@@ -70,6 +70,7 @@ const config: Config = {
         'orbit': 'orbit 20s linear infinite',
         'shimmer': 'shimmer 2s linear infinite',
         'bounce-subtle': 'bounceSubtle 2s ease-in-out infinite',
+        'marquee': 'marquee 20s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -119,6 +120,10 @@ const config: Config = {
         bounceSubtle: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-5px)' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
       backgroundImage: {

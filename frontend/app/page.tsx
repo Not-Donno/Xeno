@@ -48,11 +48,21 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[80vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-space-950 via-space-950/90 to-space-950" />
-        <div className="relative container-x">
+        <svg className="absolute -bottom-10 right-0 w-1/2 opacity-20" viewBox="0 0 400 200" fill="none" aria-hidden="true">
+          <path d="M0 200 L120 0" stroke="#6366f1" strokeWidth="2" />
+          <path d="M80 200 L200 0" stroke="#6366f1" strokeWidth="2" />
+          <path d="M160 200 L280 0" stroke="#c4b5fd" strokeWidth="2" />
+          <path d="M240 200 L360 0" stroke="#c4b5fd" strokeWidth="2" />
+          <path d="M320 200 L440 0" stroke="#6366f1" strokeWidth="2" />
+        </svg>
+        <div className="relative container-x py-20">
           <div className="max-w-2xl animate-fade-in-up">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+            <p className="mt-4 text-xs font-semibold tracking-[0.3em] uppercase text-accent">
+              Athletic Wear Collection
+            </p>
+            <h1 className="mt-4 text-4xl md:text-6xl lg:text-7xl font-black italic uppercase leading-tight">
               Gear Up.
               <br />
               <span className="text-gradient">Play Hard.</span>
@@ -66,13 +76,13 @@ export default async function HomePage() {
                   Shop Now
                 </Button>
               </Link>
-              <Link href="/categories">
+              <Link href="/vendors">
                 <Button
                   variant="ghost"
                   size="lg"
                   className="text-white border border-white/20 hover:bg-white/10 hover:text-white hover:border-white/40"
                 >
-                  Explore Categories
+                  Meet the Vendors
                 </Button>
               </Link>
             </div>
@@ -80,11 +90,24 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Athletic marquee strip */}
+      <div className="overflow-hidden border-y border-surface-border py-3 select-none">
+        <div className="flex w-max animate-marquee text-xs font-black italic uppercase tracking-[0.3em] text-star-blue/40">
+          {Array.from({ length: 4 }).map((_, k) => (
+            <span key={k} className="flex gap-10 pr-10">
+              {['Run', 'Train', 'Win', 'Sprint', 'Endure', 'Repeat'].map((w) => (
+                <span key={w}>{w} <span className="text-accent">—</span></span>
+              ))}
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* Popular Sports */}
       {data.sports.length > 0 && (
         <section className="container-x py-16 md:py-24">
           <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-star-white">Popular Sports</h2>
+            <h2 className="text-2xl md:text-3xl font-black italic uppercase tracking-wide text-star-white">Popular Sports</h2>
             <Link href="/categories" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>
@@ -94,10 +117,10 @@ export default async function HomePage() {
               <Link
                 key={sport.id}
                 href={`/products?sport=${sport.slug}`}
-                className="flex flex-col items-center gap-3 p-5 rounded-xl hover:bg-surface-light/50 transition-all duration-300 hover:-translate-y-1 animate-fade-in-up"
+                className="group flex flex-col items-center gap-3 p-5 rounded-xl hover:bg-surface-light/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-glow animate-fade-in-up"
                 style={{ animationDelay: `${i * 60}ms` }}
               >
-                <Icon name={sport.icon || 'trophy'} size={28} className="text-accent" />
+                <Icon name={sport.icon || 'trophy'} size={28} className="text-accent transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-1" />
                 <span className="text-sm text-center text-star-blue/80 font-medium">
                   {sport.name}
                 </span>
@@ -111,7 +134,7 @@ export default async function HomePage() {
       {data.productTypes.length > 0 && (
         <section className="container-x py-16 md:py-24">
           <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-star-white">Shop by Category</h2>
+            <h2 className="text-2xl md:text-3xl font-black italic uppercase tracking-wide text-star-white">Shop by Category</h2>
             <Link href="/products" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>
@@ -167,7 +190,7 @@ export default async function HomePage() {
       {data.featured.length > 0 && (
         <section className="container-x py-16 md:py-24">
           <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-star-white">Featured Products</h2>
+            <h2 className="text-2xl md:text-3xl font-black italic uppercase tracking-wide text-star-white">Featured Products</h2>
             <Link href="/products" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>
@@ -186,7 +209,7 @@ export default async function HomePage() {
       {data.trending.length > 0 && (
         <section className="container-x py-16 md:py-24">
           <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-star-white">Trending Now</h2>
+            <h2 className="text-2xl md:text-3xl font-black italic uppercase tracking-wide text-star-white">Trending Now</h2>
             <Link href="/products?sort=popular" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>
@@ -205,7 +228,7 @@ export default async function HomePage() {
       {data.vendors.length > 0 && (
         <section className="container-x py-16 md:py-24">
           <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-star-white">Popular Vendors</h2>
+            <h2 className="text-2xl md:text-3xl font-black italic uppercase tracking-wide text-star-white">Popular Vendors</h2>
             <Link href="/vendors" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>
@@ -248,7 +271,7 @@ export default async function HomePage() {
       {data.newArrivals.length > 0 && (
         <section className="container-x py-16 md:py-24">
           <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-star-white">New Arrivals</h2>
+            <h2 className="text-2xl md:text-3xl font-black italic uppercase tracking-wide text-star-white">New Arrivals</h2>
             <Link href="/products?sort=newest" className="text-sm text-star-blue/60 hover:text-accent transition-colors">
               View all
             </Link>

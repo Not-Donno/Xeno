@@ -25,13 +25,13 @@
     @apply inline-flex items-center justify-center font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg;
   }
   .btn-primary {
-    @apply btn bg-gradient-to-r from-accent to-cosmic-500 text-white hover:shadow-glow hover:-translate-y-0.5 focus:ring-accent;
+    @apply btn bg-gradient-to-r from-accent to-cosmic-500 text-white hover:shadow-glow hover:-translate-y-0.5 focus:ring-accent shine;
   }
   .btn-secondary {
     @apply btn bg-surface-lighter text-star-white border border-surface-border hover:bg-surface-border hover:border-accent/30 hover:-translate-y-0.5 focus:ring-accent;
   }
   .btn-accent {
-    @apply btn bg-accent text-white hover:bg-accent-light hover:shadow-glow hover:-translate-y-0.5 focus:ring-accent;
+    @apply btn bg-accent text-white hover:bg-accent-light hover:shadow-glow hover:-translate-y-0.5 focus:ring-accent shine;
   }
   .input {
     @apply w-full px-4 py-3 bg-surface-light border border-surface-border rounded-lg text-star-white placeholder:text-star-blue/40 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300;
@@ -41,6 +41,27 @@
   }
   .card-hover {
     @apply transition-all duration-500 hover:shadow-card-hover hover:border-accent/20 hover:-translate-y-1;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
+  .shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+  }
+  .shine:hover::after {
+    left: 125%;
   }
   .glass {
     @apply bg-surface-light/40 backdrop-blur-md border border-surface-border/50;
